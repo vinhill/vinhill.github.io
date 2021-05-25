@@ -43,12 +43,31 @@ def create_database():
     cur.execute("DROP TABLE IF EXISTS participates")
     cur.execute("DROP TABLE IF EXISTS kills")
     cur.execute("DROP TABLE IF EXISTS damages")
+    cur.execute("DROP TABLE IF EXISTS roles")
     
-    cur.execute("CREATE TABLE match (mid INTEGER PRIMARY KEY, map TEXT, result TEXT, date TEXT)")
+    # create table linking roles e.g. vampire and group e.g. traitor
+    cur.execute("CREATE TABLE roles (role TEXT, team TEXT)")
+    cur.executemany("INSERT INTO roles (role, team) VALUES (?, ?)", [
+        ("Assassin", "Traitors"),
+        ("Traitor", "Traitors"),
+        ("Zombie", "Traitors"),
+        ("Vampire", "Traitors"),
+        ("Hypnotist", "Traitors"),
+        ("Killer", "Killer"),
+        ("Jester", "Jester"),
+        ("Innocent", "Innocent"),
+        ("Glitch", "Innocent"),
+        ("Detective", "Innocent"),
+        ("Phantom", "Innocent"),
+        ("Mercenary", "Innocent"),
+        ("Swapper", "None")
+    ])
+    
+    cur.execute("CREATE TABLE match (mid INTEGER PRIMARY KEY, map TEXT, result REFERENCES roles(team), date TEXT)")
     cur.execute("CREATE TABLE player (name TEXT PRIMARY KEY)")
-    cur.execute("CREATE TABLE participates (mid REFERENCES match(mid), player REFERENCES player(name), role TEXT)")
-    cur.execute("CREATE TABLE kills (mid REFERENCES match(mid), attacker REFERENCES player(name), victim REFERENCES player(name), atkrole TEXT, vktrole TEXT, time TEXT)")
-    cur.execute("CREATE TABLE damages (mid REFERENCES match(mid), attacker REFERENCES player(name), victim REFERENCES player(name), atkrole TEXT, vktrole TEXT, time TEXT, damage INTEGER)")
+    cur.execute("CREATE TABLE participates (mid REFERENCES match(mid), player REFERENCES player(name), role REFERENCES roles(role))")
+    cur.execute("CREATE TABLE kills (mid REFERENCES match(mid), attacker REFERENCES player(name), victim REFERENCES player(name), atkrole  REFERENCES roles(role), vktrole  REFERENCES roles(role), time TEXT)")
+    cur.execute("CREATE TABLE damages (mid REFERENCES match(mid), attacker REFERENCES player(name), victim REFERENCES player(name), atkrole  REFERENCES roles(role), vktrole  REFERENCES roles(role), time TEXT, damage INTEGER)")
     
     db.commit()
     db.close()
@@ -127,7 +146,12 @@ def get_connection(path='ttt.db'):
     return __singleton_connections[path]
 
 
-def query(str):
+def query_df(str):
     con = get_connection()
     res = pd.read_sql_query(str, con)
     return res
+    
+def query(str):
+    cur = get_connection().cursor()
+    cur.execute(str)
+    return cur.fetchall()
