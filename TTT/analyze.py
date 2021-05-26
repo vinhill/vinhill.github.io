@@ -102,13 +102,40 @@ def win_loss():
         GROUP BY participates.player
         ) a
     ORDER BY quote
+    DESC
     """)
     card = {
-        'header': 'Maps',
+        'header': 'Siege',
         'body': body
     }
     return card
-    
+
+def win_loss_innocent():
+    body = hmtl_table("""
+    SELECT
+        a.player,
+        a.wins,
+        a.losses,
+        ROUND(CAST(a.wins as float) / CAST(a.wins + a.losses as float), 3) AS quote
+    FROM (
+        SELECT
+            participates.player AS player,
+            sum(case when roles.team = match.result and roles.team = 'Innocent' then 1 else 0 end) AS wins,
+            sum(case when not roles.team = match.result and roles.team = 'Innocent' then 1 else 0 end) AS losses
+        FROM
+            participates
+            JOIN roles ON participates.role == roles.role
+            JOIN match ON participates.mid == match.mid
+        GROUP BY participates.player
+        ) a
+    ORDER BY quote
+    DESC
+    """)
+    card = {
+        'header': 'Siege Innocent',
+        'body': body
+    }
+    return card  
     
 if __name__ == "__main__":
     # cards is a list consisting of dictionaries, each representing one html card
@@ -130,6 +157,7 @@ if __name__ == "__main__":
     cards.append(players())
     cards.append(maps())
     cards.append(win_loss())
+    cards.append(win_loss_innocent())
     cards.append(roles())
         
     # create a cards.js file containing the code for the cards list
