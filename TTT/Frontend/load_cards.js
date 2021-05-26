@@ -21,22 +21,24 @@ function make_card(idx, header, image=undefined, body=undefined, text=undefined,
 	res.push('<div class="card">');
 	// image
 	if (image !== undefined) {
-		res.push(`<img class="card-img-top collapse show multi-collapse ${idx}" src=image alt="Card image cap">`);
+		res.push(`<img class="card-img-top collapse show multi-collapse ${idx}" src="${image}" alt="Card image cap">`);
 	}
 	//header
 	res.push(`<h5 class="card-header" data-toggle="collapse" data-target=".${idx}">${header}</h5>`);
-	// content part
-	res.push(`<div class="card-body collapse show ${idx}">`);
-	if (body !== undefined) {
-		res.push(body);
+	// content part	
+	if (body || text || footer) {
+		res.push(`<div class="card-body collapse show ${idx}">`);
+		if (body) {
+			res.push(body);
+		}
+		if (text) {
+			res.push(`<p class="card-text">${text}</p>`);
+		}
+		if (footer) {
+			res.push(`<p class="card-text"><small class="text-muted">footer</small></p>`)
+		}
+		res.push('</div>');
 	}
-	if (text !== undefined) {
-		res.push(`<p class="card-text">${text}</p>`);
-	}
-	if (footer !== undefined) {
-		res.push(`<p class="card-text"><small class="text-muted">footer</small></p>`)
-	}
-	res.push('</div>');
 	res.push('</div>')
 	return res.join("");
 }

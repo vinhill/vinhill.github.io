@@ -3,6 +3,7 @@ from typing import Dict, List
 
 from tqdm import tqdm
 import numpy as np
+import matplotlib.pyplot as plt
 
 from logparser import query
 
@@ -48,6 +49,40 @@ def maps():
     }
     return card
     
+    
+def roles():
+    """
+    Donut chart displaying how often which roles appeared
+    """
+    _, values = query("SELECT role, COUNT(mid) as count FROM participates GROUP BY role ORDER BY count DESC")
+    values = np.array(values)  # [[role, count], [role2, count2], ...]
+    
+    # see https://matplotlib.org/stable/gallery/pie_and_polar_charts/pie_and_donut_labels.html
+    fig, ax = plt.subplots(figsize=(6, 3), subplot_kw=dict(aspect="equal"))
+    wedges, texts = ax.pie(values[:, 1], wedgeprops=dict(width=0.5), startangle=-40)
+
+    bbox_props = dict(boxstyle="square,pad=0.3", fc="w", ec="k", lw=0.72)
+    kw = dict(arrowprops=dict(arrowstyle="-"),
+              bbox=bbox_props, zorder=0, va="center")
+
+    for i, p in enumerate(wedges):
+        ang = (p.theta2 - p.theta1)/2. + p.theta1
+        y = np.sin(np.deg2rad(ang))
+        x = np.cos(np.deg2rad(ang))
+        horizontalalignment = {-1: "right", 1: "left"}[int(np.sign(x))]
+        connectionstyle = "angle,angleA=0,angleB={}".format(ang)
+        kw["arrowprops"].update({"connectionstyle": connectionstyle})
+        ax.annotate(values[i,0], xy=(x, y), xytext=(1.35*np.sign(x), 1.4*y),
+                    horizontalalignment=horizontalalignment, **kw)
+
+    plt.savefig("./Frontend/rolesdonut.jpg")
+    plt.show()
+    
+    return {
+        "header": "Roles",
+        "image": "rolesdonut.jpg"
+    }
+
     
 def win_loss():
     """
@@ -106,6 +141,7 @@ if __name__ == "__main__":
     cards.append(players())
     cards.append(maps())
     cards.append(win_loss())
+    cards.append(roles())
         
     # create a cards.js file containing the code for the cards list
     with open("./Frontend/cards.js", "w") as f:
