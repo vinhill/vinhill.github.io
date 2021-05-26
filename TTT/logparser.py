@@ -129,8 +129,8 @@ def update_db_through_log(logfile="console.log"):
         elif match := fight_re.search(line): # DMG or KILL
             attacker = match.group("atk_name")
             victim = match.group("vkt_name")
-            atkrole = match.group("atk_role")
-            vktrole = match.group("vkt_role")
+            atkrole = match.group("atk_role").capitalize()  # for some reason, this log entry isn't capitalized
+            vktrole = match.group("vkt_role").capitalize()
             time = match.group("time")
             if match.group("type") == "DMG":
                 db.execute(
@@ -199,3 +199,7 @@ def query(str):
     cur.execute(str)
     names = [descr[0] for descr in cur.description]
     return names, cur.fetchall()
+
+
+if __name__ == "__main__":
+    update_db_through_log()

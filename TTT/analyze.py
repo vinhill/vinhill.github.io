@@ -49,6 +49,36 @@ def maps():
     }
     return card
     
+
+def kills():
+    """
+    Table card consisting of players, their kills and false kills
+    """
+    body = hmtl_table("""
+    SELECT
+        a.player,
+        a.kills,
+        a.wrong,
+        (a.kills - 2 * a.wrong) AS score
+    FROM (
+        SELECT
+            attacker AS player,
+            COUNT(*) AS kills,
+            sum(case when atkroles.team = vktroles.team then 1 else 0 end) AS wrong
+        FROM
+            kills
+            JOIN roles AS atkroles ON atkroles.role = kills.atkrole
+            JOIN roles AS vktroles ON vktroles.role = kills.vktrole
+        GROUP BY attacker
+    ) a
+    ORDER BY score DESC
+    """)
+    card = {
+        'header': 'Kills',
+        'body': body
+    }
+    return card
+    
     
 def roles():
     """
@@ -84,6 +114,9 @@ def roles():
     
     
 def win_loss():
+    """
+    Table card consisting of players, their wins and losses and the quotient wins / (wins+losses)
+    """
     body = hmtl_table("""
     SELECT
         a.player,
@@ -101,16 +134,19 @@ def win_loss():
             JOIN match ON participates.mid == match.mid
         GROUP BY participates.player
         ) a
-    ORDER BY quote
-    DESC
+    ORDER BY quote DESC
     """)
     card = {
-        'header': 'Siege',
+        'header': 'Siege insgesammt',
         'body': body
     }
     return card
 
+
 def win_loss_innocent():
+    """
+    Table card consisting of players, their wins and losses as innocents and the quotient wins / (wins+losses)
+    """
     body = hmtl_table("""
     SELECT
         a.player,
@@ -120,23 +156,24 @@ def win_loss_innocent():
     FROM (
         SELECT
             participates.player AS player,
-            sum(case when roles.team = match.result and roles.team = 'Innocent' then 1 else 0 end) AS wins,
-            sum(case when not roles.team = match.result and roles.team = 'Innocent' then 1 else 0 end) AS losses
+            sum(case when roles.team = match.result  then 1 else 0 end) AS wins,
+            sum(case when not roles.team = match.result then 1 else 0 end) AS losses
         FROM
             participates
             JOIN roles ON participates.role == roles.role
             JOIN match ON participates.mid == match.mid
+        WHERE roles.team = 'Innocent'
         GROUP BY participates.player
         ) a
-    ORDER BY quote
-    DESC
+    ORDER BY quote DESC
     """)
     card = {
-        'header': 'Siege Innocent',
+        'header': 'Siege als Innocent',
         'body': body
     }
     return card  
     
+
 if __name__ == "__main__":
     # cards is a list consisting of dictionaries, each representing one html card
     # a dictionary can have the keys header, image, body, text, footer and values being strings
@@ -159,6 +196,7 @@ if __name__ == "__main__":
     cards.append(win_loss())
     cards.append(win_loss_innocent())
     cards.append(roles())
+    cards.append(kills())
         
     # create a cards.js file containing the code for the cards list
     with open("./Frontend/cards.js", "w") as f:
