@@ -6,7 +6,7 @@ function make_card(idx, header, image=undefined, body=undefined, text=undefined,
 		res.push(`<img class="card-img-top collapse show multi-collapse ${idx}" src=image alt="Card image cap">`);
 	}
 	//header
-	res.push(`<h5 class="card-header" data-bs-toggle="collapse" href=".${idx}">${header}</h5>`);
+	res.push(`<h5 class="card-header" data-toggle="collapse" data-target=".${idx}">${header}</h5>`);
 	// content part
 	res.push(`<div class="card-body collapse show ${idx}">`);
 	if (body !== undefined) {

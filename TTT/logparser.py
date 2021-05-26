@@ -2,6 +2,7 @@ import re
 import sqlite3
 from datetime import datetime
 import shutil
+import os
 
 import pandas as pd
 from tqdm import tqdm
@@ -35,7 +36,7 @@ def get_regexes():
     return join_re, leave_re, fight_re, role_re, result_re, map_re, start_re
 
 
-def create_database():
+def reset_database():
     db = sqlite3.connect('ttt.db')
     
     cur = db.cursor()
@@ -140,11 +141,11 @@ def update_db_through_log(logfile="console.log"):
     db.close()
     file.close()
     # move file to prevent duplicates
-    time = datetime.datetime.now().strftime('%Y-%m-%d;%H:%M:%S')
+    time = datetime.now().strftime('%Y.%m.%d %H,%M,%S')
     if not os.path.exists("./logs"):
         os.mkdir("./logs")
-        shutil.copyfile(logfile, f"./logs/{time}.log")
-        os.remove(logfile)
+    shutil.copyfile(logfile, f"./logs/{time}.log")
+    os.remove(logfile)
 
 
 __singleton_connections = dict()
