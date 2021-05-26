@@ -1,5 +1,6 @@
 __pycache__
 console.log
+.ipynb_checkpoints
 
 
 # Ignore Visual Studio temporary files, build results, and

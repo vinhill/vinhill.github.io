@@ -76,7 +76,6 @@ def roles():
                     horizontalalignment=horizontalalignment, **kw)
 
     plt.savefig("./Frontend/rolesdonut.jpg")
-    plt.show()
     
     return {
         "header": "Roles",
