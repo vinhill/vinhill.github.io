@@ -84,28 +84,38 @@ def roles():
     """
     Donut chart displaying how often which roles appeared
     """
-    _, values = query("SELECT role, COUNT(mid) as count FROM participates GROUP BY role ORDER BY count DESC")
+    _, values = query("""
+        SELECT roles.role, COUNT(mid) as count, colour 
+        FROM participates JOIN roles ON roles.role = participates.role 
+        GROUP BY roles.role 
+        ORDER BY count DESC
+    """)
     values = np.array(values)  # [[role, count], [role2, count2], ...]
     
-    # see https://matplotlib.org/stable/gallery/pie_and_polar_charts/pie_and_donut_labels.html
-    fig, ax = plt.subplots(figsize=(6, 3), subplot_kw=dict(aspect="equal"))
-    wedges, texts = ax.pie(values[:, 1], wedgeprops=dict(width=0.5), startangle=-40)
-
-    bbox_props = dict(boxstyle="square,pad=0.3", fc="w", ec="k", lw=0.72)
-    kw = dict(arrowprops=dict(arrowstyle="-"),
-              bbox=bbox_props, zorder=0, va="center")
-
-    for i, p in enumerate(wedges):
-        ang = (p.theta2 - p.theta1)/2. + p.theta1
-        y = np.sin(np.deg2rad(ang))
-        x = np.cos(np.deg2rad(ang))
-        horizontalalignment = {-1: "right", 1: "left"}[int(np.sign(x))]
-        connectionstyle = "angle,angleA=0,angleB={}".format(ang)
-        kw["arrowprops"].update({"connectionstyle": connectionstyle})
-        ax.annotate(values[i,0], xy=(x, y), xytext=(1.35*np.sign(x), 1.4*y),
-                    horizontalalignment=horizontalalignment, **kw)
-
-    plt.savefig("./Frontend/rolesdonut.jpg")
+    fig = plt.figure()
+    fig.set_figwidth(5)
+    fig.set_figheight(7)
+    
+    # Donut chart
+    ax = plt.subplot2grid(shape=(5, 5), loc=(0, 0), colspan=5, rowspan=5)
+    ax.pie(values[:,1], colors=values[:,2], autopct='%1.1f%%', startangle=90, pctdistance=1.2)
+    centre_circle = plt.Circle((0,0),0.70,fc='white')
+    ax.add_artist(centre_circle)
+    
+    plt.legend(values[:,0], loc="lower center", ncol=3, bbox_to_anchor=(0.5, -0.3))
+    """
+    # Pie chart
+    fig1, ax1 = plt.subplots()
+    ax1.pie(values[:,1], colors=values[:,2], autopct='%1.1f%%', startangle=90, pctdistance=1.2)
+    # Circle for making it donut
+    centre_circle = plt.Circle((0,0),0.70,fc='white')
+    fig = plt.gcf()
+    fig.gca().add_artist(centre_circle)
+    # Equal aspect ratio ensures that pie is drawn as a circle
+    plt.legend(values[:,0], loc="lower center", ncol=3, bbox_to_anchor=(0.5, -0.7))
+    plt.tight_layout()
+    """
+    plt.savefig("./Frontend/rolesdonut.jpg", bbox_inches='tight', pad_inches=0.1)
     
     return {
         "header": "Roles",

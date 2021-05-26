@@ -55,21 +55,21 @@ def reset_database():
     cur.execute("DROP TABLE IF EXISTS roles")
     
     # create table linking roles to teams e.g. vampire to traitor
-    cur.execute("CREATE TABLE roles (role TEXT, team TEXT)")
-    cur.executemany("INSERT INTO roles (role, team) VALUES (?, ?)", [
-        ("Assassin", "Traitors"),
-        ("Traitor", "Traitors"),
-        ("Zombie", "Traitors"),
-        ("Vampire", "Traitors"),
-        ("Hypnotist", "Traitors"),
-        ("Killer", "Killer"),
-        ("Jester", "Jester"),
-        ("Innocent", "Innocent"),
-        ("Glitch", "Innocent"),
-        ("Detective", "Innocent"),
-        ("Phantom", "Innocent"),
-        ("Mercenary", "Innocent"),
-        ("Swapper", "None")
+    cur.execute("CREATE TABLE roles (role TEXT, team TEXT, colour TEXT)")
+    cur.executemany("INSERT INTO roles (role, team, colour) VALUES (?, ?, ?)", [
+        ("Assassin", "Traitors", "#843001"),
+        ("Traitor", "Traitors", "#D60004"),
+        ("Zombie", "Traitors", "#3D6F00"),
+        ("Vampire", "Traitors", "#343434"),
+        ("Hypnotist", "Traitors", "#FF40FF"),
+        ("Killer", "Killer", "#37005D"),
+        ("Jester", "Jester", "#BC05FF"),
+        ("Innocent", "Innocent", "#01C700"),
+        ("Glitch", "Innocent", "#FF6300"),
+        ("Detective", "Innocent", "#1A22FF"),
+        ("Phantom", "Innocent", "#00EAFD"),
+        ("Mercenary", "Innocent", "#F3C100"),
+        ("Swapper", "None", "#7800FF")
     ])
     
     # create tables for Entities match and player as well as relationships participates, kills and damages
