@@ -10,6 +10,8 @@ from tqdm import tqdm
 
 def get_regexes():
     """
+    Creates several regexes designed for extraction of relevant information from the log files.
+    
     Example lines we want to extract
         Client "Poci" spawned in server <STEAM_0:1:202841564> (took 41 seconds).
         Dropped "V8Block" from server<STEAM_0:1:146926915>
@@ -37,9 +39,14 @@ def get_regexes():
 
 
 def reset_database():
+    """
+    Resets and initializes the database. This function is used to
+    define what tables there are and what scheme they have.
+    """
     db = sqlite3.connect('ttt.db')
-    
     cur = db.cursor()
+    
+    # remove old tables, if they exist (basically clear the database)
     cur.execute("DROP TABLE IF EXISTS match")
     cur.execute("DROP TABLE IF EXISTS player")
     cur.execute("DROP TABLE IF EXISTS participates")
@@ -47,7 +54,7 @@ def reset_database():
     cur.execute("DROP TABLE IF EXISTS damages")
     cur.execute("DROP TABLE IF EXISTS roles")
     
-    # create table linking roles e.g. vampire and group e.g. traitor
+    # create table linking roles to teams e.g. vampire to traitor
     cur.execute("CREATE TABLE roles (role TEXT, team TEXT)")
     cur.executemany("INSERT INTO roles (role, team) VALUES (?, ?)", [
         ("Assassin", "Traitors"),
@@ -65,6 +72,7 @@ def reset_database():
         ("Swapper", "None")
     ])
     
+    # create tables for Entities match and player as well as relationships participates, kills and damages
     cur.execute("CREATE TABLE match (mid INTEGER PRIMARY KEY, map TEXT, result REFERENCES roles(team), date TEXT)")
     cur.execute("CREATE TABLE player (name TEXT PRIMARY KEY)")
     cur.execute("CREATE TABLE participates (mid REFERENCES match(mid), player REFERENCES player(name), role REFERENCES roles(role))")
@@ -76,6 +84,9 @@ def reset_database():
 
 
 def update_db_through_log(logfile="console.log"):
+    """
+    Iterate over the lines in the logfile, extract relevant information and insert it into the database.
+    """
     db = sqlite3.connect('ttt.db')
     cur = db.cursor()
     file = open(logfile, "r")
@@ -140,7 +151,9 @@ def update_db_through_log(logfile="console.log"):
     db.commit()
     db.close()
     file.close()
-    # move file to prevent duplicates
+    
+    # move file to logs ordner
+    # therby preventing one log to be inserted several times
     time = datetime.now().strftime('%Y.%m.%d %H,%M,%S')
     if not os.path.exists("./logs"):
         os.mkdir("./logs")
@@ -150,17 +163,38 @@ def update_db_through_log(logfile="console.log"):
 
 __singleton_connections = dict()
 def get_connection(path='ttt.db'):
+    """
+    Implementation of a singleton in module form keeping track of one connection.
+    
+    Changes might or might not be persistent, if you don't call close_connections() afterwards.
+    """
     if path not in __singleton_connections:
         __singleton_connections[path] = sqlite3.connect(path)
     return __singleton_connections[path]
 
 
+def close_connections():
+    """
+    Close all connections that are managed by the singleton
+    """
+    for con in __singleton_connections.values():
+        con.commit()
+        con.close()
+
+
 def query_df(str):
+    """
+    Send a query to the database and get the result as pandas DataFrame
+    """
     con = get_connection()
     res = pd.read_sql_query(str, con)
     return res
     
 def query(str):
+    """
+    Send a query to the database and get the result as tuple (names, result)
+    where names is a list of column names and result is a list of rows, where each row is tuple.
+    """
     cur = get_connection().cursor()
     cur.execute(str)
     names = [descr[0] for descr in cur.description]
