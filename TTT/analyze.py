@@ -6,57 +6,44 @@ import numpy as np
 from logparser import query
 
 
-def table_card(query):
-    pass  # TODO
+def hmtl_table(query_str):
+    names, res = query(query_str)
+    body = list()
+    body.append('<table class="table"><thead><tr>')
+    body.extend(f'<th scope="col">{h}</th>' for h in names)
+    body.append("</tr></thead><tbody>")
+    for row in res:
+        body.append("<tr>")
+        for val in row:
+            body.append(f"<td>{val}</td>")
+        body.append("</tr>")
+    body.append("</tbody></table>")
+    return ''.join(body)
 
 
 def players():
-    res = query("SELECT COUNT(mid), player as count FROM participates GROUP BY player")
-    body = ["""
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Player</th>
-                    <th scope="col">rounds</th>
-                </tr>
-            </thead>
-            <tbody>
-    """]
-    body.extend([f"<tr><td>{p}</td><td>{c}</td></tr>" for c, p in res])
-    body.append("</tbody></table>")
+    body = hmtl_table("SELECT player, COUNT(mid) as rounds FROM participates GROUP BY player ORDER BY rounds DESC")
     card = {
         'header': 'Players',
-        'body': ''.join(body)
+        'body': body
     }
     return card
 
 
 def maps():
-    res = query("SELECT COUNT(mid) as count, map FROM match GROUP BY map")
-    body = ["""
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Map</th>
-                    <th scope="col">count</th>
-                </tr>
-            </thead>
-            <tbody>
-    """]
-    body.extend([f"<tr><td>{m}</td><td>{c}</td></tr>" for c, m in res])
-    body.append("</tbody></table>")
+    body = hmtl_table("SELECT map, COUNT(mid) as count FROM match GROUP BY map ORDER BY count DESC")
     card = {
         'header': 'Maps',
-        'body': ''.join(body)
+        'body': body
     }
     return card
     
     
 def win_loss():
-    win = query("SELECT part.player, COUNT(part.mid) as wins \
+    _, win = query("SELECT part.player, COUNT(part.mid) as wins \
     FROM participates as part JOIN match ON part.mid == match.mid JOIN roles on part.role == roles.role \
     WHERE roles.team = match.result GROUP BY part.player ORDER BY part.player")
-    loss = query("SELECT part.player, COUNT(part.mid) as wins \
+    _, loss = query("SELECT part.player, COUNT(part.mid) as wins \
     FROM participates as part JOIN match ON part.mid == match.mid JOIN roles on part.role == roles.role \
     WHERE roles.team != match.result GROUP BY part.player ORDER BY part.player")
     players = [p for p, c in win]
@@ -95,7 +82,7 @@ if __name__ == "__main__":
         ("Who won how often?", "SELECT COUNT(mid) as wins, result as team FROM match GROUP BY result")
     ]
     for q in tqdm(queries):
-        res = query(q[1])  # list of tuples
+        _, res = query(q[1])  # list of tuples
         res = [str(e) for tuple in res for e in tuple]
         res = " ".join(res)
         cards.append({"header": q[0], "text": res})

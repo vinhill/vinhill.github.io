@@ -163,4 +163,5 @@ def query_df(str):
 def query(str):
     cur = get_connection().cursor()
     cur.execute(str)
-    return cur.fetchall()
+    names = [descr[0] for descr in cur.description]
+    return names, cur.fetchall()
