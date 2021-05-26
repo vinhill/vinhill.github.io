@@ -23,4 +23,8 @@
 /* Prevent cards from breaking */
 .card-columns .card {
 	display: inline-block ;
+	width: 100%;
+}
+.card-columns .card .card-header {
+	cursor: pointer;
 }
