@@ -103,10 +103,9 @@ def win_loss():
         GROUP BY participates.player
         ) a
     ORDER BY quote
-    DESC
     """)
     card = {
-        'header': 'Siege',
+        'header': 'Maps',
         'body': body
     }
     return card
@@ -121,8 +120,8 @@ def win_loss_innocent():
     FROM (
         SELECT
             participates.player AS player,
-            sum(case when roles.team = match.result and roles.team = 'Innocent' then 1 else 0 end) AS wins,
-            sum(case when not roles.team = match.result and roles.team = 'Innocent' then 1 else 0 end) AS losses
+            sum(case when roles.team = match.result and roles.team = 'innocent' then 1 else 0 end) AS wins,
+            sum(case when roles.team = match.result and roles.team = 'innocent' then 0 else 1 end) AS losses
         FROM
             participates
             JOIN roles ON participates.role == roles.role
@@ -130,10 +129,9 @@ def win_loss_innocent():
         GROUP BY participates.player
         ) a
     ORDER BY quote
-    DESC
     """)
     card = {
-        'header': 'Siege Innocent',
+        'header': 'Maps',
         'body': body
     }
     return card  
