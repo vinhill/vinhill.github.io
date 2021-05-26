@@ -82,41 +82,31 @@ def roles():
         "header": "Roles",
         "image": "rolesdonut.jpg"
     }
-
+    
     
 def win_loss():
-    """
-    Table card consisting of players, how often they won and lost and what the win-loss-ratio is
-    """
-    _, win = query("SELECT part.player, COUNT(part.mid) as wins \
-    FROM participates as part JOIN match ON part.mid == match.mid JOIN roles on part.role == roles.role \
-    WHERE roles.team = match.result GROUP BY part.player ORDER BY part.player")
-    _, loss = query("SELECT part.player, COUNT(part.mid) as wins \
-    FROM participates as part JOIN match ON part.mid == match.mid JOIN roles on part.role == roles.role \
-    WHERE roles.team != match.result GROUP BY part.player ORDER BY part.player")
-    players = [p for p, c in win]
-    wins = [c for p, c in win]
-    losses = [c for p, c in loss]
-    quotes = [np.round(w / (w+l), decimals=3) for w, l in zip(wins, losses)]
-    data = list(zip(players, wins, losses, quotes))
-    data.sort(key=lambda d: d[3], reverse=True)
-    body = ["""
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Player</th>
-                    <th scope="col">wins</th>
-                    <th scope="col">losses</th>
-                    <th scope="col">quote</th>
-                </tr>
-            </thead>
-            <tbody>
-    """]
-    body.extend([f"<tr><td>{p}</td><td>{w}</td><td>{l}</td><td>{q}</td></tr>" for p, w, l, q in data])
-    body.append("</tbody></table>")
+    body = hmtl_table("""
+    SELECT
+        a.player,
+        a.wins,
+        a.losses,
+        ROUND(CAST(a.wins as float) / CAST(a.wins + a.losses as float), 3) AS quote
+    FROM (
+        SELECT
+            participates.player AS player,
+            sum(case when roles.team = match.result then 1 else 0 end) AS wins,
+            sum(case when roles.team = match.result then 0 else 1 end) AS losses
+        FROM
+            participates
+            JOIN roles ON participates.role == roles.role 
+            JOIN match ON participates.mid == match.mid
+        GROUP BY participates.player
+        ) a
+    ORDER BY quote
+    """)
     card = {
-        'header': 'Siege',
-        'body': ''.join(body)
+        'header': 'Maps',
+        'body': body
     }
     return card
     
