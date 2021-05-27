@@ -175,7 +175,7 @@ if __name__ == "__main__":
     cards.append(maps())
     cards.append(win_loss("", 'Siege insgesamt'))
     cards.append(win_loss("WHERE roles.team = 'Innocent'", 'Siege als Innocent'))
-    cards.append(win_loss("WHERE roles.team = 'Traitor'", 'Siege als Traitor'))
+    cards.append(win_loss("WHERE roles.team = 'Traitors'", 'Siege als Traitor'))
     cards.append(roles())
     cards.append(kills())
         

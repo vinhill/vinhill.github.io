@@ -57,11 +57,11 @@ def reset_database():
     # create table linking roles to teams e.g. vampire to traitor
     cur.execute("CREATE TABLE roles (role TEXT, team TEXT, colour TEXT)")
     cur.executemany("INSERT INTO roles (role, team, colour) VALUES (?, ?, ?)", [
-        ("Assassin", "Traitor", "#843001"),
-        ("Traitor", "Traitor", "#D60004"),
-        ("Zombie", "Traitor", "#3D6F00"),
-        ("Vampire", "Traitor", "#343434"),
-        ("Hypnotist", "Traitor", "#FF40FF"),
+        ("Assassin", "Traitors", "#843001"),
+        ("Traitor", "Traitors", "#D60004"),
+        ("Zombie", "Traitors", "#3D6F00"),
+        ("Vampire", "Traitors", "#343434"),
+        ("Hypnotist", "Traitors", "#FF40FF"),
         ("Killer", "Killer", "#37005D"),
         ("Jester", "Jester", "#BC05FF"),
         ("Innocent", "Innocent", "#01C700"),
