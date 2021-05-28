@@ -59,7 +59,9 @@ def kills():
         a.player,
         a.kills,
         a.wrong,
-        (a.kills - 2 * a.wrong) AS score
+        (a.kills - 2 * a.wrong) AS score,
+        b.rounds,
+        ROUND((CAST(a.kills - 2 * a.wrong AS float) / CAST(b.rounds AS float)), 2) AS killsPerGame
     FROM (
         SELECT
             attacker AS player,
@@ -70,7 +72,10 @@ def kills():
             JOIN roles AS atkroles ON atkroles.role = kills.atkrole
             JOIN roles AS vktroles ON vktroles.role = kills.vktrole
         GROUP BY attacker
-    ) a
+        ) a
+    NATURAL JOIN (
+        SELECT COUNT(mid) as rounds, player FROM participates GROUP BY player
+    ) b
     ORDER BY score DESC
     """)
     card = {
@@ -121,7 +126,6 @@ def roles():
         "header": "Roles",
         "image": "rolesdonut.jpg"
     }
-    
     
 def win_loss(whereClause, header):
     """
