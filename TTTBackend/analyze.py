@@ -115,7 +115,7 @@ def roles():
     plt.legend(values[:,0], loc="lower center", ncol=3, bbox_to_anchor=(0.5, -0.7))
     plt.tight_layout()
     """
-    plt.savefig("./Frontend/rolesdonut.jpg", bbox_inches='tight', pad_inches=0.1)
+    plt.savefig("./Frontend/rolesdonut.jpg", bbox_inches='tight', pad_inches=0.1, dpi=300)
     
     return {
         "header": "Roles",
