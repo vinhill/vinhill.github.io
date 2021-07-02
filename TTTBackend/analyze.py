@@ -59,7 +59,9 @@ def kills():
         a.player,
         a.kills,
         a.wrong,
-        (a.kills - 2 * a.wrong) AS score
+        (a.kills - 2 * a.wrong) AS score,
+        b.rounds,
+        ROUND((CAST(a.kills - 2 * a.wrong AS float) / CAST(b.rounds AS float)), 2) AS killsPerGame
     FROM (
         SELECT
             attacker AS player,
@@ -70,7 +72,10 @@ def kills():
             JOIN roles AS atkroles ON atkroles.role = kills.atkrole
             JOIN roles AS vktroles ON vktroles.role = kills.vktrole
         GROUP BY attacker
-    ) a
+        ) a
+    NATURAL JOIN (
+        SELECT COUNT(mid) as rounds, player FROM participates GROUP BY player
+    ) b
     ORDER BY score DESC
     """)
     card = {
@@ -122,8 +127,7 @@ def roles():
         "image": "rolesdonut.jpg"
     }
     
-    
-def win_loss():
+def win_loss(whereClause, header):
     """
     Table card consisting of players, their wins and losses and the quotient wins / (wins+losses)
     """
@@ -142,46 +146,16 @@ def win_loss():
             participates
             JOIN roles ON participates.role == roles.role 
             JOIN match ON participates.mid == match.mid
+        """ + whereClause + """
         GROUP BY participates.player
         ) a
     ORDER BY quote DESC
     """)
     card = {
-        'header': 'Siege insgesammt',
+        'header': header,
         'body': body
     }
     return card
-
-
-def win_loss_innocent():
-    """
-    Table card consisting of players, their wins and losses as innocents and the quotient wins / (wins+losses)
-    """
-    body = hmtl_table("""
-    SELECT
-        a.player,
-        a.wins,
-        a.losses,
-        ROUND(CAST(a.wins as float) / CAST(a.wins + a.losses as float), 3) AS quote
-    FROM (
-        SELECT
-            participates.player AS player,
-            sum(case when roles.team = match.result  then 1 else 0 end) AS wins,
-            sum(case when not roles.team = match.result then 1 else 0 end) AS losses
-        FROM
-            participates
-            JOIN roles ON participates.role == roles.role
-            JOIN match ON participates.mid == match.mid
-        WHERE roles.team = 'Innocent'
-        GROUP BY participates.player
-        ) a
-    ORDER BY quote DESC
-    """)
-    card = {
-        'header': 'Siege als Innocent',
-        'body': body
-    }
-    return card  
     
 
 if __name__ == "__main__":
@@ -203,8 +177,9 @@ if __name__ == "__main__":
     # more complex cards created by functions
     cards.append(players())
     cards.append(maps())
-    cards.append(win_loss())
-    cards.append(win_loss_innocent())
+    cards.append(win_loss("", 'Siege insgesamt'))
+    cards.append(win_loss("WHERE roles.team = 'Innocent'", 'Siege als Innocent'))
+    cards.append(win_loss("WHERE roles.team = 'Traitors'", 'Siege als Traitor'))
     cards.append(roles())
     cards.append(kills())
         
