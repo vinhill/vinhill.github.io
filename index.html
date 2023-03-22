@@ -20,44 +20,69 @@
 		<!-- Navbar -->
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		  <div class="container-fluid">
-			<a class="navbar-brand" href="#">Vinhill</a>
+			<a class="navbar-brand" href="#">Vinhill Homepage</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			  <span class="navbar-toggler-icon"></span>
 			</button>
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<!--div class="collapse navbar-collapse" id="navbarSupportedContent">
 			  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 				<li class="nav-item">
 				  <a class="nav-link active" aria-current="page" href="#">Home</a>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="./TTTStats">TTTStats</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="https://resttt.fly.dev/">RESTTT Backend</a>
-				</li>
-				<!--
-				<li class="nav-item dropdown">
-				  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-					Dropdown
-				  </a>
-				  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<li><a class="dropdown-item" href="#">Action</a></li>
-					<li><a class="dropdown-item" href="#">Another action</a></li>
-					<li><hr class="dropdown-divider"></li>
-					<li><a class="dropdown-item" href="#">Something else here</a></li>
-				  </ul>
-				</li>
-				-->
 			  </ul>
-			</div>
+			</div-->
 		  </div>
 		</nav>
 		<!-- Content -->
-		<div class="d-flex justify-content-center" id="content-wrap">
-			<div class="card" style="width: 18rem;">
-				<div class="card-body">
-					<h5 class="card-title">Home page</h5>
-					<p>Welcome to my webpage, it is currently under development.</p>
+		<div class="d-flex justify-content-center row" id="content-wrap">
+			<div class="m-3 col-8">
+				<div class="card">
+					<div class="card-header">
+						<h5 class="card-title">Home page</h5>
+					</div>
+					<div class="card-body">
+						<p>Welcome to my webpage, it is currently under development.</p>
+						<a href="https://www.linkedin.com/in/vincent-hilla/">LinkedIn</a>
+						<a href="https://github.com/vinhill">Github</a>
+					</div>
+				</div>
+			</div>
+			<div class="m-3 col-8">
+				<div class="card">
+					<div class="card-header">
+						<h5 class="card-title">TTTStats</h5>
+					</div>
+					<div class="card-body">
+						<div class="row g-0">
+							<div class="col-5">
+								<img src="./TTTStats.png" alt="RESTTT Backend" class="img-fluid rounded-start">
+							</div>
+							<div class="col-7">
+								<p>A website displaying statistics about Trouble in Terrorist Town played with some friends.</p>
+								<p>The website is written in Angular.js and accesses the RESTTT Backend for the displayed information.</p>
+								<p>See <a href="./TTTStats">here</a></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="m-3 col-8">
+				<div class="card">
+					<div class="card-header">
+						<h5 class="card-title">RESTTT Backend</h5>
+					</div>
+					<div class="card-body">
+						<div class="row g-0">
+							<div class="col-7">
+								<p>The backend for TTTStats, implemented as REST API with Express.</p>
+								<p>It fetches logfiles from the game server via FTP, stores them in the cloud. These files are parsed using regexes and a callback-based system to populate a MySQL database with high-level information. Finally, several routes offer access to data computed through SQL queries.</p>
+								<p>See <a href="https://resttt.fly.dev/">here</a></p>
+							</div>
+							<div class="col-5">
+								<img src="./RESTTT admin panel.png" alt="RESTTT Backend" class="img-fluid rounded-start">
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
