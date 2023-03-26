@@ -55,7 +55,24 @@
 					<div class="card-body">
 						<div class="row g-0">
 							<div class="col-md-5">
-								<img src="./TTTStats.png" alt="RESTTT Backend" class="img-fluid rounded-start">
+								<div id="carousel_tttstats" class="carousel carousel-dark slide" data-bs-ride="carousel">
+									<div class="carousel-inner">
+										<div class="carousel-item active">
+											<img src="./TTTStats.png" alt="RESTTT Backend" class="img-fluid rounded-start">
+										</div>
+										<div class="carousel-item">
+											<img src="./TTTStats 2.png" alt="RESTTT Backend" class="img-fluid rounded-start">
+										</div>
+									</div>
+									<button class="carousel-control-prev" type="button" data-bs-target="#carousel_tttstats" data-bs-slide="prev">
+										<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+										<span class="visually-hidden">Previous</span>
+									</button>
+									<button class="carousel-control-next" type="button" data-bs-target="#carousel_tttstats" data-bs-slide="next">
+										<span class="carousel-control-next-icon" aria-hidden="true"></span>
+										<span class="visually-hidden">Next</span>
+									</button>
+								</div>
 							</div>
 							<div class="col-md-7">
 								<p>A website displaying statistics about Trouble in Terrorist Town played with some friends.</p>
@@ -79,7 +96,37 @@
 								<p>See <a href="https://resttt.fly.dev/">here</a></p>
 							</div>
 							<div class="col-md-5">
-								<img src="./RESTTT admin panel.png" alt="RESTTT Backend" class="img-fluid rounded-start">
+								<div id="carousel-resttt" class="carousel carousel-dark slide" data-bs-ride="carousel">
+									<div class="carousel-inner">
+										<div class="carousel-item active">
+											<img src="./RESTTT admin panel.png" alt="RESTTT Backend" class="img-fluid rounded-start dim-setter">
+											<pre class="mermaid dim-user">
+											erDiagram
+												Filebase { file[] logfiles }
+												Gameserver { file currentlog }
+												RESTTT ||--|| Filebase : fetches
+												RESTTT ||--|| Filebase : stores
+												RESTTT ||--|| Database : queries
+												RESTTT ||--|| Gameserver : fetches
+											</pre>
+											<script type="module">
+												import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+											</script>
+										</div>
+										<div class="carousel-item">
+											<!-- 972 x 694 -->
+											<img src="./RESTTT admin panel.png" alt="RESTTT Backend" class="img-fluid rounded-start">
+										</div>
+									</div>
+									<button class="carousel-control-prev" type="button" data-bs-target="#carousel-resttt" data-bs-slide="prev">
+										<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+										<span class="visually-hidden">Previous</span>
+									</button>
+									<button class="carousel-control-next" type="button" data-bs-target="#carousel-resttt" data-bs-slide="next">
+										<span class="carousel-control-next-icon" aria-hidden="true"></span>
+										<span class="visually-hidden">Next</span>
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>

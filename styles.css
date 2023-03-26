@@ -16,3 +16,11 @@ nav {
 	/* same as the pedding of navbar bootstrap class for to and bottom */
 	padding-left: .5rem;
 }
+.dim-setter {
+	visibility: hidden;
+}
+.dim-user {
+	position: absolute;
+	top: 0;
+	width: 100%;
+}
