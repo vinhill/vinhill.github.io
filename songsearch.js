@@ -1,6 +1,6 @@
 // globals: zip, songs
 
-// type: {name: string, artist: string, game: string}[]
+// type: {Name: string, Artist: string, Game: string}[]
 data = [];
 
 function create_table(data) {
@@ -88,9 +88,9 @@ function songsearch() {
     const limit = document.getElementById("limit").value;
 
     let res = data.filter((song) => {
-        return song.name.toLowerCase().includes(query.toLowerCase())
-            || song.artist.toLowerCase().includes(query.toLowerCase())
-            || song.game.toLowerCase().includes(query.toLowerCase());
+        return song.Name.toLowerCase().includes(query.toLowerCase())
+            || song.Artist.toLowerCase().includes(query.toLowerCase())
+            || song.Game.toLowerCase().includes(query.toLowerCase());
     });
     res = res.splice(0, limit);
 
@@ -110,7 +110,7 @@ function songsearch() {
 
 function render_gamelist() {
     const div = document.getElementById("gamelist");
-    const games = new Set(data.map((song) => song.game));
+    const games = new Set(data.map((song) => song.Game));
     
     // horizontal ul
     const ul = document.createElement("ul");
@@ -144,7 +144,7 @@ function load_data() {
         } else {
             const tokens = line.split(" - ");
             try {
-            data.push({artist: tokens[0], name: tokens[1], game: cur_game});
+            data.push({Artist: tokens[0], Name: tokens[1], Game: cur_game});
             } catch (e) {
             console.log(tokens);
             }

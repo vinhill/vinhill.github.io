@@ -768,7 +768,7 @@ Linkin Park - With You [MULTI]
 Linkin Park - Wretches And Kings
 Linkin Park and Nelly Furtado - Divide It Right
 Linkin Park and Stevie Aoki - A Light That Never Comes
-# Star Sing Muse
+# StarSing Muse
 Muse - Animals
 Muse - Assassin [MULTI]
 Muse - Big Freeze
@@ -817,15 +817,48 @@ Muse - Unnatural Selection
 Muse - Uno
 Muse - Unsustainable
 Muse - Uprising
-# Star Sing Queen
-songlist not - yet available
+# StarSing Queen
+Queen - 39
+Queen - A Kind Of Magic
+Queen - Another One Bites The Dust
+Queen - Bicycle Race [MULTI]
+Queen - Bohemian Rhapsody [MULTI]
+Queen - Breakthru
+Queen - Crazy Little Thing Called Love
+Queen - Don’t Stop Me Now
+Queen - Fat Bottomed Girls [MULTI]
+Queen - Hammer To Fall
+Queen - I Want It All
+Queen - I Want To Break Free
+Queen - I Was Born To Love You
+Queen - I’m Going Slightly Mad
+Queen - In Only Seven Days
+Queen - Innuendo
+Queen - Killer Queen
+Queen - Love Of My Life
+Queen - One Vision
+Queen - Play The Game [MULTI]
+Queen - Princess Of The Universe
+Queen - Radio Ga Ga
+Queen - Somebody To Love
+Queen - Spread Your Wings
+Queen - Thank God It’s Christmas
+Queen - The Invisible Man
+Queen - The Miracle
+Queen - The Show Must Go On
+Queen - These Are The Days Of Our Lives
+Queen - Tie Your Mother Down
+Queen - Too Much Love Will Kill You
+Queen - Under Pressure [MULTI]
+Queen - We Are The Champions
+Queen - We Will Rock You
+Queen - Who Wants To Live Forever
+Queen - You’re My Best Friend
+Freddie Mercury - Living On my Own
+Freddie Mercury - The Great Pretender
 # StarSing 90s Volume 2
 songlist not - yet available
 # StarSing 90s Volume 3
 songlist not - yet available
-# Star Sing Michael Jackson
-songlist not - yet available
-# Star Sing Rocks! Part I
-songlist not - yet available
-# Star Sing Rocks! Part II
+# StarSing Michael Jackson
 songlist not - yet available`
