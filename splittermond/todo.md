@@ -1,0 +1,7 @@
+- LP & FP validation, storage
+- "Remove tr" btn design
+- "Add tr" btn design
+- "Expand / collapse tbl" btn as child of tr, not th
+- Magieschule, Zauber grad, Meisterschaft schwelle, vermögen validation
+- Auto-calculation of eingesetzte EP / zumindest validation
+- Tally design
