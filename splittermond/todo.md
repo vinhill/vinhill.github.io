@@ -1,7 +1,7 @@
-- LP & FP validation, storage
+- LP & FP storage
 - "Remove tr" btn design
 - "Add tr" btn design
-- "Expand / collapse tbl" btn as child of tr, not th
+- "Expand / collapse tbl" btn as child of tr, not th. Or as a summary / details element?
 - Magieschule, Zauber grad, Meisterschaft schwelle, vermögen validation
 - Auto-calculation of eingesetzte EP / zumindest validation
-- Tally design
+- page responsiveness

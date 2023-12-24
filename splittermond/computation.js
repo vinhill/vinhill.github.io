@@ -258,6 +258,7 @@ class SplittermondComputations {
     init() {
         this.make_graph();
         this.make_validators();
+        this.make_listeners();
         this.bind();
     }
 
@@ -317,6 +318,13 @@ class SplittermondComputations {
         for (const school of sm_magicschools) {
             this.g.addall([school.att1, school.att2, school.name + "_pts"], school.name);
         }
+
+        this.g.add("splitterpunktegesamt", "splitterpunktetemporaer", "_splitterpunkte");
+    }
+
+    listen(value, callback) {
+        // listener implemented as a function from value to unnamed variable
+        this.g.func(value, callback)
     }
 
     make_validators() {
@@ -376,6 +384,15 @@ class SplittermondComputations {
             this.validators.set("weapon_att2_" + i, x => sm_attrs.map(a => a.abbrev).indexOf(x) != -1 ? x : "n/a");
             this.validators.set("weapon_fp_" + i, x => sm_fight_skills.indexOf(x) != -1 ? x : "n/a");
         }
+    }
+
+    make_listeners() {
+        this.listen("_splitterpunkte", x => {
+            document.getElementById("tally-splitterpunkte").ncols = x;
+        });
+        this.listen("LP", x => {
+            document.getElementById("tally-lp").ncols = x;
+        });
     }
 
     bind() {

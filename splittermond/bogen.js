@@ -1,17 +1,3 @@
-function make_tally(container) {
-    const n_rows = Number(container.dataset.rows);
-    const n_cols = Number(container.dataset.cols);
-    const grid = document.createElement("div");
-    grid.style.gridTemplateColumns = "repeat(" + n_cols + ", 1.5em)";
-    grid.style.gridTemplateColumns = "repeat(" + n_cols + ", 1.5em)";
-    for (let i = 0; i < n_rows*n_cols; i++) {
-        const cbx = document.createElement("input");
-        cbx.type = "checkbox";
-        cbx.classList.add("tally-cbx");
-        grid.appendChild(cbx);
-    }
-    container.appendChild(grid);
-}
 
 function exportData() {
     const data = {};
@@ -221,7 +207,7 @@ class DiceDialog {
 const diceDialog = new DiceDialog();
 
 function OpenDiceDialog(templated_spec) {
-    spec = templated_spec.replace(/#(\w+)/g, (_, str) => splittermond.g.get(str));
+    spec = templated_spec.replace(/#(\p{Letter}+)/gu, (_, str) => splittermond.g.get(str));
     if (!diceDialog.spec_pattern.test(spec)) {
         console.error(`'${templated_spec}' resolved to invalid spec '${spec}'`);
         return;
@@ -401,11 +387,6 @@ function CollapseTableOnClick(e) {
 }
 
 window.addEventListener("load", () => {
-    const tallies = document.getElementsByClassName("tally");
-    for (const tally of tallies) {
-        make_tally(tally);
-    }
-
     document.getElementById("btn-save").addEventListener("click", () => download(exportData(), "character.json", "text/plain"));
     document.addEventListener("keydown", e => {
         if (e.ctrlKey && e.key == "s") {
