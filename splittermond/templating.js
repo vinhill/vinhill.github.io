@@ -47,7 +47,7 @@ function appendTemplate(templateId, container, data) {
 
 function make_table_of_contents() {
     tocid = 0;
-    for (const e1 of document.querySelectorAll("[data-category")) {
+    for (const e1 of document.querySelectorAll("[data-category]")) {
         const sublist_id = "toc-" + tocid + "-sublist";
         const group = instantiateTemplate("tmp-category-list-category", {
             title: e1.dataset.category,

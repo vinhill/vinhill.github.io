@@ -393,6 +393,9 @@ class SplittermondComputations {
         this.listen("LP", x => {
             document.getElementById("tally-lp").ncols = x;
         });
+        this.listen("FO", x => {
+            document.getElementById("tally-fokus").length = x;
+        });
     }
 
     bind() {

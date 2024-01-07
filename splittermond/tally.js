@@ -1,8 +1,9 @@
 class Tally extends HTMLElement {
-    static observedAttributes = ['nrows', 'ncols'];
+    static observedAttributes = ['nrows', 'ncols', 'length'];
     _size = 1.5;
     _nrows = 0;
     _ncols = 0;
+    _length = 0;
 
     constructor() {
         super();
@@ -20,7 +21,7 @@ class Tally extends HTMLElement {
         grid.style.gridTemplateRows = `repeat(${this.nrows}, ${this._size}em)`;
         grid.style.display = 'grid';
         grid.style.gap = "1px";
-        for (let i = 0; i < this.nrows * this.ncols; i++) {
+        for (let i = 0; i < this.length; i++) {
             const cell = document.createElement("input");
             cell.type = "checkbox";
             cell.classList.add("tally-cbx");
@@ -65,6 +66,7 @@ class Tally extends HTMLElement {
 
     set nrows(value) {
         this._nrows = value;
+        this._length = this._ncols * this.nrows;
         this._render();
     }
 
@@ -74,6 +76,16 @@ class Tally extends HTMLElement {
 
     set ncols(value) {
         this._ncols = value;
+        this._length = this._ncols * this.nrows;
+        this._render();
+    }
+
+    get length() {
+        return this._length;
+    }
+
+    set length(value) {
+        this._length = value;
         this._render();
     }
 

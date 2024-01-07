@@ -5,3 +5,5 @@
 - Magieschule, Zauber grad, Meisterschaft schwelle, vermögen validation
 - Auto-calculation of eingesetzte EP / zumindest validation
 - page responsiveness
+- use contenteditable for table instead of input?
+- validation of start attribute values?

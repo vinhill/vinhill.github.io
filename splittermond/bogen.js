@@ -345,9 +345,10 @@ class MasteryDialog {
             [...this.tbl.querySelectorAll("input")].forEach((x, i) => x.value = values[i]);
         }
 
-        // disable all inputs and buttons
+        // disable all inputs, remove buttons
         [...this.tbl.querySelectorAll("input")].forEach(x => x.disabled = true);
-        [...this.tbl.querySelectorAll("button")].forEach(x => x.disabled = true);
+        [...this.tbl.querySelectorAll("button")].forEach(x => x.remove());
+        this.dialog.querySelector(".btn-add-row").remove();
 
         this.dialog.showModal();
     }
