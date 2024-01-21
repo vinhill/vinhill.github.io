@@ -16,9 +16,6 @@ body.dark main {
 body.dark aside {
     background-color:  rgb(60, 96, 114);
 }
-body.dark #emblem-container {
-    filter: invert(80%);   
-}
 body.dark button {
     background-color: #555;
     color: #ddd;
