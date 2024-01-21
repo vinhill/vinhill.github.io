@@ -3,6 +3,7 @@
   <head>
     <title>Charakterbogen</title>
     <link rel="stylesheet" type="text/css" href="bogen.css">
+    <link rel="stylesheet" type="text/css" href="darkmode.css">
     <script src="data.js"></script>
     <script src="templating.js"></script>
     <script src="bogen.js"></script>
@@ -22,6 +23,21 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">Splittermond Charakterbogen</a>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item d-flex">
+              <label class="navbar-text">
+                Darkmode
+                <div class="switch">
+                  <input id="toggle-darkmode" type="checkbox" class="persistent" onclick="toggleDarkmode(this.checked)">
+                  <span class="slider round"></span>
+                </div>
+              </label>
+            </li>
+          </ul>
+        </div>
+
       </div>
     </nav>
     <!-- Content -->

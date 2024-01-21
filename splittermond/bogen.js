@@ -387,6 +387,16 @@ function CollapseTableOnClick(e) {
     }
 }
 
+function toggleDarkmode(active) {
+    document.body.classList.toggle("dark", active);
+    
+    const nav = document.querySelector("nav");
+    nav.classList.toggle("navbar-light", !active);
+    nav.classList.toggle("navbar-dark", active);
+    nav.classList.toggle("bg-light", !active);
+    nav.classList.toggle("bg-dark", active);
+}
+
 window.addEventListener("load", () => {
     document.getElementById("btn-save").addEventListener("click", () => download(exportData(), "character.json", "text/plain"));
     document.addEventListener("keydown", e => {
@@ -413,6 +423,7 @@ window.addEventListener("load", () => {
     masteryDialog.init();
     document.getElementById("dialog-mastery").addEventListener("close", masteryDialog.close.bind(masteryDialog));
     document.querySelectorAll("dialog").forEach(d => d.addEventListener("click", dialogClickHandler));
+    toggleDarkmode(document.getElementById("toggle-darkmode").checked);
 });
 
 window.addEventListener("beforeunload", e => {
