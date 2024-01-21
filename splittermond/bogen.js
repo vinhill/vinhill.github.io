@@ -207,7 +207,8 @@ class DiceDialog {
 const diceDialog = new DiceDialog();
 
 function OpenDiceDialog(templated_spec) {
-    spec = templated_spec.replace(/#(\p{Letter}+)/gu, (_, str) => splittermond.g.get(str));
+    spec = templated_spec.replace(/#([^#]+)#/gu, (_, str) => splittermond.g.get(str));
+    console.log(spec);
     if (!diceDialog.spec_pattern.test(spec)) {
         console.error(`'${templated_spec}' resolved to invalid spec '${spec}'`);
         return;
