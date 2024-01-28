@@ -30,7 +30,7 @@
               <label class="navbar-text">
                 Darkmode
                 <div class="switch">
-                  <input id="toggle-darkmode" type="checkbox" class="persistent" onclick="toggleDarkmode(this.checked)">
+                  <input id="toggle-darkmode" type="checkbox" name="darkmode" class="persistent" onclick="toggleDarkmode(this.checked)">
                   <span class="slider round"></span>
                 </div>
               </label>
@@ -619,7 +619,10 @@
                     <tr>
                       <td>Unverletzt</td>
                       <td>0</td>
-                      <td rowspan="5" class="max-width"><x-tally id="tally-lp" nrows="5" ncols="20"></x-tally></td>
+                      <td rowspan="5" class="max-width">
+                        <input id="data-used-lp" name="data-used-lp" hidden class="persistent">
+                        <x-tally id="tally-lp" nrows="5" ncols="20"></x-tally>
+                      </td>
                     </tr>
                     <tr>
                       <td>Angeschlagen</td>
@@ -1002,6 +1005,7 @@
                   </tr>
                   <tr>
                     <td>
+                      <input name="data-used-fokus" id="data-used-fokus" hidden class="persistent">
                       <x-tally id="tally-fokus" nrows="8" ncols="5"></x-tally>
                     </td>
                   </tr>

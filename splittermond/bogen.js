@@ -236,6 +236,7 @@ function dialogClickHandler(e) {
         e.target.close();
 }
 
+/* Instantiate a new row, requires table to have a row template */
 function AddRowOnClick(e) {
     const btn = e.target;
     const tbody = btn.parentElement.querySelector("tbody");
@@ -244,6 +245,7 @@ function AddRowOnClick(e) {
     tbody.appendChild(row);
 }
 
+/* Shrink/Expand table to num rows, requires a row template */
 function SetNumRows(table, rows) {
     const template = table.querySelector("template");
     const tbody = table.querySelector("tbody");
@@ -323,11 +325,15 @@ class MasteryDialog {
         const values = this.getSkillData(group, skill);
         console.assert(values.length % 3 == 0, "values must be a multiple of 3");
         
+        // reset input to default values
         this.tbl.querySelectorAll("input").forEach(x => x.value = x.getAttribute("value"));
+        // fill dialog with values for this skill
         SetNumRows(this.tbl, Math.max(values.length / 3, 1));
         if (values.length > 0) {
             [...this.tbl.querySelectorAll("input")].filter(x => !x.disabled).forEach((x, i) => x.value = values[i]);
         }
+
+        this.dialog.querySelector(".btn-add-row").hidden = false;
 
         this.dialog.showModal();
     }
@@ -340,7 +346,10 @@ class MasteryDialog {
         const groupdata = this.getGroupData(group);
         const values = Object.values(groupdata).flat();
         console.assert(values.length % 3 == 0, "values must be a multiple of 3");
+        
+        // reset input to default values
         this.tbl.querySelectorAll("input").forEach(x => x.value = x.getAttribute("value"));
+        // fill dialog with values for this skill
         SetNumRows(this.tbl, Math.max(values.length / 3, 0));
         if (values.length > 0) {
             [...this.tbl.querySelectorAll("input")].forEach((x, i) => x.value = values[i]);
@@ -349,7 +358,8 @@ class MasteryDialog {
         // disable all inputs, remove buttons
         [...this.tbl.querySelectorAll("input")].forEach(x => x.disabled = true);
         [...this.tbl.querySelectorAll("button")].forEach(x => x.remove());
-        this.dialog.querySelector(".btn-add-row").remove();
+        // cannot remove, as not created anew for each open
+        this.dialog.querySelector(".btn-add-row").hidden = true;
 
         this.dialog.showModal();
     }
@@ -425,6 +435,20 @@ window.addEventListener("load", () => {
     document.getElementById("dialog-mastery").addEventListener("close", masteryDialog.close.bind(masteryDialog));
     document.querySelectorAll("dialog").forEach(d => d.addEventListener("click", dialogClickHandler));
     toggleDarkmode(document.getElementById("toggle-darkmode").checked);
+    
+    document.getElementById("data-used-lp").addEventListener("input", e => {
+        document.getElementById("tally-lp").count = e.target.value;
+    });
+    document.getElementById("tally-lp").addEventListener("input", e => {
+        document.getElementById("data-used-lp").value = e.target.count;
+    });
+    
+    document.getElementById("data-used-fokus").addEventListener("input", e => {
+        document.getElementById("tally-fokus").count = e.target.value;
+    });
+    document.getElementById("tally-fokus").addEventListener("input", e => {
+        document.getElementById("data-used-fokus").value = e.target.count;
+    });
 });
 
 window.addEventListener("beforeunload", e => {

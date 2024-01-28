@@ -26,3 +26,6 @@ body.dark .dice {
 body.dark x-tally {
     color: black;
 }
+body.dark .invalid {
+    color: red !important;
+}

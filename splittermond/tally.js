@@ -14,6 +14,10 @@ class Tally extends HTMLElement {
         this._render();
     }
 
+    dispatchChange() {
+        this.dispatchEvent(new Event('change'));
+    }
+
     _render() {
         const checked = this.count;
         const grid = document.createElement('div');
@@ -25,6 +29,7 @@ class Tally extends HTMLElement {
             const cell = document.createElement("input");
             cell.type = "checkbox";
             cell.classList.add("tally-cbx");
+            cell.onclick = () => this.dispatchChange();
             grid.appendChild(cell);
         }
         this.shadowRoot.innerHTML = `<style>
