@@ -5,6 +5,4 @@
 - page responsiveness
 - use contenteditable for table instead of input?
 - validation of start attribute values?
-- Fokus points spent / focussed differentiation
-- meisterschaften speichern manchmal nicht?
 - Refactoring

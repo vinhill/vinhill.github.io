@@ -444,10 +444,17 @@ window.addEventListener("load", () => {
     });
     
     document.getElementById("data-used-fokus").addEventListener("input", e => {
-        document.getElementById("tally-fokus").count = e.target.value;
+        let [c1, c2] = e.target.value.split(",");
+        if (c2 === undefined) {
+            // for old version of this page where focus tally was binary
+            c2 = c1;
+            c1 = 0;
+        }
+        document.getElementById("tally-fokus").count = [c1, c2];
     });
     document.getElementById("tally-fokus").addEventListener("input", e => {
-        document.getElementById("data-used-fokus").value = e.target.count;
+        const [c1, c2] = e.target.count;
+        document.getElementById("data-used-fokus").value = `${c1},${c2}`;
     });
 });
 
