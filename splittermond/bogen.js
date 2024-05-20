@@ -1,52 +1,63 @@
 
 function exportData() {
     const data = {};
-    for (const inp of document.querySelectorAll("textarea.persistent, input.persistent")) {
-        console.assert(!inp.disabled, `Element ${inp.name} is disabled and bound.`);
-        console.assert(inp.name && inp.name.length > 0, `Element ${inp} has no name.`);
-        console.assert(!data.hasOwnProperty(inp.name), `Name ${inp.name} of element ${inp} already in use.`);
-        if (inp.value == "") {
-            continue;
-        }
-        data[inp.name] = inp.value;
-        if (inp.type == "checkbox") {
-            data[inp.name] = inp.checked;
+    const tags = ["textarea", "input", "table", "x-tally", "x-switch"];
+    const elements = document.querySelectorAll(tags.map(t => t + ".persistent").join(", "));
+    for (const e of elements) {
+        console.assert(!e.disabled, `Element ${e.name} is disabled and bound.`);
+        const name = e.name || e.dataset.name;
+        console.assert(name && name.length > 0, `Element ${e} has no name.`);
+        console.assert(!data.hasOwnProperty(name), `Name ${name} of element ${e} already in use.`);
+        if ((e.tagName == "INPUT" && e.type == "checkbox") || e.tagName == "X-SWITCH") {
+            data[name] = e.checked;
+        } else if (e.tagName == "INPUT" || e.tagName == "TEXTAREA") {
+            if (e.value == "") continue;
+            data[name] = e.value;
+        } else if (e.tagName == "TABLE") {
+            const tbody = e.querySelector("tbody");
+            // persist all input element values
+            const values = [...tbody.querySelectorAll("input")].filter(x => !x.disabled).map(x => x.value);
+            data[name] = { values, rows: tbody.rows.length };
+        } else if (e.tagName == "X-TALLY") {
+            data[name] = e.counts;
+            console.log(e, e.counts);
+        } else {
+            console.error("Unknown element type: " + e.tagName);
         }
     }
-    for (const tbl of document.querySelectorAll("table.persistent")) {
-        console.assert(tbl.dataset.name && tbl.dataset.name.length > 0, `Element ${tbl} has no data-name.`);
-        console.assert(!data.hasOwnProperty(tbl.dataset.name), `Name ${tbl.dataset.name} of element ${tbl} already in use.`);
-        const tbody = tbl.querySelector("tbody");
-        // persist all input element values
-        const values = [...tbody.querySelectorAll("input")].filter(x => !x.disabled).map(x => x.value);
-        data[tbl.dataset.name] = { values, rows: tbody.rows.length };
-    }
+
     return JSON.stringify(data);
+}
+
+function setCbx(cbx, value) {
+    if (cbx.checked != value) {
+        cbx.click();
+    } else {
+        cbx.dispatchEvent(new Event("input"));
+    }
 }
 
 function importData(data) {
     // create map from name to element
     const map = new Map();
-    for (const e of document.querySelectorAll("textarea.persistent, input.persistent")) {
-        map.set(e.name, e);
-    }
-    for (const e of document.querySelectorAll("table.persistent")) {
-        map.set(e.dataset.name, e);
+    const tags = ["textarea", "input", "table", "x-tally", "x-switch"];
+    for (const e of document.querySelectorAll(tags.map(t => t + ".persistent").join(", "))) {
+        map.set(e.name || e.dataset.name, e);
     }
     for (const key in data) {
         if (map.has(key)) {
             const e = map.get(key);
-            if (e.tagName == "INPUT" || e.tagName == "TEXTAREA") {
+            if ((e.tagName == "INPUT" && e.type == "checkbox") || e.tagName == "X-SWITCH") {
+                setCbx(e, data[key]);
+            } else if (e.tagName == "INPUT" || e.tagName == "TEXTAREA") {
                 e.value = data[key];
-                if (e.type == "checkbox" && e.checked != data[key]) {
-                    e.click();
-                } else {
-                    e.dispatchEvent(new Event("input"));
-                }
+                e.dispatchEvent(new Event("input"));
             } else if (e.tagName == "TABLE") {
                 SetNumRows(e, data[key].rows);
                 const values = data[key].values;
                 [...e.querySelectorAll("input")].filter(x => !x.disabled).forEach((x, i) => x.value = values[i]);
+            } else if (e.tagName == "X-TALLY") {
+                e.counts = data[key];
             } else {
                 console.error("Unknown element type: " + e.tagName);
             }
@@ -435,27 +446,6 @@ window.addEventListener("load", () => {
     document.getElementById("dialog-mastery").addEventListener("close", masteryDialog.close.bind(masteryDialog));
     document.querySelectorAll("dialog").forEach(d => d.addEventListener("click", dialogClickHandler));
     toggleDarkmode(document.getElementById("toggle-darkmode").checked);
-    
-    document.getElementById("data-used-lp").addEventListener("input", e => {
-        document.getElementById("tally-lp").count = e.target.value;
-    });
-    document.getElementById("tally-lp").addEventListener("input", e => {
-        document.getElementById("data-used-lp").value = e.target.count;
-    });
-    
-    document.getElementById("data-used-fokus").addEventListener("input", e => {
-        let [c1, c2] = e.target.value.split(",");
-        if (c2 === undefined) {
-            // for old version of this page where focus tally was binary
-            c2 = c1;
-            c1 = 0;
-        }
-        document.getElementById("tally-fokus").count = [c1, c2];
-    });
-    document.getElementById("tally-fokus").addEventListener("input", e => {
-        const [c1, c2] = e.target.count;
-        document.getElementById("data-used-fokus").value = `${c1},${c2}`;
-    });
 });
 
 window.addEventListener("beforeunload", e => {

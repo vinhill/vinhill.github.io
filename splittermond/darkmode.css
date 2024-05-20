@@ -23,7 +23,7 @@ body.dark button {
 body.dark .dice {
     border: 1px solid white;
 }
-body.dark x-tally, body.dark x-tribox {
+body.dark x-tally, body.dark x-tribox, body.dark x-state-carousel {
     color: black;
 }
 body.dark .invalid {
