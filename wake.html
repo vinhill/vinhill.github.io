@@ -1,0 +1,142 @@
+<main>
+    <h1>Wakelock</h1>
+    <button id="btn-main">Toggle</button>
+    <div style="position: relative;">
+        <div id="toast-container"></div>
+    </div>
+</main>
+
+<style>
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+#btn-main {
+    padding: 10px 20px;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+.active {
+    background-color: green;
+    color: white;
+}
+.inactive {
+    background-color: red;
+    color: white;
+}
+
+#toast-container {
+  position: absolute;
+  left: calc(50% - 200px);
+  width: 400px;
+}
+.toast {
+  opacity: 0;
+  min-height: 30px;
+  padding: 5px;
+  border: 1px solid dodgerblue;
+  margin-top: -42px;
+  background-color: lightcyan;
+  box-shadow: 0 3px 4px #0004;
+  text-align: center;
+  line-height: 30px;
+  transform: scale(0.95) translateY(50px);
+  transition:
+    margin-top 0.7s,
+    transform 0.7s,
+    opacity 0.7s;
+}
+.toast.open {
+  margin-top: 10px;
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+</style>
+
+<script>
+let lock;
+
+const
+  FADE_DUR = 700,
+  MIN_DUR = 2000;
+
+function setState(active) {
+    if (active) {
+        document.getElementById('btn-main').classList.add('active');
+        document.getElementById('btn-main').classList.remove('inactive');
+        document.getElementById('btn-main').innerText = 'Deactivate';
+    } else {
+        document.getElementById('btn-main').classList.add('inactive');
+        document.getElementById('btn-main').classList.remove('active');
+        document.getElementById('btn-main').innerText = 'Activate';
+    }
+}
+
+function onRelease() {
+    toast('released');
+    lock = null;
+    setState(false);
+}
+
+function obtainLock() {
+    if (!navigator.wakeLock) {
+        toast('not supported');
+        return;
+    }
+    if (lock && !lock.released) {
+        return;
+    }
+    toast('requesting');
+    navigator.wakeLock.request('screen')
+        .then((wl) => {
+            lock = wl;
+            lock.addEventListener('release', onRelease);
+            toast('active');
+            setState(true);
+        })
+        .catch((err) => {
+            toast('error');
+        });
+}
+
+function toast(str) {
+    let duration = Math.max(MIN_DUR, str.length * 80);
+
+    const container = document.getElementById('toast-container');
+
+    const e = document.createElement('div');
+    e.classList.add('toast');
+    e.innerText = str;
+    container.prepend(e);
+    
+    setTimeout(() => e.classList.add('open'));
+    setTimeout(
+        () => e.classList.remove('open'),
+        duration
+    );
+    setTimeout(
+        () => container.removeChild(e),
+        duration + FADE_DUR
+    );
+}
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        obtainLock();
+    }
+});
+
+document.getElementById('btn-main').addEventListener('click', () => {
+    if (lock && !lock.released) {
+        lock.release();
+    } else {
+        obtainLock();
+    }
+});
+
+setState(false);
+obtainLock();
+</script>
