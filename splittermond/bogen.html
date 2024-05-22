@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Charakterbogen</title>
-    <link rel="stylesheet" type="text/css" href="bogen.css?v=1.1">
+    <link rel="stylesheet" type="text/css" href="bogen.css?v=1.2">
     <link rel="stylesheet" type="text/css" href="darkmode.css?v=1.2">
     <script src="data.js?v=1.0"></script>
     <script src="templating.js?v=1.0"></script>
@@ -150,18 +150,17 @@
                       <td>
                         <input
                           x-bind:name="value.abbrev+'mod'"
-                          size="3"
                           type="number"
                           value="0"
-                          class="persistent"
+                          class="persistent w-3"
                         >
                       </td>
                       <td>
                         <input
                           x-bind:name="value.abbrev+'tmp'"
-                          size="3"
                           type="number"
                           value="0"
+                          class="w-3"
                         >
                       </td>
                       <td x-text="value.formula"></td>
@@ -219,9 +218,8 @@
                   <td>
                     <input
                       name="EPGesamt"
-                      class="persistent"
+                      class="persistent w-5"
                       type="number"
-                      size="5"
                       value="0"
                     >
                   </td>
@@ -231,9 +229,8 @@
                   <td>
                     <input
                       name="EPEingesetzt"
-                      class="persistent"
+                      class="persistent w-5"
                       type="number"
-                      size="5"
                       value="0"
                     >
                   </td>
@@ -279,10 +276,9 @@
                       <td>
                         <input
                           x-bind:name="attr.abbrev+'ini'"
-                          size="3"
                           type="number"
                           value="0"
-                          class="persistent"
+                          class="persistent w-3"
                         >
                       </td>
                       <td>
@@ -296,10 +292,9 @@
                       <td>
                         <input
                           x-bind:name="attr.abbrev+'mod'"
-                          size="3"
                           type="number"
                           value="0"
-                          class="persistent"
+                          class="persistent w-3"
                         >
                       </td>
                     </tr>
@@ -316,19 +311,17 @@
                   <td>
                     <input
                       name="splitterpunktegesamt"
-                      size="3"
                       value="0"
                       type="number"
-                      class="persistent"
+                      class="persistent w-3"
                       title="Gesamt"
                     >
                   </td>
                   <td>
                     <input
                       name="splitterpunktetemporaer"
-                      size="3"
                       value="0"
-                      type="number"
+                      type="number w-3"
                       title="Temporär"
                     >
                   </td>
@@ -448,8 +441,7 @@
                         <input
                           x-bind:name="resource"
                           type="number"
-                          size="4"
-                          class="persistent"
+                          class="persistent w-4"
                           value="0"
                         >
                       </td>
@@ -495,10 +487,9 @@
                     <td>
                       <input
                         x-bind:name="skill.name+'_pts'"
-                        size="3"
                         value="0"
                         type="number"
-                        class="persistent"
+                        class="persistent w-3"
                       >
                     </td>
                     <td x-text="skill.att1"></td>
@@ -506,9 +497,8 @@
                     <td>
                       <input
                         x-bind:name="skill.name+'_mod'"
-                        size="3"
                         type="number"
-                        class="persistent"
+                        class="persistent w-3"
                         value="0"
                       >
                     </td>
@@ -548,10 +538,9 @@
                     <td>
                       <input
                         x-bind:name="skill.name+'_pts'"
-                        size="3"
                         value="0"
                         type="number"
-                        class="persistent"
+                        class="persistent w-3"
                       >
                     </td>
                     <td x-text="skill.att1"></td>
@@ -559,9 +548,8 @@
                     <td>
                       <input
                         x-bind:name="skill.name+'_mod'"
-                        size="3"
                         type="number"
-                        class="persistent"
+                        class="persistent w-3"
                         value="0"
                       >
                     </td>
@@ -594,8 +582,7 @@
                         <input
                           type="number"
                           value="0"
-                          size="3"
-                          class="persistent"
+                          class="persistent w-3"
                           x-bind:name="skill"
                         >
                       </td>
@@ -684,9 +671,8 @@
                     <td>
                       <input
                         x-bind:name="'weapon_mod_'+i"
-                        size="3"
                         type="number"
-                        class="persistent"
+                        class="persistent w-3"
                         value="0"
                       >
                     </td>
@@ -694,8 +680,7 @@
                       <input
                         x-bind:name="'weapon_wgs_'+i"
                         type="number"
-                        size="3"
-                        class="persistent"
+                        class="persistent w-3"
                         value="0"
                       >
                     </td>
@@ -735,37 +720,33 @@
                       </td>
                       <td>
                         <input
-                          class="persistent"
+                          class="persistent w-3"
                           value="0"
                           type="number"
-                          size="3"
                           x-bind:name="'armor_vtd_'+i"
                         >
                       </td>
                       <td>
                         <input
-                          class="persistent"
+                          class="persistent w-3"
                           value="0"
                           type="number"
-                          size="3"
                           x-bind:name="'armor_sr_'+i"
                         >
                       </td>
                       <td>
                         <input
-                          class="persistent"
+                          class="persistent w-3"
                           value="0"
                           type="number"
-                          size="3"
                           x-bind:name="'armor_beh_'+i"
                         >
                       </td>
                       <td>
                         <input
-                          class="persistent"
+                          class="persistent w-3"
                           value="0"
                           type="number"
-                          size="3"
                           x-bind:name="'armor_tick_'+i"
                         >
                       </td>
@@ -836,7 +817,7 @@
                             </td>
                             <td>
                               <div class="d-flex">
-                                <input type="number" value="0" size="3">
+                                <input type="number" value="0" class="w-3">
                                 <button class="btn-remove-row" onclick="RemoveRowOnClick(event)">X</button>
                               </div>
                             </td>
@@ -862,7 +843,7 @@
                             </td>
                             <td>
                               <div class="d-flex">
-                                <input type="number" value="0" size="3">
+                                <input type="number" value="0" class="w-3">
                                 <button class="btn-remove-row" onclick="RemoveRowOnClick(event)">X</button>
                               </div>
                             </td>
@@ -888,10 +869,9 @@
                       <td>Solare</td>
                       <td>
                         <input
-                          class="persistent"
+                          class="persistent w-4"
                           type="number"
                           value="0"
-                          size="4"
                           name="solare"
                         >
                       </td>
@@ -900,10 +880,9 @@
                       <td>Lunare</td>
                       <td>
                         <input
-                          class="persistent"
+                          class="persistent w-4"
                           type="number"
                           value="0"
-                          size="4"
                           name="lunare"
                         >
                       </td>
@@ -912,10 +891,9 @@
                       <td>Kupfer</td>
                       <td>
                         <input
-                          class="persistent"
+                          class="persistent w-4"
                           type="number"
                           value="0"
-                          size="4"
                           name="kupfer"
                         >
                       </td>
@@ -975,8 +953,7 @@
                         </td>
                         <td>
                           <input
-                            class="persistent"
-                            size="3"
+                            class="persistent w-3"
                             type="number"
                             value="0"
                             x-bind:name="school.name+'_pts'"
@@ -1035,7 +1012,7 @@
                           <input class="max-width" size="10">
                         </td>
                         <td>
-                          <input size="2" value="0" type="number">
+                          <input class="w-2" value="0" type="number">
                         </td>
                         <td>
                           <input class="max-width" size="3">
@@ -1056,7 +1033,7 @@
                           <input class="max-width">
                         </td>
                         <td>
-                          <input size="4" type="number" value="0">
+                          <input class="w-4" type="number" value="0">
                         </td>
                         <td>
                           <div class="d-flex">
@@ -1088,7 +1065,6 @@
         <div class="center-content">
           <input
             id="dice-spec"
-            type="text"
             size="7"
             value="2W10+5"
           >
@@ -1120,7 +1096,7 @@
               <input class="max-width">
             </td>
             <td>
-              <input type="number" value="0" size="2">
+              <input type="number" value="0" class="w-2">
             </td>
             <td>
               <div class="d-flex">
