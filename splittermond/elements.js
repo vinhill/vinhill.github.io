@@ -163,6 +163,10 @@ class Tally extends HTMLElement {
     }
 
     set counts(value) {
+        if (typeof value !== "object" || value.length === undefined) {
+            console.warn(`Tally set count to ${value} but it is not an array.`);
+            return;
+        }
         if (value.length != this.states.split(",").length) {
             console.warn(`Tally set count to ${value} but states is ${this.states}, lengths do not match.`);
             return;
