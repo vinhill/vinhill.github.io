@@ -480,8 +480,11 @@
                   <tr>
                     <td>
                       <span x-text="skill.skill"></span>
-                      <button class="btn-sm-icon" x-on:click="OpenDiceDialog('2W10+#'+skill.name+'#')">&#9860;</button>
+                      <button class="btn-sm-icon" x-on:click="RollSkill(skill)">&#9860;</button>
                       <button class="btn-sm-icon" x-on:click="masteryDialog.open('Fertigkeit', skill.skill)">&#128366;</button>
+                      <div class="border-progress-outer">
+                        <div class="border-progress-inner" x-bind:id="'progr-'+skill.name"></div>
+                      </div>
                     </td>
                     <td>
                       <input
@@ -531,8 +534,11 @@
                   <tr>
                     <td>
                       <span x-text="skill.skill"></span>
-                      <button class="btn-sm-icon" x-on:click="OpenDiceDialog('2W10+#'+skill.name+'#')">&#9860;</button>
+                      <button class="btn-sm-icon" x-on:click="RollSkill(skill)">&#9860;</button>
                       <button class="btn-sm-icon" x-on:click="masteryDialog.open('Fertigkeit', skill.skill)">&#128366;</button>
+                      <div class="border-progress-outer">
+                        <div class="border-progress-inner" x-bind:id="'progr-'+skill.name"></div>
+                      </div>
                     </td>
                     <td>
                       <input

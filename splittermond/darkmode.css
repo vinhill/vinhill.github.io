@@ -29,3 +29,6 @@ body.dark x-tally, body.dark x-tribox, body.dark x-state-carousel {
 body.dark .invalid {
     color: red !important;
 }
+body.dark .border-progress-inner {
+    border-bottom: 1px solid white;
+}

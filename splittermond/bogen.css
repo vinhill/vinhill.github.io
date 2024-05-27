@@ -165,3 +165,13 @@ input:not(:disabled) {
 .w-3 { width: 3em; }
 .w-4 { width: 4em; }
 .w-5 { width: 5em; }
+
+.border-progress-outer {
+    position: relative;
+}
+.border-progress-inner {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-bottom: 1px solid black;
+}

@@ -218,7 +218,6 @@ const diceDialog = new DiceDialog();
 
 function OpenDiceDialog(templated_spec) {
     spec = templated_spec.replace(/#([^#]+)#/gu, (_, str) => splittermond.g.get(str));
-    console.log(spec);
     if (!diceDialog.spec_pattern.test(spec)) {
         console.error(`'${templated_spec}' resolved to invalid spec '${spec}'`);
         return;
@@ -416,6 +415,22 @@ function toggleDarkmode(active) {
     nav.classList.toggle("navbar-dark", active);
     nav.classList.toggle("bg-light", !active);
     nav.classList.toggle("bg-dark", active);
+}
+
+const n_rollsPerSkill = new Map();
+let n_rolls = 0;
+function RollSkill(skill) {
+    OpenDiceDialog('2W10+#'+skill.name+'#');
+    const progdiv = document.getElementById("progr-" + skill.name);
+
+    n_rolls++;
+    n_rollsPerSkill.set(skill.name, (n_rollsPerSkill.get(skill.name) || 0) + 1);
+
+    // set width as percentage of total for all skills
+    for (const [name, n] of n_rollsPerSkill) {
+        const progdiv = document.getElementById("progr-" + name);
+        progdiv.style.width = (n / n_rolls) * 100 + "%";
+    }
 }
 
 window.addEventListener("load", () => {
