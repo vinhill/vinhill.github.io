@@ -2,11 +2,11 @@
 <html>
   <head>
     <title>Charakterbogen</title>
-    <link rel="stylesheet" type="text/css" href="bogen.css?v=1.2">
+    <link rel="stylesheet" type="text/css" href="bogen.css?v=1.3">
     <link rel="stylesheet" type="text/css" href="darkmode.css?v=1.2">
     <script src="data.js?v=1.0"></script>
     <script src="templating.js?v=1.0"></script>
-    <script src="bogen.js?v=1.2"></script>
+    <script src="bogen.js?v=1.3"></script>
     <script src="computation.js?v=1.0"></script>
     <script src="elements.js?v=1.1"></script>
     <link
@@ -340,30 +340,33 @@
               <textarea class="persistent max-width" name="weaknesses"></textarea>
             </section>
             <section data-title="Stärken">
-              <table class="persistent" data-name="tbl-strengths">
-                <thead>
-                  <tr>
-                    <th>Stärken</th>
-                    <th>Wirkung<button class="btn-collapse active" onclick="CollapseTableOnClick(event)"></button></th>
-                  </tr>
-                </thead>
-                <tbody x-data class="collapsed">
-                  <template x-for="i in default_tbl_len">
+              <details>
+                <summary>Stärken</summary>
+                <table class="persistent" data-name="tbl-strengths">
+                  <thead>
                     <tr>
-                      <td>
-                        <input size="10" class="max-width">
-                      </td>
-                      <td>
-                        <div class="d-flex">
-                          <input class="max-width">
-                          <button class="btn-remove-row" onclick="RemoveRowOnClick(event)">X</button>
-                        </div>
-                      </td>
+                      <th>Stärke</th>
+                      <th>Wirkung</th>
                     </tr>
-                  </template>
-                </tbody>
-              </table>
-              <button class="btn-add-row collapsed" onclick="AddRowOnClick(event)">Add Row</button>
+                  </thead>
+                  <tbody x-data>
+                    <template x-for="i in default_tbl_len">
+                      <tr>
+                        <td>
+                          <input size="10" class="max-width">
+                        </td>
+                        <td>
+                          <div class="d-flex">
+                            <input class="max-width">
+                            <button class="btn-remove-row" onclick="RemoveRowOnClick(event)">X</button>
+                          </div>
+                        </td>
+                      </tr>
+                    </template>
+                  </tbody>
+                </table>
+                <button class="btn-add-row" onclick="AddRowOnClick(event)">Add Row</button>
+              </details>
             </section>
             <section data-title="Sprachen">
               <table>
@@ -426,33 +429,36 @@
               </table>
             </section>
             <section data-title="Ressourcen">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Ressource</th>
-                    <th>Wert</th>
-                    <th>Bedeutung<button class="btn-collapse active" onclick="CollapseTableOnClick(event)"></button></th>
-                  </tr>
-                </thead>
-                <tbody x-data class="collapsed">
-                  <template x-for="resource in sm_resources">
+              <details>
+                <summary>Ressourcen</summary>
+                <table>
+                  <thead>
                     <tr>
-                      <td x-text="resource"></td>
-                      <td>
-                        <input
-                          x-bind:name="resource"
-                          type="number"
-                          class="persistent w-4"
-                          value="0"
-                        >
-                      </td>
-                      <td class="max-width">
-                        <textarea x-bind:name="resource+'_desc'" rows="2" class="persistent max-width"></textarea>
-                      </td>
+                      <th>Ressource</th>
+                      <th>Wert</th>
+                      <th>Bedeutung</th>
                     </tr>
-                  </template>
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody x-data>
+                    <template x-for="resource in sm_resources">
+                      <tr>
+                        <td x-text="resource"></td>
+                        <td>
+                          <input
+                            x-bind:name="resource"
+                            type="number"
+                            class="persistent w-4"
+                            value="0"
+                          >
+                        </td>
+                        <td class="max-width">
+                          <textarea x-bind:name="resource+'_desc'" rows="2" class="persistent max-width"></textarea>
+                        </td>
+                      </tr>
+                    </template>
+                  </tbody>
+                </table>
+              </details>
             </section>
           </div>
         </div>

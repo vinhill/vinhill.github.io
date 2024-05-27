@@ -5,3 +5,4 @@
 - page responsiveness
 - validation of start attribute values?
 - Refactoring
+- indicate how often which skill was rolled on, e.g. by a white border of different length below the skill name

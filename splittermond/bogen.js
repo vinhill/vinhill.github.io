@@ -20,7 +20,6 @@ function exportData() {
             data[name] = { values, rows: tbody.rows.length };
         } else if (e.tagName == "X-TALLY") {
             data[name] = e.counts;
-            console.log(e, e.counts);
         } else {
             console.error("Unknown element type: " + e.tagName);
         }
