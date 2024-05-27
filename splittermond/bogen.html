@@ -586,10 +586,8 @@
                   <template x-for="skill in sm_fight_skills">
                     <tr>
                       <td>
-                        <div class="d-flex">
-                          <span x-text="skill"></span>
-                          <button class="btn-sm-icon" x-on:click="masteryDialog.open('Kampffertigkeit', skill)">&#128366;</button>
-                        </div>
+                        <span x-text="skill"></span>
+                        <button class="btn-sm-icon" x-on:click="masteryDialog.open('Kampffertigkeit', skill)">&#128366;</button>
                       </td>
                       <td>
                         <input
