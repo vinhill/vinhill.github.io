@@ -260,8 +260,12 @@ class Switch extends HTMLElement {
         this._cbx.onchange = () => this.dispatchEvent(new Event('change'));
         this._cbx.oninput = () => this.dispatchEvent(new Event('input'));
         this.addEventListener('click', (e) => {
-            if (e.target === this) {
-                this._cbx.click();
+            // need to check if original target is this
+            // due to shadow dom, events from inside will be re-targeted
+            // so e.target will always be this
+            const path = e.composedPath();
+            if (path[0] == this) {
+              this._cbx.click();
             }
         });
     }
