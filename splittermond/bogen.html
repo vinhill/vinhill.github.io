@@ -32,6 +32,14 @@
                 <x-switch id="toggle-darkmode" data-name="darkmode" class="persistent" onclick="toggleDarkmode(this.checked)"></x-switch>
               </label>
             </li>
+            <li class="nav-item d-flex ms-2"></li>
+              <form onsubmit="OpenDiceDialog(dice_inp.value); return false">
+                <div class="navbar-text">
+                  <input type="text" id="dice_inp" size="7" value="2W10+5">
+                  <button class="btn-sm-icon">&#9860;</button>
+                </div>
+              </form>
+            </li>
           </ul>
         </div>
 
