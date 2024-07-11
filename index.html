@@ -20,38 +20,44 @@
 		<!-- Navbar -->
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="container-fluid">
-				<a class="navbar-brand" href="#">Vinhill Homepage</a>
-				<!--button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item">
-					<a class="nav-link active" aria-current="page" href="#">Home</a>
-					</li>
-				</ul>
-				</div-->
+				<a class="navbar-brand" href="#">Vincent Hilla &mdash; Homepage</a>
 			</div>
 		</nav>
 		<!-- Content -->
 		<div class="d-flex justify-content-center row" id="content-wrap">
+			<!--Personal infos-->
 			<div class="m-3 col-md-8">
 				<div class="card">
 					<div class="card-header">
-						<h5 class="card-title">Home page</h5>
+						<h5 class="card-title">Info</h5>
 					</div>
 					<div class="card-body">
-						<p>Welcome to my webpage, it is currently under development.</p>
+						<p>I'm a Computer Science Student based in Germany, NRW. I'm interested in the web, computer vision and deep learning. Although I despise training and experimenting with models, I enjoy solving problems and developing software. I have most experience with C++, Python and JavaScript. My studies focus on computer vision and computer science theory.</p>
+						<p>This website is just a pet project, not a well-designed portfolio :)</p>
 						<a href="./cv.html">CV</a>
 						<a href="https://www.linkedin.com/in/vincent-hilla/">LinkedIn</a>
 						<a href="https://github.com/vinhill">Github</a>
 					</div>
 				</div>
 			</div>
+			<!--Mozilla-->
 			<div class="m-3 col-md-8">
 				<div class="card">
 					<div class="card-header">
-						<h5 class="card-title">TTTStats</h5>
+						<h5 class="card-title">Mozilla Working Student</h5>
+					</div>
+					<div class="card-body">
+						<p>Working student at Mozilla in the DOM Core team, April 2023 till July 2024.</p>
+						<p>It's been an interesting time developing Firefox features in C++, testing them with JavaScript while also discussing web standards.</p>
+						<p>You can find my contributions to Gecko <a href="https://github.com/mozilla/gecko-dev/commits?author=vinhill&since=2023-03-30&until=2024-08-16">here</a></p>
+					</div>
+				</div>
+			</div>
+			<!--TTTStats-->
+			<div class="m-3 col-md-8">
+				<div class="card">
+					<div class="card-header">
+						<h5 class="card-title">TTTStats &mdash; Webpage</h5>
 					</div>
 					<div class="card-body">
 						<div class="row g-0">
@@ -76,7 +82,7 @@
 								</div>
 							</div>
 							<div class="col-md-7 ps-3">
-								<p>A website displaying statistics about Trouble in Terrorist Town played with some friends.</p>
+								<p>A website displaying statistics about the game &quot;Trouble in Terrorist Town&quot; played with some friends.</p>
 								<p>The website is written in Angular.js and accesses the RESTTT Backend for the displayed information.</p>
 								<p>See <a href="./TTTStats">here</a></p>
 							</div>
@@ -84,16 +90,17 @@
 					</div>
 				</div>
 			</div>
+			<!--RESTTT-->
 			<div class="m-3 col-md-8">
 				<div class="card">
 					<div class="card-header">
-						<h5 class="card-title">RESTTT Backend</h5>
+						<h5 class="card-title">RESTTT &mdash; REST API</h5>
 					</div>
 					<div class="card-body">
 						<div class="row g-0">
 							<div class="col-md-7 pe-3">
 								<p>The backend for TTTStats, implemented as REST API with Express.</p>
-								<p>It fetches logfiles from the game server via FTP, stores them in the cloud. These files are parsed using regexes and a callback-based system to populate a MySQL database with high-level information. Finally, several routes offer access to data computed through SQL queries.</p>
+								<p>It fetches logfiles from the game server via FTP, stores them in the cloud. These files are parsed using regexes and a callback-based system to populate a MySQL database with high-level information. Finally, several routes provide the results of pre-determined, SQL queries. Caching is used to minimize computational requirements and decrease latency.</p>
 								<p>See <a href="https://vmd76968.contaboserver.net:3001/">here</a></p>
 							</div>
 							<div class="col-md-5">
@@ -133,24 +140,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="m-3 col-md-8">
-				<div class="card">
-					<div class="card-header">
-						<h5 class="card-title">Karaoke Songsearch</h5>
-					</div>
-					<div class="card-body">
-						<div class="row g-0">
-							<div class="col-md-5">
-								<img src="./res/Songsearch.png" alt="Song search page" class="img-fluid rounded-start">
-							</div>
-							<div class="col-md-7 ps-3">
-								<p>Search through the various Wii Sing Games in my collection.</p>
-								<p>See <a href="./songsearch.html">here</a></p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+			<!--Splittermond-->
 			<div class="m-3 col-md-8">
 				<div class="card">
 					<div class="card-header">
@@ -162,8 +152,27 @@
 								<img src="./res/splittermond.png" alt="Character sheet page" class="img-fluid rounded-start">
 							</div>
 							<div class="col-md-7 ps-3">
-								<p>A digital character sheet for the german pen & paper game Splittermond.</p>
+								<p>A digital character sheet for the german pen & paper game &quot;Splittermond&quot;.</p>
 								<p>See <a href="./splittermond/bogen.html">here</a></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--Songsearch-->
+			<div class="m-3 col-md-8">
+				<div class="card">
+					<div class="card-header">
+						<h5 class="card-title">Karaoke Songsearch</h5>
+					</div>
+					<div class="card-body">
+						<div class="row g-0">
+							<div class="col-md-7 ps-3">
+								<p>Search through the various Wii Sing Games in my collection.</p>
+								<p>See <a href="./songsearch.html">here</a></p>
+							</div>
+							<div class="col-md-5">
+								<img src="./res/Songsearch.png" alt="Song search page" class="img-fluid rounded-start">
 							</div>
 						</div>
 					</div>
