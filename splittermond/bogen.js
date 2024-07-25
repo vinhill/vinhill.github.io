@@ -460,6 +460,11 @@ window.addEventListener("load", () => {
     document.getElementById("dialog-mastery").addEventListener("close", masteryDialog.close.bind(masteryDialog));
     document.querySelectorAll("dialog").forEach(d => d.addEventListener("click", dialogClickHandler));
     toggleDarkmode(document.getElementById("toggle-darkmode").checked);
+
+    // if hash is #example, importData(EXAMPLE_DATA)
+    if (location.hash == "#example") {
+        importData(EXAMPLE_DATA);
+    }
 });
 
 window.addEventListener("beforeunload", e => {
