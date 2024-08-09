@@ -1,4 +1,6 @@
 class Page {
+    // TODO header, footer etc.
+
     constructor() {
         this._element = document.createElement('div');
         this._element.classList.add('page');
@@ -47,7 +49,6 @@ class ElementChunker {
 }
 
 class TextChunker extends ElementChunker {
-    // TODO if justified text is chunked, the last line of the widow is wrong
 
     static appliesTo(node) {
         return node.nodeType === Node.TEXT_NODE || node.nodeName === 'P';
@@ -59,13 +60,17 @@ class TextChunker extends ElementChunker {
         this.text = node.textContent;
     }
 
+    get stylingElement() {
+        return this.node.nodeType === Node.TEXT_NODE ? this.node.parentElement : this.node;
+    }
+
+    getComputedStyle() {
+        return window.getComputedStyle(this.stylingElement);
+    }
+
     get lineHeight() {
         if (this._lineHeight === undefined) {
-            let element = this.node;
-            if (this.node.nodeType === Node.TEXT_NODE) {
-                element = this.node.parentElement;
-            }
-            this._lineHeight = parseFloat(window.getComputedStyle(element).lineHeight);
+            this._lineHeight = parseFloat(this.getComputedStyle().lineHeight);
         }
         return this._lineHeight;
     }
@@ -170,6 +175,10 @@ class TextChunker extends ElementChunker {
             return [];
         } else {
             this.node.textContent = this.text.slice(0, splitIndex);
+            // keep last line of widow justified if a justified text is split
+            if (this.getComputedStyle().textAlign === 'justify') {
+                this.stylingElement.style.textAlignLast = 'justify';
+            }
             const clone = this.node.cloneNode(true);
             clone.textContent = this.text.slice(splitIndex);
             console.log(`Split text at ${splitIndex} of ${this.text.length} characters`);
@@ -177,6 +186,8 @@ class TextChunker extends ElementChunker {
         }
     }
 }
+
+// TODO custom element converting latex tabular syntax to html
 
 class Paginator {
     constructor(make_page_func) {
