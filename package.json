@@ -1,14 +1,41 @@
 {
-  "name": "vinhill.github.io",
-  "version": "1.0.0",
-  "description": "Personal webpage",
-  "main": "index.html",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "qrcode": "^1.5.1"
-  }
+	"name": "vhilla-homepage",
+	"version": "9.0.0",
+	"description": "My homepage with blog, portfolio and many small projects / showcases.",
+	"type": "module",
+	"scripts": {
+		"build": "npx @11ty/eleventy",
+		"build-ghpages": "npx @11ty/eleventy",
+		"start": "npx @11ty/eleventy --serve --quiet",
+		"debug": "cross-env DEBUG=Eleventy* npx @11ty/eleventy",
+		"debugstart": "cross-env DEBUG=Eleventy* npx @11ty/eleventy --serve --quiet",
+		"benchmark": "cross-env DEBUG=Eleventy:Benchmark* npx @11ty/eleventy"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/vinhill/vinhill.github.io.git"
+	},
+	"author": {
+		"name": "Vincent Hilla",
+		"email": "vincenthilla5@gmail.com",
+		"url": "https://vinhill.github.io"
+	},
+	"license": "MIT",
+	"engines": {
+		"node": ">=18"
+	},
+	"devDependencies": {
+		"@11ty/eleventy": "^3.0.0",
+		"@11ty/eleventy-img": "^5.0.0",
+		"@11ty/eleventy-navigation": "^0.3.5",
+		"@11ty/eleventy-plugin-rss": "^2.0.2",
+		"@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
+		"cross-env": "^7.0.3",
+		"luxon": "^3.5.0",
+		"zod": "^3.23.8",
+		"zod-validation-error": "^3.3.1"
+	},
+	"dependencies": {
+		"@zachleat/heading-anchors": "^1.0.1"
+	}
 }

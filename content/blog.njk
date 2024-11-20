@@ -1,0 +1,12 @@
+---js
+const eleventyNavigation = {
+	key: "Blog",
+	order: 2
+};
+---
+<h1>Blog</h1>
+
+<p><a href="/feed/feed.xml"><img src="/rss.svg" alt="RSS feed icon" style="width:16px;"> RSS</a></p>
+
+{% set postslist = collections.posts %}
+{% include "postslist.njk" %}

@@ -1,0 +1,127 @@
+---js
+const eleventyNavigation = {
+	key: "Portfolio",
+	order: 3
+};
+---
+
+{%- js %}{% include "public/js/carousel.js" %}{% endjs %}
+
+{%- css %}
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+.col-2 {
+    flex: 2;
+}
+.col-1 {
+    flex: 1;
+}
+.row > *:not(:first-child) {
+    margin-left: 1em;
+}
+@media (max-width: 600px) {
+    .row {
+        flex-direction: column;
+    }
+    .col-2, .col-1 {
+        flex: 1;
+    }
+}
+{% endcss %}
+
+<!--Mozilla-->
+<article>
+    <h2>Mozilla Working Student</h2>
+    <div>
+        <p>Working student at Mozilla in the DOM Core team, April 2023 till July 2024.</p>
+        <p>It's been an interesting time developing Firefox features in C++, testing them with JavaScript while also discussing web standards.</p>
+        <p>I fixed bugs for #interop2023 and #interop2024, mostly related to HTML forms and text directionality. I also implemented several JavaScript APIs, the largest ones being Capability Delegation and Screen Wake Lock. You can test the latter one <a href="/wake.html">here</a>.</p>
+        <p>You can find my contributions to Gecko <a href="https://github.com/mozilla/gecko-dev/commits?author=vinhill&since=2023-03-30&until=2024-08-16">here</a></p>
+    </div>
+</article>
+
+<!--TTTStats-->
+<article>
+    <h2>TTTStats &mdash; Webpage</h2>
+    <div class="row">
+        <div class="col-1">
+            <x-carousel auto>
+                <img src="/portfolio/TTTStats.png" alt="RESTTT Backend" style="width: 100%; height: 100%;">
+                <img src="/portfolio/TTTStats 2.png" alt="RESTTT Backend" style="width: 100%; height: 100%;">
+            </x-carousel>
+        </div>
+        <div class="col-1">
+            <p>A website displaying statistics about the game &quot;Trouble in Terrorist Town&quot; played with some friends.</p>
+            <p>The website is written in Angular.js and accesses the RESTTT Backend for the displayed information.</p>
+            <p>See <a href="/TTTStats">here</a></p>
+        </div>
+    </div>
+</article>
+
+<!--RESTTT-->
+<article>
+    <h2>RESTTT &mdash; REST API</h2>
+    <div class="row">
+        <div class="col-1">
+            <p>The backend for TTTStats, implemented as REST API with Express.</p>
+            <p>It fetches logfiles from the game server via FTP, stores them in the cloud. These files are parsed using regexes and a callback-based system to populate a MySQL database with high-level information. Finally, several routes provide the results of pre-determined, SQL queries. Caching is used to minimize computational requirements and decrease latency.</p>
+            <p>See <a href="https://vmd76968.contaboserver.net:3001/">here</a></p>
+        </div>
+        <div class="col-1">
+                <x-carousel auto>
+                <div>
+                    <!-- the same image to ensure both carousel items have same dimensions -->
+                    <img src="/portfolio/RESTTT admin panel.png" alt="RESTTT Backend" style="width: 100%; height: 100%; visibility: hidden;">
+                    <pre class="mermaid" style="position: absolute; top: 0; width: 100%;">
+                    erDiagram
+                        Filebase { file[] logfiles }
+                        Gameserver { file currentlog }
+                        RESTTT ||--|| Filebase : fetches
+                        RESTTT ||--|| Filebase : stores
+                        RESTTT ||--|| Database : queries
+                        RESTTT ||--|| Gameserver : fetches
+                    </pre>
+                    <script type="module">
+                        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+                    </script>
+                </div>
+                <img src="/portfolio/RESTTT admin panel.png" alt="RESTTT Backend" style="width: 100%; height: 100%;">
+            </x-carousel>
+        </div>
+    </div>
+</article>
+
+<!--Splittermond-->
+<article>
+    <h2>Splittermond Charactersheet</h2>
+    <div class="row">
+        <div class="col-1">
+            <img src="/portfolio/splittermond.png" alt="Character sheet page" style="width: 100%; height: 100%;">
+        </div>
+        <div class="col-1">
+            <p>A digital character sheet for the german pen &amp; paper game &quot;Splittermond&quot;.</p>
+            <p>I had two goals with this project. For once, rolling dices with the click of a button is nice. But also, I wanted to play around with native web technologies and custom elements.</p>
+            <p>See <a href="/splittermond/bogen.html#example">here</a></p>
+        </div>
+    </div>
+</article>
+
+<!--Songsearch-->
+<article>
+    <h2>Karaoke Songsearch</h2>
+    <div class="row">
+        <div class="col-1">
+            <p>Search through the various Wii Sing Games in my collection.</p>
+            <p>See <a href="/songsearch.html">here</a></p>
+        </div>
+        <div class="col-1">
+            <img src="/portfolio/Songsearch.png" alt="Song search page" style="width: 100%; height: 100%;">
+        </div>
+    </div>
+</article>
+
+<!-- TODO Bachelor Thesis -->
+<!-- TODO Master Thesis -->
+<!-- TODO sort and add dates to rows -->

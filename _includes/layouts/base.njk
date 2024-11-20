@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="{{ metadata.language }}">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>{{ title or metadata.title }}</title>
+		<meta name="description" content="{{ description or metadata.description }}">
+		<link rel="alternate" href="feed/feed.xml" type="application/atom+xml" title="{{ metadata.title }}">
+
+		<meta name="generator" content="{{ eleventy.generator }}">
+
+		{#-
+		Plain-text bundles are provided via the `eleventy-plugin-bundle` plugin:
+		1. CSS:
+			* Add to a per-page bundle using `{% css %}{% endcss %}`
+			* Retrieve bundle content using `{% getBundle "css" %}` or `{% getBundleFileUrl "css" %}`
+		2. Or for JavaScript:
+			* Add to a per-page bundle using `{% js %}{% endjs %}`
+			* Retrieve via `{% getBundle "js" %}` or `{% getBundleFileUrl "js" %}`
+		3. Learn more: https://github.com/11ty/eleventy-plugin-bundle
+		#}
+
+		{%- css %}{% include "public/css/base.css" %}{% endcss %}
+
+		{#- Add the heading-anchors web component to the JavaScript bundle #}
+		{%- js %}{% include "node_modules/@zachleat/heading-anchors/heading-anchors.js" %}{% endjs %}
+
+		{#- Render the CSS bundle using inlined CSS (for the fastest site performance in production) #}
+		<style>{% getBundle "css" %}</style>
+		<script>{% getBundle "js" %}</script>
+	</head>
+	<body>
+		<a href="#skip" class="visually-hidden">Skip to main content</a>
+
+		<header>
+			<a href="/" class="home-link">{{ metadata.title }}</a>
+
+			<nav>
+				<h2 class="visually-hidden">Top level navigation menu</h2>
+				<ul class="nav">
+				{%- for entry in collections.all | eleventyNavigation %}
+					<li class="nav-item"><a href="{{ entry.url }}"{% if entry.url == page.url %} aria-current="page"{% endif %}>{{ entry.title }}</a></li>
+				{%- endfor %}
+				</ul>
+			</nav>
+		</header>
+
+		<div class="content">
+			<main id="skip">
+				<heading-anchors>
+					{{ content | safe }}
+				</heading-anchors>
+			</main>
+
+			<aside>
+				{%- set numberOfLatestPostsToShow = 3 %}
+				{% set postsCount = collections.posts | length %}
+				{% set latestPostsCount = postsCount | min(numberOfLatestPostsToShow) %}
+				<h2>Latest {{ latestPostsCount }} Post{% if latestPostsCount != 1 %}s{% endif %}</h2>
+
+				{% set postslist = collections.posts | head(-1 * numberOfLatestPostsToShow) %}
+				{% set postslistCounter = postsCount %}
+				{% include "postslist.njk" %}
+			</aside>
+		</div>
+
+		<footer>			
+			<p><em>This page `{{ page.url }}` was built on {% currentBuildDate %} with <a href="https://www.11ty.dev/">{{ eleventy.generator }}</a></em></p>
+		</footer>
+
+		<script type="module" src="{% getBundleFileUrl "js" %}"></script>
+	</body>
+</html>
