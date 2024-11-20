@@ -1,0 +1,8 @@
+- "Remove tr" btn design
+- "Add tr" btn design
+- "Expand / collapse tbl" btn as child of tr, not th. Or as a summary / details element?
+- Magieschule, Zauber grad, Meisterschaft schwelle, vermögen validation
+- page responsiveness
+- validation of start attribute values?
+- Refactoring
+- persist how often which skill has been rolled

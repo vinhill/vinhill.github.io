@@ -1,0 +1,853 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>vhilla Homepage</title>
+		<meta name="description" content="The blog of a software engineer.">
+		<link rel="alternate" href="feed/feed.xml" type="application/atom+xml" title="vhilla Homepage">
+
+		<meta name="generator" content="Eleventy v3.0.0">
+		<style>.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+.col-2 {
+    flex: 2;
+}
+.col-1 {
+    flex: 1;
+}
+.row > *:not(:first-child) {
+    margin-left: 1em;
+}
+@media (max-width: 600px) {
+    .row {
+        flex-direction: column;
+    }
+    .col-2, .col-1 {
+        flex: 1;
+    }
+}
+/* Defaults */
+:root {
+	--font-family: -apple-system, system-ui, sans-serif;
+	--font-family-monospace: Consolas, Menlo, Monaco, Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Courier New, Courier, monospace;
+}
+
+/* Theme colors */
+:root {
+	--color-gray-20: #e0e0e0;
+	--color-gray-50: #C0C0C0;
+	--color-gray-90: #333;
+
+	--background-color: #fff;
+
+	--text-color: var(--color-gray-90);
+	--text-color-link: #082840;
+	--text-color-link-active: #5f2b48;
+	--text-color-link-visited: #17050F;
+
+	--syntax-tab-size: 2;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--color-gray-20: #e0e0e0;
+		--color-gray-50: #C0C0C0;
+		--color-gray-90: #dad8d8;
+
+		/* --text-color is assigned to --color-gray-_ above */
+		--text-color-link: #1493fb;
+		--text-color-link-active: #6969f7;
+		--text-color-link-visited: #a6a6f8;
+
+		--background-color: #15202b;
+	}
+}
+
+
+/* Global stylesheet */
+* {
+	box-sizing: border-box;
+}
+
+@view-transition {
+	navigation: auto;
+}
+
+html,
+body {
+	padding: 0;
+	margin: 0 auto;
+	font-family: var(--font-family);
+	color: var(--text-color);
+	background-color: var(--background-color);
+}
+html {
+	overflow-y: scroll;
+}
+body {
+	max-width: 60em;
+}
+
+/* https://www.a11yproject.com/posts/how-to-hide-content/ */
+.visually-hidden {
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}
+
+/* Fluid images via https://www.zachleat.com/web/fluid-images/ */
+img {
+  max-width: 100%;
+}
+img[width][height] {
+  height: auto;
+}
+img[src$=".svg"] {
+  width: 100%;
+  height: auto;
+  max-width: none;
+}
+
+p:last-child {
+	margin-bottom: 0;
+}
+p {
+	line-height: 1.5;
+}
+
+li {
+	line-height: 1.5;
+}
+
+a[href] {
+	color: var(--text-color-link);
+}
+a[href]:visited {
+	color: var(--text-color-link-visited);
+}
+a[href]:hover,
+a[href]:active {
+	color: var(--text-color-link-active);
+}
+
+main,
+aside,
+footer {
+	padding: 1rem;
+}
+main :first-child {
+	margin-top: 0;
+}
+
+header {
+	border-bottom: 1px dashed var(--color-gray-20);
+}
+header:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.links-nextprev {
+	display: flex;
+	justify-content: space-between;
+	gap: .5em 1em;
+	list-style: "";
+	border-top: 1px dashed var(--color-gray-20);
+	padding: 1em 0;
+}
+.links-nextprev > * {
+	flex-grow: 1;
+}
+.links-nextprev-next {
+	text-align: right;
+}
+
+table {
+	margin: 1em 0;
+}
+table td,
+table th {
+	padding-right: 1em;
+}
+
+pre,
+code {
+	font-family: var(--font-family-monospace);
+}
+pre:not([class*="language-"]) {
+	margin: .5em 0;
+	line-height: 1.375; /* 22px /16 */
+	-moz-tab-size: var(--syntax-tab-size);
+	-o-tab-size: var(--syntax-tab-size);
+	tab-size: var(--syntax-tab-size);
+	-webkit-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+	direction: ltr;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	overflow-x: auto;
+}
+code {
+	word-break: break-all;
+}
+
+/* Header */
+header {
+	display: flex;
+	gap: 1em .5em;
+	flex-wrap: wrap;
+	align-items: center;
+	padding: 1em;
+}
+.home-link {
+	font-size: 1em; /* 16px /16 */
+	font-weight: 700;
+	margin-right: 2em;
+}
+.home-link:link:not(:hover) {
+	text-decoration: none;
+}
+
+/* Nav */
+.nav {
+	display: flex;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+.nav-item {
+	display: inline-block;
+	margin-right: 1em;
+}
+.nav-item a[href]:not(:hover) {
+	text-decoration: none;
+}
+.nav a[href][aria-current="page"] {
+	text-decoration: underline;
+}
+
+/* main and aside */
+.content {
+	display: flex;
+	flex-direction: row;
+}
+main {
+	width: 75%;
+}
+aside {
+	width: 25%;
+	font-size: 0.8em;
+}
+@media (max-width: 720px) {
+	.content {
+		flex-direction: column;
+	}
+	main {
+		width: 100%;
+	}
+	aside {
+		width: 100%;
+	}
+}
+
+/* Posts list */
+.postlist {
+	list-style: none;
+	padding: 0;
+	padding-left: 1.5rem;
+}
+.postlist-item {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	counter-increment: start-from -1;
+	margin-bottom: 1em;
+}
+.postlist-item:before {
+	display: inline-block;
+	pointer-events: none;
+	content: "" counter(start-from, decimal-leading-zero) ". ";
+	line-height: 100%;
+	text-align: right;
+	margin-left: -1.5rem;
+}
+.postlist-date,
+.postlist-item:before {
+	font-size: 0.8125em; /* 13px /16 */
+	color: var(--color-gray-90);
+}
+.postlist-date {
+	word-spacing: -0.5px;
+}
+.postlist-link {
+	font-size: 1.1875em; /* 19px /16 */
+	font-weight: 700;
+	/*flex-basis: calc(100% - 1.5rem);*/
+	flex-basis: 100%;
+	padding-left: .25em;
+	text-underline-position: from-font;
+	text-underline-offset: 0;
+	text-decoration-thickness: 1px;
+}
+.postlist-item-active .postlist-link {
+	font-weight: bold;
+}
+
+/* Tags */
+.post-tag {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-transform: capitalize;
+	font-style: italic;
+}
+.postlist-item > .post-tag {
+	align-self: center;
+}
+
+/* Tags list */
+.post-metadata {
+	display: inline-flex;
+	flex-wrap: wrap;
+	gap: .5em;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.post-metadata time {
+	margin-right: 1em;
+}
+
+article {
+    padding-bottom: 1em;
+	border-bottom: 1px dashed var(--color-gray-20);
+    margin-bottom: 1em;
+}
+.postlist { counter-reset: start-from 5 }</style>
+		<script>const style = `
+* {box-sizing:border-box}
+
+/* Slideshow container */
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+.current-slide {
+  display: block;
+}
+`
+
+// https://www.w3schools.com/howto/howto_js_slideshow.asp
+class Carousel extends HTMLElement {
+    static observedAttributes = ['auto'];
+
+    _idx = 0;
+    _auto = false;
+    _interval;
+
+    constructor() {
+        super();
+        this.attachShadow({mode: 'open'});
+    }
+
+    connectedCallback() {
+        this._render();
+    }
+
+    attributeChangedCallback(name, _, newValue) {
+        if (name === 'auto') {
+            this.auto = newValue !== null && newValue !== 'false';
+        }
+    }
+
+    set auto(value) {
+        this._auto = value;
+        if (this._auto) {
+            this._interval = setInterval(() => this._onAutoInterval(), 5000);
+        } else {
+            clearInterval(this._interval);
+        }
+    }
+
+    get auto() {
+        return this._auto;
+    }
+
+    _onAutoInterval() {
+        if (this._auto) {
+            this.next();
+        }
+    }
+
+    _render() {
+        this.shadowRoot.innerHTML = `
+        <style>${style}</style>
+        <div class="slideshow-container">
+            <slot></slot>
+            <a class="prev">&#10094;</a>
+            <a class="next">&#10095;</a>
+        </div>
+        <div style="text-align:center">
+            ${Array.from(this.children).map((_, idx) => `
+            <span class="dot ${idx === this._idx ? 'active' : ''}"></span>
+            `).join('')}
+        </div>
+        `;
+        for (let i = 0; i < this.children.length; i++) {
+            const child = this.children[i];
+            child.style.display = i === this._idx ? 'block' : 'none';
+        }
+        this.shadowRoot.querySelector('.prev').addEventListener('click', () => this.prev());
+        this.shadowRoot.querySelector('.next').addEventListener('click', () => this.next());
+        this.shadowRoot.querySelectorAll('.dot').forEach((dot, idx) => {
+            dot.addEventListener('click', () => this.slide(idx));
+        });
+    }
+
+    next() {
+        this.slide(this._idx + 1);
+    }
+
+    prev() {
+        this.slide(this._idx - 1);
+    }
+
+    slide(n) {
+        const n_slides = this.children.length;
+        if (n < 0) n = n_slides-1;
+        if (n >= n_slides) n = 0;
+        this._idx = n;
+        this._render();
+    } 
+}
+
+customElements.define('x-carousel', Carousel);
+// Thank you to https://github.com/daviddarnes/heading-anchors
+// Thank you to https://amberwilson.co.uk/blog/are-your-anchor-links-accessible/
+
+let globalInstanceIndex = 0;
+
+class HeadingAnchors extends HTMLElement {
+	static register(tagName) {
+		if ("customElements" in window) {
+			customElements.define(tagName || "heading-anchors", HeadingAnchors);
+		}
+	}
+
+	static attributes = {
+		exclude: "data-ha-exclude",
+		prefix: "prefix",
+		content: "content",
+	}
+
+	static classes = {
+		anchor: "ha",
+		placeholder: "ha-placeholder",
+		srOnly: "ha-visualhide",
+	}
+
+	static defaultSelector = "h2,h3,h4,h5,h6";
+
+	static css = `
+.${HeadingAnchors.classes.srOnly} {
+	clip: rect(0 0 0 0);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	width: 1px;
+}
+.${HeadingAnchors.classes.anchor} {
+	position: absolute;
+	left: var(--ha_offsetx);
+	top: var(--ha_offsety);
+	text-decoration: none;
+	opacity: 0;
+}
+.${HeadingAnchors.classes.placeholder} {
+	opacity: .3;
+}
+.${HeadingAnchors.classes.anchor}:is(:focus-within, :hover) {
+	opacity: 1;
+}
+.${HeadingAnchors.classes.anchor},
+.${HeadingAnchors.classes.placeholder} {
+	padding: 0 .25em;
+
+	/* Disable selection of visually hidden label */
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+@supports (anchor-name: none) {
+	.${HeadingAnchors.classes.anchor} {
+		position: absolute;
+		left: anchor(left);
+		top: anchor(top);
+	}
+}`;
+
+	get supports() {
+		return "replaceSync" in CSSStyleSheet.prototype;
+	}
+
+	get supportsAnchorPosition() {
+		return CSS.supports("anchor-name: none");
+	}
+
+	constructor() {
+		super();
+
+		if(!this.supports) {
+			return;
+		}
+
+		let sheet = new CSSStyleSheet();
+		sheet.replaceSync(HeadingAnchors.css);
+		document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
+
+		this.headingStyles = {};
+		this.instanceIndex = globalInstanceIndex++;
+	}
+
+	connectedCallback() {
+		if (!this.supports) {
+			return;
+		}
+
+		this.headings.forEach((heading, index) => {
+			if(!heading.hasAttribute(HeadingAnchors.attributes.exclude)) {
+				let anchor = this.getAnchorElement(heading);
+				let placeholder = this.getPlaceholderElement();
+
+				// Prefers anchor position approach for better accessibility
+				// https://amberwilson.co.uk/blog/are-your-anchor-links-accessible/
+				if(this.supportsAnchorPosition) {
+					let anchorName = `--ha_${this.instanceIndex}_${index}`;
+					placeholder.style.setProperty("anchor-name", anchorName);
+					anchor.style.positionAnchor = anchorName;
+				}
+
+				heading.appendChild(placeholder)
+				heading.after(anchor);
+			}
+		});
+	}
+
+	// Polyfill-only
+	positionAnchorFromPlaceholder(placeholder) {
+		if(!placeholder) {
+			return;
+		}
+
+		let heading = placeholder.closest("h1,h2,h3,h4,h5,h6");
+		if(!heading.nextElementSibling) {
+			return;
+		}
+
+		// TODO next element could be more defensive
+		this.positionAnchor(heading.nextElementSibling);
+	}
+
+	// Polyfill-only
+	positionAnchor(anchor) {
+		if(!anchor || !anchor.previousElementSibling) {
+			return;
+		}
+
+		// TODO previous element could be more defensive
+		let heading = anchor.previousElementSibling;
+		this.setFontProp(heading, anchor);
+
+		if(this.supportsAnchorPosition) {
+			// quit early
+			return;
+		}
+
+		let placeholder = heading.querySelector(`.${HeadingAnchors.classes.placeholder}`);
+		if(placeholder) {
+			anchor.style.setProperty("--ha_offsetx", `${placeholder.offsetLeft}px`);
+			anchor.style.setProperty("--ha_offsety", `${placeholder.offsetTop}px`);
+		}
+	}
+
+	setFontProp(heading, anchor) {
+		let placeholder = heading.querySelector(`.${HeadingAnchors.classes.placeholder}`);
+		if(placeholder) {
+			let style = getComputedStyle(placeholder);
+			let props = ["font-weight", "font-size", "line-height", "font-family"];
+			let font = props.map(name => style.getPropertyValue(name));
+			anchor.style.setProperty("font", `${font[0]} ${font[1]}/${font[2]} ${font[3]}`);
+		}
+	}
+
+	getAccessibleTextPrefix() {
+		// Useful for i18n
+		return this.getAttribute(HeadingAnchors.attributes.prefix) || "Jump to section titled";
+	}
+
+	getContent() {
+		return this.getAttribute(HeadingAnchors.attributes.content) || "#";
+	}
+
+	getPlaceholderElement() {
+		let ph = document.createElement("span");
+		ph.setAttribute("aria-hidden", true);
+		ph.classList.add(HeadingAnchors.classes.placeholder);
+		ph.textContent = this.getContent();
+
+		ph.addEventListener("mouseover", (e) => {
+			let placeholder = e.target.closest(`.${HeadingAnchors.classes.placeholder}`);
+			if(placeholder) {
+				this.positionAnchorFromPlaceholder(placeholder);
+			}
+		});
+
+		return ph;
+	}
+
+	getAnchorElement(heading) {
+		let anchor = document.createElement("a");
+		anchor.href = `#${heading.id}`;
+		anchor.classList.add(HeadingAnchors.classes.anchor);
+
+		let content = this.getContent();
+		anchor.innerHTML = `<span class="${HeadingAnchors.classes.srOnly}">${this.getAccessibleTextPrefix()}: ${heading.textContent}</span><span aria-hidden="true">${content}</span>`;
+
+		anchor.addEventListener("focus", e => {
+			let anchor = e.target.closest(`.${HeadingAnchors.classes.anchor}`);
+			if(anchor) {
+				this.positionAnchor(anchor);
+			}
+		});
+
+		anchor.addEventListener("mouseover", (e) => {
+			// when CSS anchor positioning is supported, this is only used to set the font
+			let anchor = e.target.closest(`.${HeadingAnchors.classes.anchor}`);
+			this.positionAnchor(anchor);
+		});
+
+		return anchor;
+	}
+
+	get headings() {
+		return this.querySelectorAll(this.selector.split(",").map(entry => `${entry.trim()}[id]`));
+	}
+
+	get selector() {
+		return this.getAttribute("selector") || HeadingAnchors.defaultSelector;
+	}
+}
+
+HeadingAnchors.register();
+
+export { HeadingAnchors }</script>
+	</head>
+	<body>
+		<a href="#skip" class="visually-hidden">Skip to main content</a>
+
+		<header>
+			<a href="/" class="home-link">vhilla Homepage</a>
+
+			<nav>
+				<h2 class="visually-hidden" id="top-level-navigation-menu">Top level navigation menu</h2>
+				<ul class="nav">
+					<li class="nav-item"><a href="/">Home</a></li>
+					<li class="nav-item"><a href="/blog/">Blog</a></li>
+					<li class="nav-item"><a href="/portfolio/" aria-current="page">Portfolio</a></li>
+				</ul>
+			</nav>
+		</header>
+
+		<div class="content">
+			<main id="skip">
+				<heading-anchors>
+					
+
+
+<!--Mozilla-->
+<article>
+    <h2 id="mozilla-working-student">Mozilla Working Student</h2>
+    <div>
+        <p>Working student at Mozilla in the DOM Core team, April 2023 till July 2024.</p>
+        <p>It's been an interesting time developing Firefox features in C++, testing them with JavaScript while also discussing web standards.</p>
+        <p>I fixed bugs for #interop2023 and #interop2024, mostly related to HTML forms and text directionality. I also implemented several JavaScript APIs, the largest ones being Capability Delegation and Screen Wake Lock. You can test the latter one <a href="/wake.html">here</a>.</p>
+        <p>You can find my contributions to Gecko <a href="https://github.com/mozilla/gecko-dev/commits?author=vinhill&since=2023-03-30&until=2024-08-16">here</a></p>
+    </div>
+</article>
+
+<!--TTTStats-->
+<article>
+    <h2 id="tttstats-webpage">TTTStats &mdash; Webpage</h2>
+    <div class="row">
+        <div class="col-1">
+            <x-carousel auto="">
+                <picture><source type="image/avif" srcset="/img/cSvqoMb2jI-1291.avif 1291w"><source type="image/webp" srcset="/img/cSvqoMb2jI-1291.webp 1291w"><img loading="lazy" decoding="async" src="/img/cSvqoMb2jI-1291.png" alt="RESTTT Backend" style="width: 100%; height: 100%;" width="1291" height="910"></picture>
+                <picture><source type="image/avif" srcset="/img/Y8-gngx3U1-1291.avif 1291w"><source type="image/webp" srcset="/img/Y8-gngx3U1-1291.webp 1291w"><img loading="lazy" decoding="async" src="/img/Y8-gngx3U1-1291.png" alt="RESTTT Backend" style="width: 100%; height: 100%;" width="1291" height="910"></picture>
+            </x-carousel>
+        </div>
+        <div class="col-1">
+            <p>A website displaying statistics about the game &quot;Trouble in Terrorist Town&quot; played with some friends.</p>
+            <p>The website is written in Angular.js and accesses the RESTTT Backend for the displayed information.</p>
+            <p>See <a href="/TTTStats">here</a></p>
+        </div>
+    </div>
+</article>
+
+<!--RESTTT-->
+<article>
+    <h2 id="resttt-rest-api">RESTTT &mdash; REST API</h2>
+    <div class="row">
+        <div class="col-1">
+            <p>The backend for TTTStats, implemented as REST API with Express.</p>
+            <p>It fetches logfiles from the game server via FTP, stores them in the cloud. These files are parsed using regexes and a callback-based system to populate a MySQL database with high-level information. Finally, several routes provide the results of pre-determined, SQL queries. Caching is used to minimize computational requirements and decrease latency.</p>
+            <p>See <a href="https://vmd76968.contaboserver.net:3001/">here</a></p>
+        </div>
+        <div class="col-1">
+                <x-carousel auto="">
+                <div>
+                    <!-- the same image to ensure both carousel items have same dimensions -->
+                    <picture><source type="image/avif" srcset="/img/8dvTUaFnDf-972.avif 972w"><source type="image/webp" srcset="/img/8dvTUaFnDf-972.webp 972w"><img loading="lazy" decoding="async" src="/img/8dvTUaFnDf-972.png" alt="RESTTT Backend" style="width: 100%; height: 100%; visibility: hidden;" width="972" height="694"></picture>
+                    <pre class="mermaid" style="position: absolute; top: 0; width: 100%;">
+                    erDiagram
+                        Filebase { file[] logfiles }
+                        Gameserver { file currentlog }
+                        RESTTT ||--|| Filebase : fetches
+                        RESTTT ||--|| Filebase : stores
+                        RESTTT ||--|| Database : queries
+                        RESTTT ||--|| Gameserver : fetches
+                    </pre>
+                    <script type="module">
+                        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+                    </script>
+                </div>
+                <picture><source type="image/avif" srcset="/img/8dvTUaFnDf-972.avif 972w"><source type="image/webp" srcset="/img/8dvTUaFnDf-972.webp 972w"><img loading="lazy" decoding="async" src="/img/8dvTUaFnDf-972.png" alt="RESTTT Backend" style="width: 100%; height: 100%;" width="972" height="694"></picture>
+            </x-carousel>
+        </div>
+    </div>
+</article>
+
+<!--Splittermond-->
+<article>
+    <h2 id="splittermond-charactersheet">Splittermond Charactersheet</h2>
+    <div class="row">
+        <div class="col-1">
+            <picture><source type="image/avif" srcset="/img/c_pXXVagsI-1919.avif 1919w"><source type="image/webp" srcset="/img/c_pXXVagsI-1919.webp 1919w"><img loading="lazy" decoding="async" src="/img/c_pXXVagsI-1919.png" alt="Character sheet page" style="width: 100%; height: 100%;" width="1919" height="913"></picture>
+        </div>
+        <div class="col-1">
+            <p>A digital character sheet for the german pen &amp; paper game &quot;Splittermond&quot;.</p>
+            <p>I had two goals with this project. For once, rolling dices with the click of a button is nice. But also, I wanted to play around with native web technologies and custom elements.</p>
+            <p>See <a href="/splittermond/bogen.html#example">here</a></p>
+        </div>
+    </div>
+</article>
+
+<!--Songsearch-->
+<article>
+    <h2 id="karaoke-songsearch">Karaoke Songsearch</h2>
+    <div class="row">
+        <div class="col-1">
+            <p>Search through the various Wii Sing Games in my collection.</p>
+            <p>See <a href="/songsearch.html">here</a></p>
+        </div>
+        <div class="col-1">
+            <picture><source type="image/avif" srcset="/img/qa2lif8Stw-1278.avif 1278w"><source type="image/webp" srcset="/img/qa2lif8Stw-1278.webp 1278w"><img loading="lazy" decoding="async" src="/img/qa2lif8Stw-1278.png" alt="Song search page" style="width: 100%; height: 100%;" width="1278" height="793"></picture>
+        </div>
+    </div>
+</article>
+
+<!-- TODO Bachelor Thesis -->
+<!-- TODO Master Thesis -->
+<!-- TODO sort and add dates to rows -->
+
+				</heading-anchors>
+			</main>
+
+			<aside>
+				
+				
+				<h2 id="latest-3-posts">Latest 3 Posts</h2>
+
+				
+				
+				
+<ol reversed="" class="postlist">
+	<li class="postlist-item">
+		<a href="/blog/fourthpost/" class="postlist-link">This is my fourth post</a>
+		<time class="postlist-date" datetime="2018-09-30">September 2018</time>
+	</li>
+	<li class="postlist-item">
+		<a href="/blog/thirdpost/" class="postlist-link">This is my third post.</a>
+		<time class="postlist-date" datetime="2018-08-24">August 2018</time>
+	</li>
+	<li class="postlist-item">
+		<a href="/blog/secondpost/" class="postlist-link">This is my second post with a much longer title.</a>
+		<time class="postlist-date" datetime="2018-07-04">July 2018</time>
+	</li>
+</ol>
+
+			</aside>
+		</div>
+
+		<footer>			
+			<p><em>This page `/portfolio/` was built on 2024-11-20T20:55:04.911Z with <a href="https://www.11ty.dev/">Eleventy v3.0.0</a></em></p>
+		</footer>
+
+		<script type="module" src="/dist/KObXHchsAR.js"></script>
+	</body>
+</html>

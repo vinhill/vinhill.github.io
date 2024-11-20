@@ -1,0 +1,177 @@
+th, summary {
+    color: white;
+    background-color: #6a5159;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-weight: bold;
+}
+body {
+    margin-top: 1em;
+}
+aside {
+    background-color: rgba(173,214,234,1);
+}
+main {
+    background: linear-gradient(90deg, rgba(173,214,234,1) 0%, rgba(255,255,255,1) 50%, rgba(173,214,234,1) 100%);
+    border: 1px solid black;
+}
+nav {
+    background-color: gray;
+    width: 100vw;
+}
+section {
+    margin-top: 0.5em;
+}
+table {
+    width: 100%;
+}
+.img-logo {
+    width: 100%;
+}
+.collapsed {
+    display: none;
+    visibility: hidden;
+    height: 0;
+    margin: 0;
+}
+#category-list {
+    list-style-type: none;
+    padding-left: 1rem;
+}
+
+.invalid {
+    color: red;
+}
+#emblem-container {
+    margin-right: 1em;
+    width: 33%;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(0,-50%);
+}
+.center-content {
+    display: flex;
+    justify-content: center;
+}
+#dice-spec {
+    margin: 0.5em 0 0.5em 0;
+    width: fit-content;
+}
+#dice-btn {
+    height: fit-content;
+    margin: auto 0 auto 0;
+}
+.dice {
+    border: 1px solid black;
+    width: 2em;
+    height: 2em;
+    margin: 0 0.5em 0 0.5em;
+    background-color: light-gray;
+    animation: rollAnimation 1s ease-in-out;
+}
+.dice-crit {
+    color: red;
+}
+.dice-txt {
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+}
+#dice-result {
+    text-align: center;
+}
+@keyframes rollAnimation {
+    0% {
+        transform: rotate(0deg);
+    }
+    33% {
+        transform: rotate(90deg);
+    }
+    66% {
+        transform: rotate(-90deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.max-width {
+    width: 100%;
+}
+input:disabled {
+    border: none;
+    background-color: initial;
+    color: initial;
+    height: 1.5em;
+}
+input:not(:disabled) {
+    max-height: 1.5em;
+}
+.btn-remove-row {
+    height: 1.5em;
+}
+.btn-add-row {
+    float: right;
+}
+.btn-sm-icon {
+    height: 1.25em;
+    display: inline-flex;
+    align-items: center;
+}
+.btn-collapse {
+    float: right;
+}
+.btn-collapse::after {
+    display: inline-block;
+    margin-left: .255em;
+    vertical-align: .255em;
+    content: "";
+    border-top: 0;
+    border-right: .3em solid transparent;
+    border-bottom: .3em solid;;
+    border-left: .3em solid transparent;
+    transition: .2s ease-in-out;
+}
+.btn-collapse.active::after {
+    transform: rotate(180deg);
+}
+
+/*https://bootstrapious.com/p/bootstrap-sidebar*/
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+#sidebar {
+    min-width: 200px;
+    max-width: 200px;
+    min-height: 100vh;
+}
+#sidebar.active {
+    margin-left: -200px;
+}
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -200px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+}
+
+.w-1 { width: 1em; }
+.w-2 { width: 2em; }
+.w-3 { width: 3em; }
+.w-4 { width: 4em; }
+.w-5 { width: 5em; }
+
+.border-progress-outer {
+    position: relative;
+}
+.border-progress-inner {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-bottom: 1px solid black;
+}

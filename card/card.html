@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vincent Hilla</title>
+    <link rel="stylesheet" href="card.css">
+    <script src="qrcode.js"></script>
+</head>
+<body>
+    <div class="card-container">
+        <div class="card" id="card-1">
+            <div class="front portrait-column">
+                <div class="portrait-row">
+                    <img src="profile.jpg" alt="Vincent Hilla" class="profile-img">
+                    <h1>Vincent Hilla</h1>
+                    <p class="title">Software Developer</p>
+                </div>
+                <div class="contact-info portrait-row">
+                    <p>Email: <a href="mailto:vincenthilla5@gmail.com">vincenthilla5@gmail.com</a></p>
+                    <p>Phone: <a href="tel:+4915789698036">+49 157 8969 8036</a></p>
+                    <p>Website: <a href="https://vinhill.github.io" target="_blank">vinhill.github.io</a></p>
+                </div>
+            </div>
+            <div class="back v-center flipped">
+                <canvas id="qrcode" class="qrcode"></canvas>
+            </div>
+            <button class="btn-flip img-btn" onclick="flip_card('card-1')">
+                <img src="iq-qrcode.svg">
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function make_qr_code() {
+            const canvas = document.getElementById('qrcode');
+            const uri = "https://vinhill.github.io/card/card.html";
+            QRCode.toCanvas(canvas, uri, { scale: 6 }, err => {
+                if (err) console.error(err);
+            });
+        }
+
+        function flip_card(id) {
+            const card = document.getElementById(id);
+            const front = card.querySelector('.front');
+            const back = card.querySelector('.back');
+            front.classList.toggle('flipped');
+            back.classList.toggle('flipped');
+        }
+
+        document.addEventListener('DOMContentLoaded', make_qr_code);
+    </script>
+</body>
+</html>

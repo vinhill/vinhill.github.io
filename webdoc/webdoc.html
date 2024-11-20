@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+  <title>Web Document Editor</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/foldgutter.min.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/css/css.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/xml/xml.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/htmlmixed/htmlmixed.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/foldcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/foldgutter.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/brace-fold.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/xml-fold.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/comment-fold.min.js"></script>
+
+  <link rel="stylesheet" href="index.css">
+  <script src="index.js"></script>
+</head>
+<body>
+  <main class="row">
+    <section id="editors-column">
+      HTML
+      <div class="container">
+        <textarea class="container" id="editor-html"></textarea>
+      </div>
+      JavaScript
+      <div class="container">
+        <textarea class="container" id="editor-js">
+htmldoc.init({ size: "a4", orientation: "portrait" });
+
+htmldoc.lipsum({amount: 15, html: false}).then(txt => {
+  document.body.innerHTML = txt + "<p>" + txt.replace(/\n/g, "</p><p>") + "</p>";
+  const p = new Paginator();
+  p.flow(document.body, document.body, false);
+});
+        </textarea>
+      </div>
+      CSS
+      <div class="container">
+        <textarea class="container" id="editor-css">
+.page {
+  box-sizing: border-box;
+  padding: 10mm;
+}
+.page-main {
+  height: 100%;
+  border: 1px solid red;
+}
+p {
+  text-align: justify;
+}
+        </textarea>
+      </div>
+    </section>
+    <section id="viewer-column">
+      <button id="btn-render" onclick="render_document()" title="Ctrl+S">Render</button>
+      <button id="btn-render" onclick="print_document()" title="Ctrl+P">Print</button>
+      <iframe id="viewer" class="container" src="about:blank"></iframe>
+    </section>
+  </main>
+</body>
+</html>

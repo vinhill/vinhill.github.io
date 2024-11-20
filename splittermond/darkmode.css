@@ -1,0 +1,34 @@
+body.dark, body.dark dialog {
+    background-color: #333;
+    color: #ddd;
+}
+body.dark input:not(:disabled), body.dark textarea {
+    background-color: #555;
+    color: #ddd;
+}
+body.dark input:disabled {
+    color: #ddd;
+}
+body.dark main {
+    background: linear-gradient(90deg, rgb(60, 96, 114) 0%, #333 50%, rgba(60, 96, 114) 100%);
+    border: 1px solid white;
+}
+body.dark aside {
+    background-color:  rgb(60, 96, 114);
+}
+body.dark button {
+    background-color: #555;
+    color: #ddd;
+}
+body.dark .dice {
+    border: 1px solid white;
+}
+body.dark x-tally, body.dark x-tribox, body.dark x-state-carousel {
+    color: black;
+}
+body.dark .invalid {
+    color: red !important;
+}
+body.dark .border-progress-inner {
+    border-bottom: 1px solid white;
+}

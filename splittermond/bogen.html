@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Charakterbogen</title>
+    <link rel="stylesheet" type="text/css" href="bogen.css?v=1.3">
+    <link rel="stylesheet" type="text/css" href="darkmode.css?v=1.2">
+    <script src="data.js?v=1.0"></script>
+    <script src="templating.js?v=1.0"></script>
+    <script src="bogen.js?v=1.3"></script>
+    <script src="computation.js?v=1.0"></script>
+    <script src="elements.js?v=1.1"></script>
+    <script src="example.json.js?v=1.0"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    >
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Splittermond Charakterbogen</a>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item d-flex">
+              <label class="navbar-text">
+                Darkmode
+                <x-switch id="toggle-darkmode" data-name="darkmode" class="persistent" onclick="toggleDarkmode(this.checked)"></x-switch>
+              </label>
+            </li>
+            <li class="nav-item d-flex ms-2"></li>
+              <form onsubmit="OpenDiceDialog(dice_inp.value); return false">
+                <div class="navbar-text">
+                  <input type="text" id="dice_inp" size="7" value="2W10+5">
+                  <button class="btn-sm-icon">&#9860;</button>
+                </div>
+              </form>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </nav>
+    <!-- Content -->
+    <div class="wrapper">
+      <aside id="sidebar">
+        <h3>Elemente</h3>
+        <ul id="category-list">
+          <template id="tmp-category-list-category">
+            <li>
+              <div class="d-flex">
+                <input
+                  type="checkbox"
+                  data-attrs="cbx"
+                  data-event="click"
+                  checked
+                  class="persistent"
+                >
+                <label data-attrs="lbl" data-fill="title" class="ms-1"></label>
+              </div>
+              <ul data-attrs="sublist"></ul>
+            </li>
+          </template>
+          <template id="tmp-category-list-item">
+            <li>
+              <div class="d-flex">
+                <input
+                  type="checkbox"
+                  data-attrs="cbx"
+                  data-event="click"
+                  checked
+                  class="persistent"
+                >
+                <label data-attrs="lbl" data-fill="title" class="ms-1"></label>
+              </div>
+            </li>
+          </template>
+        </ul>
+        <button id="btn-save">Speichern</button>
+        <button id="btn-load">Laden</button>
+      </aside>
+      <main id="content" class="container">
+        <div class="row" data-category="Charakter">
+          <div class="col-md-8">
+            <section data-title="Charakter" style="position:relative">
+              <table>
+                <tbody x-data>
+                  <template x-for="attr in sm_char_attrs">
+                    <tr>
+                      <th style="min-width:9em;" x-text="attr.attr"></th>
+                      <td class="max-width">
+                        <input x-bind:name="attr.name" class="persistent max-width">
+                      </td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+              <input
+                class="persistent"
+                name="emblemdata"
+                id="emblemdata"
+                type="hidden"
+              >
+              <svg viewbox="0 0 217 297" id="emblem-container">
+                <defs>
+                  <clipPath id="emblem">
+                    <path d="M108 296Q4 228 4 152 4 108 8 64 9 45 4 24 40 24 108 4 180 24 216 24 211.5 41 212 64 216 108 216 152 216 228 108 296Z"/>
+                  </clipPath>
+                </defs>
+                <path d="M108 296Q4 228 4 152 4 108 8 64 9 45 4 24 40 24 108 4 180 24 216 24 211.5 41 212 64 216 108 216 152 216 228 108 296Z" fill="white"/>
+                <image
+                  x="0"
+                  y="0"
+                  width="216"
+                  height="296"
+                  id="img-emblem"
+                  href="./click-to-insert.png"
+                  clip-path="url(#emblem)"
+                />
+                <path
+                  d="M108 296Q4 228 4 152 4 108 8 64 9 45 4 24 40 24 108 4 180 24 216 24 211.5 41 212 64 216 108 216 152 216 228 108 296Z"
+                  fill="none"
+                  stroke="black"
+                  stroke-width="2"
+                />
+              </svg>
+            </section>
+            <section data-title="Abgeleitete Werte">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Abgeleitete Werte</th>
+                    <th></th>
+                    <th>Wert</th>
+                    <th>mod.</th>
+                    <th>temp.</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody x-data>
+                  <template x-for="value in sm_derived_attrs">
+                    <tr>
+                      <td x-text="value.name"></td>
+                      <td x-text="value.abbrev"></td>
+                      <td>
+                        <input
+                          x-bind:name="value.abbrev"
+                          size="2"
+                          data-attrs="wert"
+                          disabled
+                          value="0"
+                        >
+                      </td>
+                      <td>
+                        <input
+                          x-bind:name="value.abbrev+'mod'"
+                          type="number"
+                          value="0"
+                          class="persistent w-3"
+                        >
+                      </td>
+                      <td>
+                        <input
+                          x-bind:name="value.abbrev+'tmp'"
+                          type="number"
+                          value="0"
+                          class="w-3"
+                        >
+                      </td>
+                      <td x-text="value.formula"></td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </section>
+          </div>
+          <div class="col-md-4">
+            <img src="./Logo.png" class="img-logo">
+            <section data-title="Heldengrad">
+              <table>
+                <tr>
+                  <th class="dflex" colspan="2">Heldengrad <input name="Heldengrad" style="color: white;" disabled size="2"></th>
+                </tr>
+                <tr>
+                  <td>Max. Attributssteigerung</td>
+                  <td>
+                    <input name="MaxAttributssteigerung" disabled size="2">
+                  </td>
+                </tr>
+                <tr>
+                  <td>Max. Fertigkeitspunkte</td>
+                  <td>
+                    <input name="MaximaleFertigkeitspunkte" disabled size="2">
+                  </td>
+                </tr>
+                <tr>
+                  <td>Widerstands-Bonus</td>
+                  <td>
+                    <input
+                      name="WiderstandsBonus"
+                      value="0"
+                      disabled
+                      size="2"
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td>Maximaler Bonus</td>
+                  <td>
+                    <input name="MaximalerBonus" disabled size="2">
+                  </td>
+                </tr>
+              </table>
+            </section>
+            <section data-title="Erfahrungspunkte">
+              <table>
+                <tr>
+                  <th colspan="2">Erfahrungspunkte (EP)</th>
+                </tr>
+                <tr>
+                  <td>Gesamt</td>
+                  <td>
+                    <input
+                      name="EPGesamt"
+                      class="persistent w-5"
+                      type="number"
+                      value="0"
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td>Eingesetzt</td>
+                  <td>
+                    <input
+                      name="EPEingesetzt"
+                      class="persistent w-5"
+                      type="number"
+                      value="0"
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td>Offen</td>
+                  <td>
+                    <input
+                      name="EPOffen"
+                      disabled
+                      size="4"
+                      value="0"
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td>Nächster Heldengrad</td>
+                  <td>
+                    <input name="NächsterHeldengrad" disabled size="4">
+                  </td>
+                </tr>
+              </table>
+            </section>
+            <section data-title="Attribute">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th></th>
+                    <th>Start</th>
+                    <th>Wert</th>
+                    <th>mod.</th>
+                  </tr>
+                </thead>
+                <tbody x-data>
+                  <template x-for="attr in sm_attrs">
+                    <tr>
+                      <td>
+                        <span x-text="attr.name"></span>
+                        <button class="btn-sm-icon" x-on:click="OpenDiceDialog('2W10+#'+attr.abbrev+'#')">&#9860;</button>
+                      </td>
+                      <td x-text="attr.abbrev"></td>
+                      <td>
+                        <input
+                          x-bind:name="attr.abbrev+'ini'"
+                          type="number"
+                          value="0"
+                          class="persistent w-3"
+                        >
+                      </td>
+                      <td>
+                        <input
+                          x-bind:name="attr.abbrev"
+                          disabled
+                          size="2"
+                          value="0"
+                        >
+                      </td>
+                      <td>
+                        <input
+                          x-bind:name="attr.abbrev+'mod'"
+                          type="number"
+                          value="0"
+                          class="persistent w-3"
+                        >
+                      </td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </section>
+          </div>
+          <div class="col-md-6">
+            <section data-title="Splitterpunkte">
+              <table>
+                <tr>
+                  <th>Splitterpunkte</th>
+                  <td>
+                    <input
+                      name="splitterpunktegesamt"
+                      value="0"
+                      type="number"
+                      class="persistent w-3"
+                      title="Gesamt"
+                    >
+                  </td>
+                  <td>
+                    <input
+                      name="splitterpunktetemporaer"
+                      value="0"
+                      class="w-3"
+                      type="number"
+                      title="Temporär"
+                    >
+                  </td>
+                  <td class="max-width"><x-tally nrows="1" ncols="7" id="tally-splitterpunkte"></x-tally></td>
+                </tr>
+              </table>
+              <p>
+                Pro Splitterpunkt: eine Probe +3, Widerstandswert +3, Schaden einer Quelle -5, Mondzeichen einsetzen
+              </p>
+            </section>
+            <section data-title="Schwächen">
+              <table>
+                <th>Schwächen</th>
+              </table>
+              <textarea class="persistent max-width" name="weaknesses"></textarea>
+            </section>
+            <section data-title="Stärken">
+              <details>
+                <summary>Stärken</summary>
+                <table class="persistent" data-name="tbl-strengths">
+                  <thead>
+                    <tr>
+                      <th>Stärke</th>
+                      <th>Wirkung</th>
+                    </tr>
+                  </thead>
+                  <tbody x-data>
+                    <template x-for="i in default_tbl_len">
+                      <tr>
+                        <td>
+                          <input size="10" class="max-width">
+                        </td>
+                        <td>
+                          <div class="d-flex">
+                            <input class="max-width">
+                            <button class="btn-remove-row" onclick="RemoveRowOnClick(event)">X</button>
+                          </div>
+                        </td>
+                      </tr>
+                    </template>
+                  </tbody>
+                </table>
+                <button class="btn-add-row" onclick="AddRowOnClick(event)">Add Row</button>
+              </details>
+            </section>
+            <section data-title="Sprachen">
+              <table>
+                <tr>
+                  <th>Muttersprache</th>
+                  <td class="max-width">
+                    <input name="muttersprachen" class="persistent max-width">
+                  </td>
+                </tr>
+                <tr>
+                  <td style="min-width: 9em;">
+                    <label for="ta-sprachen">Weitere Sprachen:</label>
+                  </td>
+                  <td class="max-width">
+                    <textarea id="ta-sprachen" name="sprachen" class="persistent max-width"></textarea>
+                  </td>
+                </tr>
+              </table>
+            </section>
+          </div>
+          <div class="col-md-6">
+            <section data-title="Mondzeichen">
+              <table>
+                <tr>
+                  <th style="width:7em">Mondzeichen</th>
+                  <td>
+                    <input name="mondzeichen" class="persistent max-width">
+                  </td>
+                </tr>
+                <tr>
+                  <th colspan="2">Mondzeichen Fähigkeiten</th>
+                </tr>
+                <tr>
+                  <td>Grad 1</td>
+                  <td class="max-width">
+                    <textarea name="mondzeicheng1" class="persistent max-width" rows="1"></textarea>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Grad 2</td>
+                  <td class="max-width">
+                    <textarea name="mondzeicheng2" class="persistent max-width" rows="1"></textarea>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Grad 3</td>
+                  <td class="max-width">
+                    <textarea name="mondzeicheng3" class="persistent max-width" rows="3">
+- Einsatz 2:1 für Gefährten ohne Splitterpunkte
+- Verstärken einer Gefährten-Splittergabe:
+  Probe und Widerstand +5 statt +3, Schaden -8 statt -5</textarea>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Grad 4</td>
+                  <td class="max-width">
+                    <textarea name="mondzeicheng4" class="persistent max-width" rows="1"></textarea>
+                  </td>
+                </tr>
+              </table>
+            </section>
+            <section data-title="Ressourcen">
+              <details>
+                <summary>Ressourcen</summary>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Ressource</th>
+                      <th>Wert</th>
+                      <th>Bedeutung</th>
+                    </tr>
+                  </thead>
+                  <tbody x-data>
+                    <template x-for="resource in sm_resources">
+                      <tr>
+                        <td x-text="resource"></td>
+                        <td>
+                          <input
+                            x-bind:name="resource"
+                            type="number"
+                            class="persistent w-4"
+                            value="0"
+                          >
+                        </td>
+                        <td class="max-width">
+                          <textarea x-bind:name="resource+'_desc'" rows="2" class="persistent max-width"></textarea>
+                        </td>
+                      </tr>
+                    </template>
+                  </tbody>
+                </table>
+              </details>
+            </section>
+          </div>
+        </div>
+        <section class="row" data-category="Fertigkeiten">
+          <div class="col-md-6">
+            <table>
+              <thead>
+                <tr>
+                  <th>Fertigkeit <button class="btn-sm-icon" onclick="masteryDialog.open('Fertigkeit')">&#128366;</button></th>
+                  <th>Wert</th>
+                  <th>Punkte</th>
+                  <th>Att 1</th>
+                  <th>Att 2</th>
+                  <th>mod.</th>
+                </tr>
+              </thead>
+              <tbody x-data>
+                <template x-for="skill in sm_skills.slice(0, 13)">
+                  <tr>
+                    <td>
+                      <span x-text="skill.skill"></span>
+                      <button class="btn-sm-icon" x-on:click="RollSkill(skill)">&#9860;</button>
+                      <button class="btn-sm-icon" x-on:click="masteryDialog.open('Fertigkeit', skill.skill)">&#128366;</button>
+                      <div class="border-progress-outer">
+                        <div class="border-progress-inner" x-bind:id="'progr-'+skill.name"></div>
+                      </div>
+                    </td>
+                    <td>
+                      <input
+                        x-bind:name="skill.name"
+                        size="2"
+                        disabled
+                        value="0"
+                      >
+                    </td>
+                    <td>
+                      <input
+                        x-bind:name="skill.name+'_pts'"
+                        value="0"
+                        type="number"
+                        class="persistent w-3"
+                      >
+                    </td>
+                    <td x-text="skill.att1"></td>
+                    <td x-text="skill.att2"></td>
+                    <td>
+                      <input
+                        x-bind:name="skill.name+'_mod'"
+                        type="number"
+                        class="persistent w-3"
+                        value="0"
+                      >
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-6">
+            <table>
+              <thead>
+                <tr>
+                  <th>Fertigkeit <button class="btn-sm-icon" onclick="masteryDialog.open('Fertigkeit')">&#128366;</button></th>
+                  <th>Wert</th>
+                  <th>Punkte</th>
+                  <th>Att 1</th>
+                  <th>Att 2</th>
+                  <th>mod.</th>
+                </tr>
+              </thead>
+              <tbody x-data>
+                <template x-for="skill in sm_skills.slice(13)">
+                  <tr>
+                    <td>
+                      <span x-text="skill.skill"></span>
+                      <button class="btn-sm-icon" x-on:click="RollSkill(skill)">&#9860;</button>
+                      <button class="btn-sm-icon" x-on:click="masteryDialog.open('Fertigkeit', skill.skill)">&#128366;</button>
+                      <div class="border-progress-outer">
+                        <div class="border-progress-inner" x-bind:id="'progr-'+skill.name"></div>
+                      </div>
+                    </td>
+                    <td>
+                      <input
+                        x-bind:name="skill.name"
+                        size="2"
+                        disabled
+                        value="0"
+                      >
+                    </td>
+                    <td>
+                      <input
+                        x-bind:name="skill.name+'_pts'"
+                        value="0"
+                        type="number"
+                        class="persistent w-3"
+                      >
+                    </td>
+                    <td x-text="skill.att1"></td>
+                    <td x-text="skill.att2"></td>
+                    <td>
+                      <input
+                        x-bind:name="skill.name+'_mod'"
+                        type="number"
+                        class="persistent w-3"
+                        value="0"
+                      >
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <div class="row" data-category="Kampf">
+          <div class="col-md-3">
+            <section data-title="Kampffertigkeiten">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Kampffertigkeit <button class="btn-sm-icon" onclick="masteryDialog.open('Kampffertigkeit')">&#128366;</button></th>
+                    <th>FP</th>
+                  </tr>
+                </thead>
+                <tbody x-data>
+                  <template x-for="skill in sm_fight_skills">
+                    <tr>
+                      <td>
+                        <span x-text="skill"></span>
+                        <button class="btn-sm-icon" x-on:click="masteryDialog.open('Kampffertigkeit', skill)">&#128366;</button>
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          value="0"
+                          class="persistent w-3"
+                          x-bind:name="skill"
+                        >
+                      </td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </section>
+          </div>
+          <div class="col-md-9">
+            <section data-title="Lebenspunkte">
+              <div class="row">
+                <div class="col-12">
+                  <table>
+                    <tr>
+                      <th colspan="3">Lebenspunkte</th>
+                    </tr>
+                    <tr>
+                      <td>Unverletzt</td>
+                      <td>0</td>
+                      <td rowspan="5" class="max-width">
+                        <x-tally id="tally-lp" nrows="5" ncols="20" class="persistent" data-name="data-used-lp"></x-tally>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Angeschlagen</td>
+                      <td>-1</td>
+                    </tr>
+                    <tr>
+                      <td>Verletzt</td>
+                      <td>-2</td>
+                    </tr>
+                    <tr>
+                      <td style="min-width: 8em;">Schwer verletzt</td>
+                      <td>-4</td>
+                    </tr>
+                    <tr>
+                      <td>Todgeweiht</td>
+                      <td>-8</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="d-flex mt-2">
+                Atemholen benutzt
+                <x-state-carousel class="me-1 ms-1"></x-state-carousel>
+                (Kont. Akt.: 8 Ticks -> 10+ KON Betäubungsschaden geheilt)
+              </div>
+            </section>
+          </div>
+          <section data-title="Waffen">
+            <table>
+              <thead>
+                <tr>
+                  <th>Waffe</th>
+                  <th>Wert</th>
+                  <th>FP</th>
+                  <th>Att 1</th>
+                  <th>Att 2</th>
+                  <th>mod.</th>
+                  <th>WGS</th>
+                  <th>Schaden</th>
+                  <th>Reichw.</th>
+                  <th>Merkmale</th>
+                </tr>
+              </thead>
+              <tbody x-data>
+                <template x-for="i in 6">
+                  <tr>
+                    <td>
+                      <input x-bind:name="'weapon_name_'+i" class="persistent max-width">
+                    </td>
+                    <td>
+                      <input x-bind:name="'weapon_value_'+i" size="2" disabled>
+                      <button class="btn-sm-icon" x-on:click="OpenDiceDialog('2W10+#weapon_value_'+i+'#')">&#9860;</button>
+                    </td>
+                    <td>
+                      <input x-bind:name="'weapon_fp_'+i" size="10" class="persistent max-width">
+                    </td>
+                    <td>
+                      <input x-bind:name="'weapon_att1_'+i" size="3" class="persistent">
+                    </td>
+                    <td>
+                      <input x-bind:name="'weapon_att2_'+i" size="3" class="persistent">
+                    </td>
+                    <td>
+                      <input
+                        x-bind:name="'weapon_mod_'+i"
+                        type="number"
+                        class="persistent w-3"
+                        value="0"
+                      >
+                    </td>
+                    <td>
+                      <input
+                        x-bind:name="'weapon_wgs_'+i"
+                        type="number"
+                        class="persistent w-3"
+                        value="0"
+                      >
+                    </td>
+                    <td>
+                      <input x-bind:name="'weapon_dmg_'+i" size="6" class="persistent">
+                      <button class="btn-sm-icon" x-on:click="OpenDiceDialog(event.target.parentElement.firstElementChild.value)">&#9860;</button>
+                    </td>
+                    <td>
+                      <input x-bind:name="'weapon_range_'+i" size="3" class="persistent max-width">
+                    </td>
+                    <td>
+                      <input x-bind:name="'weapon_attrs_'+i" class="persistent max-width">
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </section>
+          <div class="col-md-12">
+            <section data-title="Rüstung">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Rüstung / Schild</th>
+                    <th>VTD+</th>
+                    <th>SR</th>
+                    <th>Beh.</th>
+                    <th>Tick+</th>
+                    <th>Merkmale</th>
+                  </tr>
+                </thead>
+                <tbody x-data>
+                  <template x-for="i in 5">
+                    <tr>
+                      <td>
+                        <input class="persistent max-width" x-bind:name="'armor_'+i">
+                      </td>
+                      <td>
+                        <input
+                          class="persistent w-3"
+                          value="0"
+                          type="number"
+                          x-bind:name="'armor_vtd_'+i"
+                        >
+                      </td>
+                      <td>
+                        <input
+                          class="persistent w-3"
+                          value="0"
+                          type="number"
+                          x-bind:name="'armor_sr_'+i"
+                        >
+                      </td>
+                      <td>
+                        <input
+                          class="persistent w-3"
+                          value="0"
+                          type="number"
+                          x-bind:name="'armor_beh_'+i"
+                        >
+                      </td>
+                      <td>
+                        <input
+                          class="persistent w-3"
+                          value="0"
+                          type="number"
+                          x-bind:name="'armor_tick_'+i"
+                        >
+                      </td>
+                      <td>
+                        <input class="persistent max-width" x-bind:name="'armor_descr_'+i">
+                      </td>
+                    </tr>
+                  </template>
+                  <tr>
+                    <th>Summe</th>
+                    <td>
+                      <input
+                        name="armor_vtd"
+                        size="2"
+                        value="0"
+                        disabled
+                      >
+                    </td>
+                    <td>
+                      <input
+                        name="armor_sr"
+                        size="2"
+                        value="0"
+                        disabled
+                      >
+                    </td>
+                    <td>
+                      <input
+                        name="armor_beh"
+                        size="2"
+                        value="0"
+                        disabled
+                      >
+                    </td>
+                    <td>
+                      <input
+                        name="armor_tick"
+                        size="2"
+                        value="0"
+                        disabled
+                      >
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          </div>
+        </div>
+        <div data-category="Ausrüstung">
+          <div class="row">
+            <div class="col-md-10">
+              <section data-title="Inventar">
+                <div class="row">
+                  <div class="col-md-6">
+                    <table class="persistent" data-name="tbl-inventar1">
+                      <thead>
+                        <tr>
+                          <th>Ausrüstung</th>
+                          <th>Last</th>
+                        </tr>
+                      </thead>
+                      <tbody x-data>
+                        <template x-for="i in 9">
+                          <tr>
+                            <td class="max-width">
+                              <input class="max-width">
+                            </td>
+                            <td>
+                              <div class="d-flex">
+                                <input type="number" value="0" class="w-3">
+                                <button class="btn-remove-row" onclick="RemoveRowOnClick(event)">X</button>
+                              </div>
+                            </td>
+                          </tr>
+                        </template>
+                      </tbody>
+                    </table>
+                    <button class="btn-add-row" onclick="AddRowOnClick(event)">Add Row</button>
+                  </div>
+                  <div class="col-md-6">
+                    <table class="persistent" data-name="tbl-inventar2">
+                      <thead>
+                        <tr>
+                          <th>Ausrüstung</th>
+                          <th>Last</th>
+                        </tr>
+                      </thead>
+                      <tbody x-data>
+                        <template x-for="i in 9">
+                          <tr>
+                            <td class="max-width">
+                              <input class="max-width">
+                            </td>
+                            <td>
+                              <div class="d-flex">
+                                <input type="number" value="0" class="w-3">
+                                <button class="btn-remove-row" onclick="RemoveRowOnClick(event)">X</button>
+                              </div>
+                            </td>
+                          </tr>
+                        </template>
+                      </tbody>
+                    </table>
+                    <button class="btn-add-row" onclick="AddRowOnClick(event)">Add Row</button>
+                  </div>
+                </div>
+              </section>
+            </div>
+            <div class="col-md-2">
+              <section data-title="Vermögen">
+                <table>
+                  <thead>
+                    <tr>
+                      <th colspan="2">Vermögen</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Solare</td>
+                      <td>
+                        <input
+                          class="persistent w-4"
+                          type="number"
+                          value="0"
+                          name="solare"
+                        >
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Lunare</td>
+                      <td>
+                        <input
+                          class="persistent w-4"
+                          type="number"
+                          value="0"
+                          name="lunare"
+                        >
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Kupfer</td>
+                      <td>
+                        <input
+                          class="persistent w-4"
+                          type="number"
+                          value="0"
+                          name="kupfer"
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Wertgegenstände</th>
+                    </tr>
+                  </thead>
+                  <tbody x-data>
+                    <template x-for="i in 6">
+                      <tr>
+                        <td>
+                          <input class="persistent max-width" x-bind:name="'valuable_'+i">
+                        </td>
+                      </tr>
+                    </template>
+                  </tbody>
+                </table>
+              </section>
+            </div>
+          </div>
+        </div>
+        <div data-category="Magie">
+          <div class="row">
+            <div class="col-md-10">
+              <section data-title="Magieschulen">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Magieschule <button class="btn-sm-icon" onclick="masteryDialog.open('Magiefertigkeit')">&#128366;</button></th>
+                      <th>Wert</th>
+                      <th>Punkte</th>
+                      <th>Att 1</th>
+                      <th>Att 2</th>
+                      <th>Modifikatoren/Notizen</th>
+                    </tr>
+                  </thead>
+                  <tbody x-data>
+                    <template x-for="school in sm_magicschools">
+                      <tr>
+                        <td>
+                          <span x-text="school.school"></span>
+                          <button class="btn-sm-icon" x-on:click="OpenDiceDialog('2W10+#'+school.name+'#')">&#9860;</button>
+                          <button class="btn-sm-icon" x-on:click="masteryDialog.open('Magiefertigkeit', school.school)">&#128366;</button>
+                        </td>
+                        <td>
+                          <input
+                            disabled
+                            value="0"
+                            size="2"
+                            x-bind:name="school.name"
+                          >
+                        </td>
+                        <td>
+                          <input
+                            class="persistent w-3"
+                            type="number"
+                            value="0"
+                            x-bind:name="school.name+'_pts'"
+                          >
+                        </td>
+                        <td x-text="school.att1"></td>
+                        <td x-text="school.att2"></td>
+                        <td>
+                          <input class="persistent max-width" x-bind:name="school.name+'_notes'">
+                        </td>
+                      </tr>
+                    </template>
+                  </tbody>
+                </table>
+              </section>
+            </div>
+            <div class="col-md-2">
+              <section data-title="Fokus">
+                <table>
+                  <tr>
+                    <th>Fokus</th>
+                  </tr>
+                  <tr>
+                    <td>
+                      <x-tally id="tally-fokus" nrows="8" ncols="5" states=" ,\,X" class="persistent" data-name="data-used-fokus"></x-tally>
+                    </td>
+                  </tr>
+                </table>
+              </section>
+            </div>
+            <div class="col-md-12">
+              <section data-title="Zauber">
+                <table class="persistent" data-name="tbl-zauber">
+                  <thead>
+                    <tr>
+                      <th>Zauber</th>
+                      <th>Schule</th>
+                      <th>Grad</th>
+                      <th title="Schwierigkeit">Schw.</th>
+                      <th>Fokus</th>
+                      <th title="Zauberdauer">ZD</th>
+                      <th title="Reichweite">RW</th>
+                      <th title="Wirkungsdauer">WD</th>
+                      <th>Wirkung</th>
+                      <th>Seite</th>
+                      <th title="Kanalisierte Punkte">Kan.</th>
+                    </tr>
+                  </thead>
+                  <tbody x-data>
+                    <template x-for="i in default_tbl_len">
+                      <tr>
+                        <td>
+                          <input class="max-width">
+                        </td>
+                        <td>
+                          <input class="max-width" size="10">
+                        </td>
+                        <td>
+                          <input class="w-2" value="0" type="number">
+                        </td>
+                        <td>
+                          <input class="max-width" size="3">
+                        </td>
+                        <td>
+                          <input class="max-width" size="5">
+                        </td>
+                        <td>
+                          <input class="max-width" size="4">
+                        </td>
+                        <td>
+                          <input class="max-width" size="2">
+                        </td>
+                        <td>
+                          <input class="max-width" size="2">
+                        </td>
+                        <td>
+                          <input class="max-width">
+                        </td>
+                        <td>
+                          <input class="w-4" type="number" value="0">
+                        </td>
+                        <td>
+                          <div class="d-flex">
+                            <input class="max-width" size="3">
+                            <button class="btn-remove-row" onclick="RemoveRowOnClick(event)">X</button>
+                          </div>
+                        </td>
+                      </tr>
+                    </template>
+                  </tbody>
+                </table>
+                <button class="btn-add-row" onclick="AddRowOnClick(event)">Add Row</button>
+              </section>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <!-- Modals -->
+    <dialog id="dialog-dice">
+      <div id="dice-container" class="center-content">
+        <template id="tmp-dice">
+          <div class="dice">
+            <span class="dice-txt">0</span>
+          </div>
+        </template>
+      </div>
+      <form id="dice-form">
+        <div class="center-content">
+          <input
+            id="dice-spec"
+            size="7"
+            value="2W10+5"
+          >
+          <button id="dice-btn" type="submit">Würfeln</button>
+        </div>
+      </div>
+    </form>
+    <span id="dice-result"></span>
+  </dialog>
+  <dialog id="dialog-mastery">
+    <table>
+      <thead>
+        <tr>
+          <th colspan="3">
+            <span id="txt-group"></span>
+            <span id="txt-fertigkeit"></span>
+          </th>
+        </tr>
+        <tr>
+          <th>Meisterschaft</th>
+          <th>Schwelle</th>
+          <th>Wirkung</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template>
+          <tr>
+            <td>
+              <input class="max-width">
+            </td>
+            <td>
+              <input type="number" value="0" class="w-2">
+            </td>
+            <td>
+              <div class="d-flex">
+                <input class="max-width">
+                <button class="btn-remove-row" onclick="RemoveRowOnClick(event)">X</button>
+              </div>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+    <button class="btn-add-row" onclick="AddRowOnClick(event)">Add Row</button>
+    <input id="data-masteries" class="persistent" type="hidden" name="masteries" value="{}">
+  </dialog>
+</body>
+</html>
