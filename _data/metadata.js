@@ -3,8 +3,8 @@ export default {
 	subtitle: "The blog of a software engineer.",
 	description: "The blog of a software engineer.",
 	language: "en",
-	url: "https://vinhill.github.io/blog/",
-	base: "https://vinhill.github.io/blog/",
+	url: "https://vinhill.github.io/",
+	base: "https://vinhill.github.io/",
 	author: {
 		name: "Vincent Hilla",
 		email: "vincenthilla5@gmail.com",

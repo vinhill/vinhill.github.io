@@ -40,12 +40,18 @@
             });
         }
 
+        const rotations = new Map();
+
         function flip_card(id) {
             const card = document.getElementById(id);
             const front = card.querySelector('.front');
             const back = card.querySelector('.back');
-            front.classList.toggle('flipped');
-            back.classList.toggle('flipped');
+            //front.classList.toggle('flipped');
+            //back.classList.toggle('flipped');
+            const rotation = (rotations.get(id) || 0)+180;
+            rotations.set(id, rotation);
+            front.style.transform = `rotateY(${rotation}deg)`;
+            back.style.transform = `rotateY(${rotation+180}deg)`;
         }
 
         document.addEventListener('DOMContentLoaded', make_qr_code);
