@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vincent Hilla</title>
+
+    <script defer="" src="/js/qrcode.js"></script>
+
+    <style>/* Base Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.card {
+    width: 300px;
+    height: 400px;
+    text-align: center;
+    position: relative;
+}
+
+.front, .back {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: -15px 15px 15px rgba(0, 0, 0, 0.2);
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.back {
+    transform: rotateY(180deg);
+}
+
+.btn-flip {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+.img-btn {
+    width: 25px;
+    height: 25px;
+    padding: 2px;
+}
+.img-btn img {
+    width: 100%;
+    height: 100%;
+}
+
+.icon {
+    width: 1em;
+    height: 1em;
+}
+
+.profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    /*margin-top: -60px;*/
+    margin-top: 10px;
+    border: 4px solid white;
+    object-fit: cover;
+    object-position: 50% 15%;
+}
+
+h1 {
+    font-size: 1.8em;
+    margin: 10px 0;
+}
+
+.title {
+    color: gray;
+    font-size: 1em;
+    margin: 5px 0 15px;
+}
+
+.contact-info a {
+    color: #0073e6;
+    text-decoration: none;
+    font-size: 1.25em;
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+}
+
+.qrcode {
+    margin: 20px auto;
+}
+
+.portrait-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.v-center {
+    align-content: center;
+}
+
+@media screen and (orientation: landscape) and (max-height: 600px) {
+    .portrait-column {
+        flex-direction: row;
+    }
+    .portrait-row {
+        align-content: center;
+        margin: 10px;
+    }
+
+    .profile-img {
+        margin-top: 0;
+        border-radius: 10px;
+        height: 160px;
+    }
+
+    .card {
+        width: 450px;
+        height: 300px;
+    }
+}</style>
+    <script>function make_qr_code() {
+            const canvas = document.getElementById('qrcode');
+            const uri = "https://vinhill.github.io/card/card.html";
+            QRCode.toCanvas(canvas, uri, { scale: 6 }, err => {
+                if (err) console.error(err);
+            });
+        }
+
+        const rotations = new Map();
+
+        function flip_card(id) {
+            const card = document.getElementById(id);
+            const front = card.querySelector('.front');
+            const back = card.querySelector('.back');
+            const rotation = (rotations.get(id) || 0)+180;
+            rotations.set(id, rotation);
+            front.style.transform = `rotateY(${rotation}deg)`;
+            back.style.transform = `rotateY(${rotation+180}deg)`;
+        }
+
+        document.addEventListener('DOMContentLoaded', make_qr_code);</script>
+</head>
+<body>
+    <div class="card-container">
+        <div class="card" id="card-1" onclick="flip_card('card-1')">
+            <div class="front portrait-column">
+                <div class="portrait-row">
+                    <picture><source type="image/avif" srcset="/card/K83tuKltqC-520.avif 520w"><source type="image/webp" srcset="/card/K83tuKltqC-520.webp 520w"><img loading="lazy" decoding="async" src="/card/K83tuKltqC-520.jpeg" alt="Portrait photo" class="profile-img" width="520" height="780"></picture>
+                    <h1 id="vincent-hilla">Vincent Hilla</h1>
+                    <p class="title">Software Developer</p>
+                </div>
+                <div class="contact-info portrait-row">
+                    <a href="mailto:vincenthilla5@gmail.com"><picture><source type="image/avif" srcset="/card/mYTJSL9dxJ-512.avif 512w"><source type="image/webp" srcset="/card/mYTJSL9dxJ-512.webp 512w"><img loading="lazy" decoding="async" class="icon" src="/card/mYTJSL9dxJ-512.svg" alt="email icon" width="512" height="512"></picture></a>
+                    <a href="tel:+49 157 8969 8036"><picture><source type="image/avif" srcset="/card/Ft_LRilGS6-512.avif 512w"><source type="image/webp" srcset="/card/Ft_LRilGS6-512.webp 512w"><img loading="lazy" decoding="async" class="icon" src="/card/Ft_LRilGS6-512.svg" alt="phone icon" width="512" height="512"></picture></a>
+                    <a href="https://vinhill.github.io" target="_blank"><picture><source type="image/avif" srcset="/card/6YvTMx3r-T-512.avif 512w"><source type="image/webp" srcset="/card/6YvTMx3r-T-512.webp 512w"><img loading="lazy" decoding="async" class="icon" src="/card/6YvTMx3r-T-512.svg" alt="globe icon" width="512" height="512"></picture></a>
+                    <a href="https://linkedin.com/in/vincent-hilla" target="_blank"><picture><source type="image/avif" srcset="/card/ZQ5NVqM1Va-448.avif 448w"><source type="image/webp" srcset="/card/ZQ5NVqM1Va-448.webp 448w"><img loading="lazy" decoding="async" class="icon" src="/card/ZQ5NVqM1Va-448.svg" alt="linkedin icon" width="448" height="512"></picture></a>
+                    <a href="https://github.com/vinhill" target="_blank"><picture><source type="image/avif" srcset="/card/8TeycivNyz-496.avif 496w"><source type="image/webp" srcset="/card/8TeycivNyz-496.webp 496w"><img loading="lazy" decoding="async" class="icon" src="/card/8TeycivNyz-496.svg" alt="github icon" width="496" height="512"></picture></a>
+                </div>
+            </div>
+            <div class="back v-center">
+                <canvas id="qrcode" class="qrcode"></canvas>
+            </div>
+            <!--button class="btn-flip img-btn" onclick="flip_card('card-1')">
+                <img src="iq-qrcode.svg" alt="qr-code icon">
+            </button-->
+        </div>
+    </div>
+</body>
+</html>

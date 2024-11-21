@@ -4,9 +4,9 @@
   <title>vhilla Homepage</title>
   <subtitle>The blog of a software engineer.</subtitle>
   <link href="https://vinhill.github.io/feed/feed.xml" rel="self" />
-  <link href="https://vinhill.github.io/blog/" />
+  <link href="https://vinhill.github.io/" />
   <updated>2018-09-30T00:00:00Z</updated>
-  <id>https://vinhill.github.io/blog/</id>
+  <id>https://vinhill.github.io/</id>
   <author>
     <name>Vincent Hilla</name>
     <email>vincenthilla5@gmail.com</email>
