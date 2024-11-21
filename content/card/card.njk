@@ -38,7 +38,7 @@
 </head>
 <body>
     <div class="card-container">
-        <div class="card" id="card-1" onclick="flip_card('card-1')">
+        <div class="card" id="card-1">
             <div class="front portrait-column">
                 <div class="portrait-row">
                     <img src="profile.jpg" alt="Portrait photo" class="profile-img">
@@ -52,13 +52,16 @@
                     <a href="{{ metadata.author.linkedin }}" target="_blank"><img class="icon" src="linkedin-brands-solid.svg" alt="linkedin icon"></a>
                     <a href="{{ metadata.author.github }}" target="_blank"><img class="icon" src="github-brands-solid.svg" alt="github icon"></a>
                 </div>
+                <button class="btn-flip img-btn" onclick="flip_card('card-1')">
+                    <img src="rotate-solid.svg" alt="qr-code icon">
+                </button>
             </div>
             <div class="back v-center">
                 <canvas id="qrcode" class="qrcode"></canvas>
+                <button class="btn-flip img-btn" onclick="flip_card('card-1')">
+                    <img src="rotate-solid.svg" alt="qr-code icon">
+                </button>
             </div>
-            <!--button class="btn-flip img-btn" onclick="flip_card('card-1')">
-                <img src="iq-qrcode.svg" alt="qr-code icon">
-            </button-->
         </div>
     </div>
 </body>
