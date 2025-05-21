@@ -1,0 +1,75 @@
+
+:root {
+--row-height: 20px;
+}
+* {
+box-sizing: border-box;
+}
+body {
+margin: 0;
+font-family: system-ui, sans-serif;
+}
+header {
+background: #222;
+color: #fff;
+padding: 1rem;
+text-align: center;
+}
+
+/* layout */
+#grid {
+display: flex;
+overflow-x: auto;
+}
+.day {
+min-width: 280px;
+border-right: 1px solid #ddd;
+position: relative;
+}
+.day-header {
+position: sticky;
+top: 0;
+background: #fff;
+font-weight: 700;
+padding: 4px;
+border-bottom: 1px solid #ccc;
+z-index: 2;
+}
+.time-col {
+width: 55px;
+border-right: 1px solid #ccc;
+background: #fafafa;
+position: sticky;
+left: 0;
+z-index: 1;
+display: grid;
+}
+.time-label {
+font-size: 10px;
+border-bottom: 1px solid #eee;
+display: flex;
+justify-content: flex-end;
+padding-right: 4px;
+align-items: start;
+}
+
+.stage-col {
+flex: 1;
+border-left: 1px solid #eee;
+display: grid;
+position: relative;
+}
+.event {
+background: #f3f3f3;
+border: 1px solid #888;
+border-radius: 4px;
+padding: 2px 4px;
+font-size: 12px;
+cursor: pointer;
+overflow: hidden;
+}
+.event.selected {
+background: #d9534f;
+color: #fff;
+border-color: #b52b26;
+}
