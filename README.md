@@ -1,0 +1,1 @@
+To deploy, just push to github. The workflow will automatically build and deploy the site to github pages.

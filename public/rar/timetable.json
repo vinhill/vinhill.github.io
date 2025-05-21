@@ -1,0 +1,575 @@
+{
+  "days": [
+    {
+      "date": "2025-06-06",
+      "label": "Fri, 06",
+      "stages": [
+        {
+          "events": [
+            {
+              "artist": "Very Special Guest",
+              "start": "13:30",
+              "end": "14:30"
+            },
+            {
+              "artist": "Very Special Guest",
+              "start": "15:00",
+              "end": "16:00"
+            },
+            {
+              "artist": "Very Special Guest",
+              "start": "16:30",
+              "end": "17:20"
+            },
+            {
+              "artist": "Weezer",
+              "start": "17:50",
+              "end": "18:50"
+            },
+            {
+              "artist": "A Day to Remember",
+              "start": "19:20",
+              "end": "20:20"
+            },
+            {
+              "artist": "Biffy Clyro",
+              "start": "21:00",
+              "end": "22:15"
+            },
+            {
+              "artist": "Bring Me the Horizon",
+              "start": "23:15",
+              "end": "01:15"
+            }
+          ]
+        },
+        {
+          "events": [
+            {
+              "artist": "House of Protection",
+              "start": "14:15",
+              "end": "15:00"
+            },
+            {
+              "artist": "Frog Leap",
+              "start": "15:25",
+              "end": "16:10"
+            },
+            {
+              "artist": "Myles Kennedy",
+              "start": "16:35",
+              "end": "17:25"
+            },
+            {
+              "artist": "Poppy",
+              "start": "17:55",
+              "end": "18:55"
+            },
+            {
+              "artist": "Frank Turner & The Sleeping Souls",
+              "start": "19:25",
+              "end": "20:25"
+            },
+            {
+              "artist": "Feine Sahne Fischfilet",
+              "start": "20:55",
+              "end": "22:05"
+            },
+            {
+              "artist": "The Prodigy",
+              "start": "22:45",
+              "end": "00:00"
+            },
+            {
+              "artist": "Late Night Special: K.I.Z",
+              "start": "01:00",
+              "end": "02:30"
+            }
+          ]
+        },
+        {
+          "events": [
+            {
+              "artist": "Christin Nichols",
+              "start": "14:50",
+              "end": "15:30"
+            },
+            {
+              "artist": "Die Nerven",
+              "start": "15:55",
+              "end": "16:35"
+            },
+            {
+              "artist": "Mia Morgan",
+              "start": "17:00",
+              "end": "17:40"
+            },
+            {
+              "artist": "Soft Play",
+              "start": "18:05",
+              "end": "18:50"
+            },
+            {
+              "artist": "Drangsal",
+              "start": "19:15",
+              "end": "20:00"
+            },
+            {
+              "artist": "Destroy Boys",
+              "start": "20:25",
+              "end": "21:10"
+            },
+            {
+              "artist": "Adam Angst",
+              "start": "21:35",
+              "end": "22:25"
+            },
+            {
+              "artist": "Olli Schulz & Band",
+              "start": "22:50",
+              "end": "23:50"
+            },
+            {
+              "artist": "Tocotronic",
+              "start": "00:20",
+              "end": "01:20"
+            },
+            {
+              "artist": "Electric Callboy DJ Set",
+              "start": "01:50",
+              "end": "03:00"
+            }
+          ]
+        },
+        {
+          "events": [
+            {
+              "artist": "unpeople",
+              "start": "14:00",
+              "end": "14:40"
+            },
+            {
+              "artist": "Tulpe",
+              "start": "15:05",
+              "end": "15:45"
+            },
+            {
+              "artist": "Survive Said the Prophet",
+              "start": "16:10",
+              "end": "16:50"
+            },
+            {
+              "artist": "LØLØ",
+              "start": "17:15",
+              "end": "17:55"
+            },
+            {
+              "artist": "FJØRT",
+              "start": "18:20",
+              "end": "19:05"
+            },
+            {
+              "artist": "Static Dress",
+              "start": "19:30",
+              "end": "20:15"
+            },
+            {
+              "artist": "Nasty",
+              "start": "20:40",
+              "end": "21:30"
+            },
+            {
+              "artist": "Fleshwater",
+              "start": "21:55",
+              "end": "22:55"
+            },
+            {
+              "artist": "Creeper",
+              "start": "23:20",
+              "end": "00:20"
+            },
+            {
+              "artist": "Boston Manor",
+              "start": "00:50",
+              "end": "02:00"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "date": "2025-06-07",
+      "label": "Sat, 07",
+      "stages": [
+        {
+          "events": [
+            {
+              "artist": "Nothing More",
+              "start": "15:35",
+              "end": "16:20"
+            },
+            {
+              "artist": "Skillet",
+              "start": "16:50",
+              "end": "17:50"
+            },
+            {
+              "artist": "Spiritbox",
+              "start": "18:20",
+              "end": "19:20"
+            },
+            {
+              "artist": "Bullet For My Valentine",
+              "start": "19:50",
+              "end": "20:50"
+            },
+            {
+              "artist": "Kontra K",
+              "start": "21:30",
+              "end": "22:45"
+            },
+            {
+              "artist": "Slipknot",
+              "start": "23:30",
+              "end": "01:15"
+            }
+          ]
+        },
+        {
+          "events": [
+            {
+              "artist": "Kittie",
+              "start": "15:15",
+              "end": "15:50"
+            },
+            {
+              "artist": "Imminence",
+              "start": "16:10",
+              "end": "16:55"
+            },
+            {
+              "artist": "Me First and the Gimme Gimmes",
+              "start": "17:20",
+              "end": "18:05"
+            },
+            {
+              "artist": "Airbourne",
+              "start": "18:30",
+              "end": "19:25"
+            },
+            {
+              "artist": "Heaven Shall Burn",
+              "start": "19:55",
+              "end": "20:55"
+            },
+            {
+              "artist": "In Flames",
+              "start": "21:25",
+              "end": "22:25"
+            },
+            {
+              "artist": "Rise Against",
+              "start": "23:05",
+              "end": "00:20"
+            },
+            {
+              "artist": "Late Night Special:        SDP",
+              "start": "01:00",
+              "end": "02:30"
+            }
+          ]
+        },
+        {
+          "events": [
+            {
+              "artist": "Still Talk",
+              "start": "14:55",
+              "end": "15:35"
+            },
+            {
+              "artist": "Defects",
+              "start": "16:00",
+              "end": "16:40"
+            },
+            {
+              "artist": "Evil Jared x Krogi",
+              "start": "17:05",
+              "end": "17:45"
+            },
+            {
+              "artist": "Holy Wars",
+              "start": "18:10",
+              "end": "18:50"
+            },
+            {
+              "artist": "Future Palace",
+              "start": "19:15",
+              "end": "20:00"
+            },
+            {
+              "artist": "Northlane",
+              "start": "20:25",
+              "end": "21:10"
+            },
+            {
+              "artist": "Seven Hours After Violet",
+              "start": "21:35",
+              "end": "22:25"
+            },
+            {
+              "artist": "Smash Into Pieces",
+              "start": "22:50",
+              "end": "23:50"
+            },
+            {
+              "artist": "Millencolin",
+              "start": "00:20",
+              "end": "01:20"
+            },
+            {
+              "artist": "Touché Amoré",
+              "start": "01:50",
+              "end": "03:00"
+            }
+          ]
+        },
+        {
+          "events": [
+            {
+              "artist": "Kris Barras Band",
+              "start": "15:05",
+              "end": "15:45"
+            },
+            {
+              "artist": "Teen Mortgage",
+              "start": "16:10",
+              "end": "16:50"
+            },
+            {
+              "artist": "Spiritual Cramp",
+              "start": "17:15",
+              "end": "17:55"
+            },
+            {
+              "artist": "Grade 2",
+              "start": "18:20",
+              "end": "19:05"
+            },
+            {
+              "artist": "Trophy Eyes",
+              "start": "19:30",
+              "end": "20:15"
+            },
+            {
+              "artist": "Superheaven",
+              "start": "20:40",
+              "end": "21:30"
+            },
+            {
+              "artist": "SiM",
+              "start": "21:55",
+              "end": "22:55"
+            },
+            {
+              "artist": "Zebrahead",
+              "start": "23:20",
+              "end": "00:20"
+            },
+            {
+              "artist": "Turbostaat",
+              "start": "00:50",
+              "end": "02:00"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "date": "2025-06-08",
+      "label": "Sun, 08",
+      "stages": [
+        {
+          "events": [
+            {
+              "artist": "Dead Poet Society",
+              "start": "15:05",
+              "end": "15:50"
+            },
+            {
+              "artist": "The Warning",
+              "start": "16:20",
+              "end": "17:20"
+            },
+            {
+              "artist": "Idles",
+              "start": "17:50",
+              "end": "18:50"
+            },
+            {
+              "artist": "Beatsteaks",
+              "start": "19:20",
+              "end": "20:30"
+            },
+            {
+              "artist": "Falling in Reverse",
+              "start": "21:15",
+              "end": "22:45"
+            },
+            {
+              "artist": "KoRn",
+              "start": "23:30",
+              "end": "01:00"
+            }
+          ]
+        },
+        {
+          "events": [
+            {
+              "artist": "Fit For An Autopsy",
+              "start": "15:00",
+              "end": "15:30"
+            },
+            {
+              "artist": "Polaris",
+              "start": "15:50",
+              "end": "16:35"
+            },
+            {
+              "artist": "Jerry Cantrell",
+              "start": "17:00",
+              "end": "17:45"
+            },
+            {
+              "artist": "Jinjer",
+              "start": "18:10",
+              "end": "19:05"
+            },
+            {
+              "artist": "The Ghost Inside",
+              "start": "19:35",
+              "end": "20:35"
+            },
+            {
+              "artist": "Lorna Shore",
+              "start": "21:05",
+              "end": "22:05"
+            },
+            {
+              "artist": "Powerwolf",
+              "start": "22:45",
+              "end": "00:00"
+            },
+            {
+              "artist": "Sleep Token",
+              "start": "01:00",
+              "end": "02:30"
+            }
+          ]
+        },
+        {
+          "events": [
+            {
+              "artist": "Zetra",
+              "start": "15:00",
+              "end": "15:35"
+            },
+            {
+              "artist": "I See Stars",
+              "start": "16:00",
+              "end": "16:40"
+            },
+            {
+              "artist": "Amira Elfeky",
+              "start": "17:00",
+              "end": "17:45"
+            },
+            {
+              "artist": "VOWWS",
+              "start": "18:10",
+              "end": "18:50"
+            },
+            {
+              "artist": "Deafheaven",
+              "start": "19:15",
+              "end": "20:00"
+            },
+            {
+              "artist": "Whitechapel",
+              "start": "20:25",
+              "end": "21:15"
+            },
+            {
+              "artist": "thrown",
+              "start": "21:40",
+              "end": "22:25"
+            },
+            {
+              "artist": "Terror",
+              "start": "22:50",
+              "end": "23:50"
+            },
+            {
+              "artist": "Stray From The Path",
+              "start": "00:20",
+              "end": "01:20"
+            },
+            {
+              "artist": "Brutalismus 3000",
+              "start": "01:50",
+              "end": "03:00"
+            }
+          ]
+        },
+        {
+          "events": [
+            {
+              "artist": "The Red Flags",
+              "start": "15:05",
+              "end": "15:45"
+            },
+            {
+              "artist": "Leftovers",
+              "start": "16:10",
+              "end": "16:50"
+            },
+            {
+              "artist": "Pain of Truth",
+              "start": "17:15",
+              "end": "17:55"
+            },
+            {
+              "artist": "Drug Church",
+              "start": "18:20",
+              "end": "19:05"
+            },
+            {
+              "artist": "AViVA",
+              "start": "19:30",
+              "end": "20:15"
+            },
+            {
+              "artist": "Massendefekt",
+              "start": "20:40",
+              "end": "21:30"
+            },
+            {
+              "artist": "Deine Cousine",
+              "start": "21:55",
+              "end": "22:55"
+            },
+            {
+              "artist": "ZSK",
+              "start": "23:20",
+              "end": "00:20"
+            },
+            {
+              "artist": "Kasalla",
+              "start": "00:50",
+              "end": "02:00"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
