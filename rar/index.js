@@ -88,7 +88,7 @@ function TimeAxis({ totalRows, minTime }) {
   );
 }
 
-function Event({ event, minTime, selected, onToggle }) {
+function Event({ event, minTime, selected, toggle }) {
   const rowStart = Math.floor((event.startM - minTime) / 15) + 1;
   const rowEnd   = Math.floor((event.endM   - minTime) / 15) + 1;
 
@@ -97,7 +97,7 @@ function Event({ event, minTime, selected, onToggle }) {
     {
       className: selected ? "event selected" : "event",
       style: { gridRow: `${rowStart} / ${rowEnd}` },
-      onClick: () => onToggle(event.id),
+      onClick: () => toggle(event.id),
     },
     [
       React.createElement("div", { key: "artist", className: "event-artist" }, event.artist),
