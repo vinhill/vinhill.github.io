@@ -51,20 +51,32 @@ function preprocessTimetable(raw) {
   };
 }
 
-/** hook to keep Set<number> synced with ?sel URL param */
-function useUrlSelection() {
-  const [sel, setSel] = React.useState(() => {
-    const p = new URLSearchParams(location.search).get("sel");
-    return new Set(p ? p.split(".").map(Number) : []);
+/** hook to keep a states array in sync with ?sel and ?sel2 URL params (backwards compatible with sel-b) */
+function useUrlStates(maxId) {
+  const [states, setStates] = React.useState(() => {
+    const p = new URLSearchParams(location.search);
+    const sel1raw = p.get("sel") || "";
+    const sel2raw = p.get("sel2") || "";
+    const sel1 = new Set(sel1raw ? sel1raw.split(".").map(Number) : []);
+    const sel2 = new Set(sel2raw ? sel2raw.split(".").map(Number) : []);
+    // states[id] = 0 (none), 1 (sel), 2 (sel2)
+    const arr = Array(maxId + 1).fill(0);
+    sel1.forEach(id => { if (id <= maxId) arr[id] = 1; });
+    sel2.forEach(id => { if (id <= maxId) arr[id] = 2; });
+    return arr;
   });
 
   React.useEffect(() => {
+    const sel1 = [];
+    const sel2 = [];
+    states.forEach((v, i) => { if (v === 1) sel1.push(i); else if (v === 2) sel2.push(i); });
     const p = new URLSearchParams(location.search);
-    sel.size ? p.set("sel", [...sel].join(".")) : p.delete("sel");
+    p.set("sel", sel1.join("."));
+    p.set("sel2", sel2.join("."));
     history.replaceState(null, "", "?" + p.toString());
-  }, [sel]);
+  }, [states]);
 
-  return [sel, setSel];
+  return [states, setStates];
 }
 
 // --- UI components ----------------------------------------------
@@ -88,16 +100,16 @@ function TimeAxis({ totalRows, minTime }) {
   );
 }
 
-function Event({ event, minTime, selected, toggle }) {
+function Event({ event, minTime, state, toggle }) {
   const rowStart = Math.floor((event.startM - minTime) / 15) + 1;
   const rowEnd   = Math.floor((event.endM   - minTime) / 15) + 1;
-
+  const className = state === 1 ? "event sel1" : state === 2 ? "event sel2" : "event";
   return React.createElement(
     "div",
     {
-      className: selected ? "event selected" : "event",
+      className,
       style: { gridRow: `${rowStart} / ${rowEnd}` },
-      onClick: () => toggle(event.id),
+      onClick: () => toggle(event.id, state),
     },
     [
       React.createElement("div", { key: "artist", className: "event-artist" }, event.artist),
@@ -110,7 +122,7 @@ function Event({ event, minTime, selected, toggle }) {
   );
 }
 
-function StageColumn({ stage, totalRows, minTime, sel, toggle }) {
+function StageColumn({ stage, totalRows, minTime, states, toggle }) {
   return React.createElement(
     "div",
     {
@@ -120,12 +132,12 @@ function StageColumn({ stage, totalRows, minTime, sel, toggle }) {
     },
     stage.events.map(
       (ev) =>
-        new Event({ event: ev, minTime, selected: sel.has(ev.id), toggle })
+        new Event({ event: ev, minTime, state: states[ev.id], toggle })
     )
   );
 }
 
-function Day({ day, totalRows, minTime, sel, toggle }) {
+function Day({ day, totalRows, minTime, states, toggle }) {
   return React.createElement(
     "div",
     { className: "day", key: day.date, style: { "--rows": totalRows } },
@@ -142,7 +154,7 @@ function Day({ day, totalRows, minTime, sel, toggle }) {
             stage: s,
             totalRows,
             minTime,
-            sel,
+            states,
             toggle,
             key: s.name,
           })
@@ -156,14 +168,16 @@ function Day({ day, totalRows, minTime, sel, toggle }) {
 function App({ data }) {
   const { days, minTime, maxTime } = data;
   const totalRows = Math.ceil((maxTime - minTime) / 15);
-  const [sel, setSel] = useUrlSelection();
-  const toggle = (id) =>
-    setSel((prev) => {
-      const n = new Set(prev);
-      n.has(id) ? n.delete(id) : n.add(id);
-      return n;
+  // Find max event id
+  const maxId = Math.max(...days.flatMap(d => d.stages.flatMap(s => s.events.map(e => e.id))));
+  const [states, setStates] = useUrlStates(maxId);
+  const toggle = (id, state) => {
+    setStates(arr => {
+      const next = arr.slice();
+      next[id] = (state + 1) % 3; // cycle through 0 → 1 → 2 → 0
+      return next;
     });
-
+  };
   return React.createElement(
     "div",
     { id: "grid" },
@@ -172,7 +186,7 @@ function App({ data }) {
         day: d,
         totalRows,
         minTime,
-        sel,
+        states,
         toggle,
         key: d.date,
       })

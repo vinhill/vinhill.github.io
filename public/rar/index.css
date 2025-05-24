@@ -1,4 +1,3 @@
-
 :root {
 --row-height: 20px;
 }
@@ -68,7 +67,12 @@ font-size: 12px;
 cursor: pointer;
 overflow: hidden;
 }
-.event.selected {
+.event.sel1 {
+background: #337ab7;
+color: #fff;
+border-color: #23527c;
+}
+.event.sel2 {
 background: #d9534f;
 color: #fff;
 border-color: #b52b26;
