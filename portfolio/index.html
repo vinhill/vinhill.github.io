@@ -728,7 +728,42 @@ export { HeadingAnchors }</script>
 
 <!--Mozilla-->
 <article>
-    <h2 id="mozilla-working-student">Mozilla Working Student</h2>
+    <h2 id="mozilla">Mozilla</h2>
+
+    <h3 id="se3">SE3</h3>
+    <div>
+        <p>In March 2026, I became senior and look forward to the next years.</p>
+        <p>I'll work on View Transitions</p>
+    </div>
+
+    <h3 id="se2">SE2</h3>
+    <div>
+        <p>It was such a pleasure to continue full time at Mozilla after my studies
+            completed. From November 2024 to March 2026, I was a Software Engineer,
+            again in the DOM Core team.</p>
+        <p>I spend most of my year on synchronous <code>about:blank</code>
+           (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=543435">bug 543435</a>).
+           This was awesome to get to know the code more and collaborate with various
+           teams, while closing an important web-interoperability gap. Though inheriting
+           a 16 year old patch and touching over 240 files, mostly to fix load races
+           has been... something.</p>
+        <p>Another fun thing I implemented is Document Picture-in-Picture:
+            <button onclick="doPiPExample()">click me</button></p>
+    </div>
+    <script>
+        function doPiPExample() {
+            documentPictureInPicture
+                .requestWindow({ width: 260, height: 180 })
+                .then(w => {
+                const s = w.document.createElement('script');
+                s.src = '/js/pip-stopwatch.js'; // adjust path
+                w.document.body.appendChild(s);
+                })
+                .catch(console.error);
+        }
+    </script>
+
+    <h3 id="working-student">Working Student</h3>
     <div>
         <p>Working student at Mozilla in the DOM Core team, April 2023 till July 2024.</p>
         <p>It's been an interesting time developing Firefox features in C++, testing them with JavaScript while also discussing web standards.</p>
@@ -750,7 +785,8 @@ export { HeadingAnchors }</script>
         <div class="col-1">
             <p>A website displaying statistics about the game &quot;Trouble in Terrorist Town&quot; played with some friends.</p>
             <p>The website is written in Angular.js and accesses the RESTTT Backend for the displayed information.</p>
-            <p>See <a href="/TTTStats">here</a></p>
+            <p>Sadly, it's not up anymore after we stopped playing TTT</p>
+            <!--p>See <a href="/TTTStats">here</a></p-->
         </div>
     </div>
 </article>
@@ -762,7 +798,7 @@ export { HeadingAnchors }</script>
         <div class="col-1">
             <p>The backend for TTTStats, implemented as REST API with Express.</p>
             <p>It fetches logfiles from the game server via FTP, stores them in the cloud. These files are parsed using regexes and a callback-based system to populate a MySQL database with high-level information. Finally, several routes provide the results of pre-determined, SQL queries. Caching is used to minimize computational requirements and decrease latency.</p>
-            <p>See <a href="https://vmd76968.contaboserver.net:3001/">here</a></p>
+            <!--p>See <a href="https://vmd76968.contaboserver.net:3001/">here</a></p-->
         </div>
         <div class="col-1">
                 <x-carousel auto="">
@@ -834,15 +870,15 @@ export { HeadingAnchors }</script>
 				
 <ol reversed="" class="postlist">
 	<li class="postlist-item">
-		<a href="/blog/fourthpost/" class="postlist-link">This is my fourth post</a>
+		<a href="/blog/fourthpost/" class="postlist-link">Fourth demo post</a>
 		<time class="postlist-date" datetime="2018-09-30">September 2018</time>
 	</li>
 	<li class="postlist-item">
-		<a href="/blog/thirdpost/" class="postlist-link">This is my third post.</a>
+		<a href="/blog/thirdpost/" class="postlist-link">Third demo post</a>
 		<time class="postlist-date" datetime="2018-08-24">August 2018</time>
 	</li>
 	<li class="postlist-item">
-		<a href="/blog/secondpost/" class="postlist-link">This is my second post with a much longer title.</a>
+		<a href="/blog/secondpost/" class="postlist-link">Second demo post</a>
 		<time class="postlist-date" datetime="2018-07-04">July 2018</time>
 	</li>
 </ol>
@@ -851,7 +887,7 @@ export { HeadingAnchors }</script>
 		</div>
 
 		<footer>			
-			<p><em>This page `/portfolio/` was built on 2025-09-21T06:50:41.376Z with <a href="https://www.11ty.dev/">Eleventy v3.0.0</a></em></p>
+			<p><em>This page `/portfolio/` was built on 2026-03-01T14:20:13.745Z with <a href="https://www.11ty.dev/">Eleventy v3.0.0</a></em></p>
 		</footer>
 
 		<script type="module" src="/dist/KObXHchsAR.js"></script>

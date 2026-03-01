@@ -12,7 +12,7 @@
     <email>vincenthilla5@gmail.com</email>
   </author>
   <entry>
-    <title>This is my fourth post</title>
+    <title>Fourth demo post</title>
     <link href="https://vinhill.github.io/blog/fourthpost/" />
     <updated>2018-09-30T00:00:00Z</updated>
     <id>https://vinhill.github.io/blog/fourthpost/</id>
@@ -24,7 +24,7 @@
 </content>
   </entry>
   <entry>
-    <title>This is my third post.</title>
+    <title>Third demo post</title>
     <link href="https://vinhill.github.io/blog/thirdpost/" />
     <updated>2018-08-24T00:00:00Z</updated>
     <id>https://vinhill.github.io/blog/thirdpost/</id>
@@ -56,7 +56,7 @@ console.log(&#39;Test&#39;);
 </content>
   </entry>
   <entry>
-    <title>This is my second post with a much longer title.</title>
+    <title>Second demo post</title>
     <link href="https://vinhill.github.io/blog/secondpost/" />
     <updated>2018-07-04T00:00:00Z</updated>
     <id>https://vinhill.github.io/blog/secondpost/</id>
@@ -69,7 +69,7 @@ console.log(&#39;Test&#39;);
 </content>
   </entry>
   <entry>
-    <title>This is my first post.</title>
+    <title>First demo post</title>
     <link href="https://vinhill.github.io/blog/firstpost/" />
     <updated>2018-05-01T00:00:00Z</updated>
     <id>https://vinhill.github.io/blog/firstpost/</id>
