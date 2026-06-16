@@ -1,0 +1,77 @@
+body {
+    font-family: monospace;
+    margin: 2em;
+    background: #1a1a2e;
+    color: #e0e0e0;
+}
+
+table {
+    border-collapse: collapse;
+    margin-top: 1em;
+    width: 100%;
+}
+
+th,
+td {
+    border: 1px solid #444;
+    padding: 8px 12px;
+    text-align: right;
+}
+
+th {
+    background: #16213e;
+}
+
+td:first-child,
+th:first-child {
+    text-align: left;
+}
+
+td:nth-child(2),
+th:nth-child(2) {
+    text-align: left;
+}
+
+tr:hover {
+    background: #16213e;
+}
+
+.high {
+    color: #ff6b6b;
+}
+
+.medium {
+    color: #ffd93d;
+}
+
+.low {
+    color: #6bcb77;
+}
+
+#status {
+    margin: 1em 0;
+}
+
+a {
+    color: #7eb8f7;
+}
+
+select {
+    font-family: monospace;
+    padding: 4px 8px;
+    background: #16213e;
+    color: #e0e0e0;
+    border: 1px solid #444;
+}
+
+.controls {
+    margin: 1em 0;
+}
+
+#chart {
+    margin-top: 2em;
+}
+
+tr.chart-hl {
+    background: #16213e;
+}
