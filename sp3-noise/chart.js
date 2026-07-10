@@ -40,21 +40,32 @@ function buildChart(results) {
   svg.setAttribute('height', H);
   svg.style.overflow = 'visible';
 
-  const labelMeta = [];
-
-  results.forEach(({ sig, series }, i) => {
+  const prepared = results.map(({ sig, series }, i) => {
     const color = COLORS[i % COLORS.length];
     const sorted = [...series.data].sort(
       (a, b) => new Date(a.push_timestamp) - new Date(b.push_timestamp)
     );
     const values = sorted.map(d => d.value);
-    const vMin = Math.min(...values);
-    const vMax = Math.max(...values);
-    const vRange = vMax - vMin || 1;
+    const mean = values.reduce((s, v) => s + v, 0) / values.length;
+    const centered = values.map(v => v - mean);
+    return { sig, series, color, sorted, centered };
+  });
 
-    const pts = sorted.map(d => [
+  let yMin = Infinity, yMax = -Infinity;
+  for (const { centered } of prepared) {
+    for (const v of centered) {
+      if (v < yMin) yMin = v;
+      if (v > yMax) yMax = v;
+    }
+  }
+  const yRange = yMax - yMin || 1;
+
+  const labelMeta = [];
+
+  prepared.forEach(({ sig, series, color, sorted, centered }, i) => {
+    const pts = sorted.map((d, j) => [
       PAD.left + ((new Date(d.push_timestamp).getTime() - tMin) / tRange) * iW,
-      PAD.top + (1 - (d.value - vMin) / vRange) * iH,
+      PAD.top + (1 - (centered[j] - yMin) / yRange) * iH,
     ]);
 
     const poly = document.createElementNS(NS, 'polyline');
