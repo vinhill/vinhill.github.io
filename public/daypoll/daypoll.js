@@ -531,7 +531,7 @@ $('#addUsers').addEventListener('click', () => {
     for (const code of additions) {
         try {
             const [name, votes] = code.split('=');
-            parseUser(name, votes, pollDates);
+            parseUser(votes, pollDates);
             valid.push([name, votes]);
         } catch (e) {
             alert(`Could not parse: ${code}\n${e.message}`);
@@ -557,5 +557,4 @@ $('#startDate').value = localToday;
 $('#endDate').value = localEnd;
 
 loadFromUrl();
-const p = params();
-setTab(p.getAll('user').length ? 'results' : pollDates.length ? 'vote' : 'create');
+setTab(userCodesFromUrl().length ? 'results' : pollDates.length ? 'vote' : 'create');
