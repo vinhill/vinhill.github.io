@@ -557,5 +557,4 @@ $('#startDate').value = localToday;
 $('#endDate').value = localEnd;
 
 loadFromUrl();
-const p = params();
-setTab(p.getAll('user').length ? 'results' : pollDates.length ? 'vote' : 'create');
+setTab(userCodesFromUrl().length ? 'results' : pollDates.length ? 'vote' : 'create');
