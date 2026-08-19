@@ -19,6 +19,7 @@
       <option value="90">90 days</option>
     </select>
   </div>
+
   <div id="status">Loading...</div>
   <table id="results" hidden>
     <thead>
@@ -35,7 +36,47 @@
     <tbody></tbody>
   </table>
   <div id="chart"></div>
+
+  <h3>Noise Estimate (try)</h3>
+  <div id="try-status"></div>
+  <table id="try-results" hidden>
+    <thead>
+      <tr>
+        <th>Platform</th>
+        <th>Signature</th>
+        <th>Pushes</th>
+        <th>Runs</th>
+        <th>~Runs/Push</th>
+        <th>CV P50</th>
+        <th>CV P75</th>
+        <th>CV P90</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <div id="noise-chart"></div>
+
+  <h3>Push Compare</h3>
+  <div class="controls">
+    <input id="base-rev" placeholder="base revision" size="44">
+    <input id="test-rev" placeholder="test revision (optional)" size="44">
+    <button id="calc-btn">Check</button>
+  </div>
+  <div id="calc-status"></div>
+  <table id="calc-results" hidden>
+    <thead>
+      <tr>
+        <th>Platform</th>
+        <th>Base</th>
+        <th>Test</th>
+        <th>7d Noise</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
   <script src="chart.js"></script>
+  <script src="api.js"></script>
   <script src="app.js"></script>
 </body>
 

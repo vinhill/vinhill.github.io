@@ -75,3 +75,33 @@ select {
 tr.chart-hl {
     background: #16213e;
 }
+
+input {
+    font-family: monospace;
+    padding: 4px 8px;
+    background: #16213e;
+    color: #e0e0e0;
+    border: 1px solid #444;
+}
+
+button {
+    font-family: monospace;
+    padding: 4px 12px;
+    background: #16213e;
+    color: #e0e0e0;
+    border: 1px solid #444;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1a3a5c;
+}
+
+h3 {
+    margin-top: 2em;
+    color: #7eb8f7;
+}
+
+#noise-chart {
+    margin-top: 1em;
+}
