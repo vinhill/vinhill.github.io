@@ -128,3 +128,160 @@ function buildChart(results) {
     p.addEventListener('mouseout', () => setHighlight(null));
   });
 }
+
+// Scatter plot of per-push CV% over time, with rolling median overlay.
+// noiseResults: [{ sig, platform, color, perPush: [{cv, timestamp}] }]
+function buildNoiseChart(noiseResults) {
+  const container = document.getElementById('noise-chart');
+  container.innerHTML = '';
+  if (!noiseResults.length) return;
+
+  const W = Math.max(container.clientWidth || 0, 600);
+  const H = 220;
+  const PAD = { top: 16, right: 148, bottom: 8, left: 48 };
+  const iW = W - PAD.left - PAD.right;
+  const iH = H - PAD.top - PAD.bottom;
+
+  const allPoints = [];
+  noiseResults.forEach(({ sig, color, perPush }) => {
+    perPush.forEach(p => {
+      allPoints.push({ t: new Date(p.timestamp).getTime(), cv: p.cv, color, sig });
+    });
+  });
+  if (!allPoints.length) return;
+
+  let tMin = Infinity, tMax = -Infinity, cvMax = 0;
+  for (const p of allPoints) {
+    if (p.t < tMin) tMin = p.t;
+    if (p.t > tMax) tMax = p.t;
+    if (p.cv > cvMax) cvMax = p.cv;
+  }
+  const tRange = tMax - tMin || 1;
+  cvMax = Math.max(cvMax, 1);
+
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('width', '100%');
+  svg.setAttribute('height', H);
+
+  // Y axis label + ticks
+  const yLabel = document.createElementNS(NS, 'text');
+  yLabel.setAttribute('x', 12);
+  yLabel.setAttribute('y', PAD.top + iH / 2);
+  yLabel.setAttribute('fill', '#888');
+  yLabel.setAttribute('font-size', '11');
+  yLabel.setAttribute('font-family', 'monospace');
+  yLabel.setAttribute('transform', `rotate(-90, 12, ${PAD.top + iH / 2})`);
+  yLabel.setAttribute('text-anchor', 'middle');
+  yLabel.textContent = 'CV %';
+  svg.appendChild(yLabel);
+
+  const nTicks = 4;
+  for (let i = 0; i <= nTicks; i++) {
+    const v = (cvMax * i) / nTicks;
+    const y = PAD.top + (1 - i / nTicks) * iH;
+    const tick = document.createElementNS(NS, 'text');
+    tick.setAttribute('x', PAD.left - 4);
+    tick.setAttribute('y', y);
+    tick.setAttribute('fill', '#666');
+    tick.setAttribute('font-size', '10');
+    tick.setAttribute('font-family', 'monospace');
+    tick.setAttribute('text-anchor', 'end');
+    tick.setAttribute('dominant-baseline', 'middle');
+    tick.textContent = v.toFixed(1);
+    svg.appendChild(tick);
+    if (i > 0) {
+      const gl = document.createElementNS(NS, 'line');
+      gl.setAttribute('x1', PAD.left);
+      gl.setAttribute('x2', PAD.left + iW);
+      gl.setAttribute('y1', y);
+      gl.setAttribute('y2', y);
+      gl.setAttribute('stroke', '#333');
+      gl.setAttribute('stroke-dasharray', '3,3');
+      svg.appendChild(gl);
+    }
+  }
+
+  // Scatter dots
+  allPoints.forEach(p => {
+    const cx = PAD.left + ((p.t - tMin) / tRange) * iW;
+    const cy = PAD.top + (1 - p.cv / cvMax) * iH;
+    const dot = document.createElementNS(NS, 'circle');
+    dot.setAttribute('cx', cx.toFixed(1));
+    dot.setAttribute('cy', cy.toFixed(1));
+    dot.setAttribute('r', '2.5');
+    dot.setAttribute('fill', p.color);
+    dot.setAttribute('opacity', '0.5');
+    dot.dataset.sig = p.sig;
+    svg.appendChild(dot);
+  });
+
+  // Rolling median line (percentile is defined in app.js, available at call time)
+  const sorted = [...allPoints].sort((a, b) => a.t - b.t);
+  const win = Math.max(10, Math.floor(sorted.length / 15));
+  const medLine = [];
+  for (let i = 0; i < sorted.length; i++) {
+    const lo = Math.max(0, i - Math.floor(win / 2));
+    const hi = Math.min(sorted.length, lo + win);
+    const wCVs = sorted.slice(lo, hi).map(p => p.cv).sort((a, b) => a - b);
+    medLine.push({ t: sorted[i].t, cv: percentile(wCVs, 0.5) });
+  }
+  if (medLine.length > 1) {
+    const pts = medLine.map(p => {
+      const x = PAD.left + ((p.t - tMin) / tRange) * iW;
+      const y = PAD.top + (1 - p.cv / cvMax) * iH;
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(' ');
+    const poly = document.createElementNS(NS, 'polyline');
+    poly.setAttribute('points', pts);
+    poly.setAttribute('fill', 'none');
+    poly.setAttribute('stroke', '#fff');
+    poly.setAttribute('stroke-width', '2');
+    poly.setAttribute('opacity', '0.7');
+    svg.appendChild(poly);
+  }
+
+  // Legend
+  noiseResults.forEach(({ sig, platform, color }, idx) => {
+    const y = PAD.top + (idx / Math.max(noiseResults.length - 1, 1)) * iH;
+    const text = document.createElementNS(NS, 'text');
+    text.setAttribute('x', PAD.left + iW + 10);
+    text.setAttribute('y', y);
+    text.setAttribute('fill', color);
+    text.setAttribute('font-size', '11');
+    text.setAttribute('font-family', 'monospace');
+    text.setAttribute('dominant-baseline', 'middle');
+    text.dataset.sig = sig;
+    text.textContent = platform;
+    svg.appendChild(text);
+  });
+
+  container.appendChild(svg);
+
+  // Cross-highlight between try table rows and noise chart
+  const rows = document.querySelectorAll('#try-results tbody tr');
+  const dots = svg.querySelectorAll('circle');
+  const labels = svg.querySelectorAll('text[data-sig]');
+
+  function setNoiseHighlight(activeSig) {
+    const dimmed = activeSig !== null;
+    dots.forEach(d => {
+      d.setAttribute('opacity', dimmed && d.dataset.sig !== activeSig ? '0.08' : '0.5');
+      d.setAttribute('r', d.dataset.sig === activeSig ? '4' : '2.5');
+    });
+    labels.forEach(t => {
+      t.style.opacity = dimmed && t.dataset.sig !== activeSig ? '0.15' : '1';
+    });
+    rows.forEach(r => r.classList.toggle('chart-hl', r.dataset.sig === activeSig));
+  }
+
+  rows.forEach(r => {
+    r.addEventListener('mouseover', () => setNoiseHighlight(r.dataset.sig));
+    r.addEventListener('mouseout', () => setNoiseHighlight(null));
+  });
+  dots.forEach(d => {
+    d.addEventListener('mouseover', () => setNoiseHighlight(d.dataset.sig));
+    d.addEventListener('mouseout', () => setNoiseHighlight(null));
+  });
+}
