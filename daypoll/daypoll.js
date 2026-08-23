@@ -1099,7 +1099,7 @@ function paintRange(a, b, value) {
 
 /* Results */
 
-function async renderResults() {
+async function renderResults() {
     const hasPoll = pollDates.length > 0;
 
     $('#noPollResults').classList.toggle('hidden', hasPoll);
