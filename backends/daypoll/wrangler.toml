@@ -1,0 +1,11 @@
+name = "daypoll-api"
+main = "src/index.js"
+compatibility_date = "2026-08-23"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "daypoll"
+database_id = "ee57b459-1495-4a79-a364-71218a840bd2"
+
+[vars]
+ALLOWED_ORIGIN = "https://vinhill.github.io"

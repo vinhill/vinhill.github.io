@@ -20,6 +20,51 @@ const fullFmt = new Intl.DateTimeFormat(undefined, {
 });
 
 
+/* Optional backend */
+
+class Backend {
+    static baseUrl() {
+        return $('meta[name="daypoll-api-url"]')
+            ?.content.trim().replace(/\/$/, '');
+    }
+
+    static async request(path, options = {}) {
+        const baseUrl = this.baseUrl();
+
+        if (!baseUrl) {
+            throw new Error(
+                'Daypoll backend is not configured; using URL-only mode.'
+            );
+        }
+
+        const response = await fetch(`${baseUrl}${path}`, {
+            ...options,
+            headers: options.headers
+        });
+
+        if (!response.ok) {
+            throw new Error(`Daypoll backend returned ${response.status}`);
+        }
+
+        return response.json();
+    }
+
+    static submitVote(poll, name, votes) {
+        return this.request('/api/votes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ poll, name, votes })
+        });
+    }
+
+    static results(poll) {
+        return this.request(
+            `/api/results?poll=${encodeURIComponent(poll)}`
+        );
+    }
+}
+
+
 /* Dates */
 
 function fromISO(iso) {
@@ -1054,7 +1099,7 @@ function paintRange(a, b, value) {
 
 /* Results */
 
-function renderResults() {
+async function renderResults() {
     const hasPoll = pollDates.length > 0;
 
     $('#noPollResults').classList.toggle('hidden', hasPoll);
@@ -1082,6 +1127,33 @@ function renderResults() {
                 `${name}=${votes}`,
                 e
             );
+        }
+    }
+
+    if (Backend.baseUrl()) {
+        try {
+            const poll = Storage.params().get('poll');
+            const result = await Backend.results(poll);
+
+            for (const { name, votes } of result.votes) {
+                if (names.includes(name)) {
+                    continue;
+                }
+
+                try {
+                    parsed.push(Codec.parseUser(votes, pollDates));
+                    names.push(name);
+                    validCodes.push([name, votes]);
+                } catch (e) {
+                    console.warn(
+                        'Skipping invalid backend user',
+                        `${name}=${votes}`,
+                        e
+                    );
+                }
+            }
+        } catch (e) {
+            console.warn('Could not load backend results', e);
         }
     }
 
@@ -1281,7 +1353,7 @@ $('#setAllNo').addEventListener('click', () => {
 });
 
 
-$('#finishVote').addEventListener('click', () => {
+$('#finishVote').addEventListener('click', async () => {
     if (!pollDates.length) return;
 
     const name = $('#username').value || 'anonymous';
@@ -1289,6 +1361,17 @@ $('#finishVote').addEventListener('click', () => {
 
     $('#voteCode').textContent = code;
     $('#voteOutputWrap').classList.remove('hidden');
+
+    if (Backend.baseUrl()) {
+        const votes = code.slice(code.indexOf('=') + 1);
+        const poll = Storage.params().get('poll');
+
+        try {
+            await Backend.submitVote(poll, name, votes);
+        } catch (e) {
+            console.warn('Could not save vote to backend', e);
+        }
+    }
 });
 
 
