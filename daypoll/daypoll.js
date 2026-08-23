@@ -925,10 +925,6 @@ let paint = 'y';
 let voteAnchor = null;
 let draggingVote = false;
 
-let backendUsers = [];
-let backendPoll = null;
-let backendLoadPromise = null;
-
 
 /* App */
 
@@ -943,10 +939,6 @@ function loadFromUrl() {
     voteMap = Object.fromEntries(
         pollDates.map(d => [d, 'y'])
     );
-
-    backendUsers = [];
-    backendPoll = null;
-    backendLoadPromise = null;
 }
 
 function setTab(name) {
@@ -959,10 +951,7 @@ function setTab(name) {
     );
 
     if (name === 'vote') renderVote();
-    if (name === 'results') {
-        renderResults();
-        loadBackendResults();
-    }
+    if (name === 'results') renderResults();
 }
 
 
@@ -1110,7 +1099,7 @@ function paintRange(a, b, value) {
 
 /* Results */
 
-function renderResults() {
+function async renderResults() {
     const hasPoll = pollDates.length > 0;
 
     $('#noPollResults').classList.toggle('hidden', hasPoll);
@@ -1122,25 +1111,16 @@ function renderResults() {
         return;
     }
 
-    const localCodes = Storage.users();
-    const localKeys = new Set(
-        localCodes.map(([name, votes]) => `${name}\0${votes}`)
-    );
-    const codes = [
-        ...localCodes.map(code => ({ code, local: true })),
-        ...backendUsers
-            .filter(([name, votes]) => !localKeys.has(`${name}\0${votes}`))
-            .map(code => ({ code, local: false }))
-    ];
+    const codes = Storage.users();
     const parsed = [];
     const validCodes = [];
     const names = [];
 
-    for (const { code: [name, votes], local } of codes) {
+    for (const [name, votes] of codes) {
         try {
             parsed.push(Codec.parseUser(votes, pollDates));
             names.push(name);
-            validCodes.push({ code: [name, votes], local });
+            validCodes.push([name, votes]);
         } catch (e) {
             console.warn(
                 'Skipping invalid user code',
@@ -1150,13 +1130,36 @@ function renderResults() {
         }
     }
 
-    // Also removes malformed users from the URL.
-    const validLocalCodes = validCodes
-        .filter(entry => entry.local)
-        .map(entry => entry.code);
+    if (Backend.baseUrl()) {
+        try {
+            const poll = Storage.params().get('poll');
+            const result = await Backend.results(poll);
 
-    if (validLocalCodes.length !== localCodes.length) {
-        Storage.replaceUsers(validLocalCodes);
+            for (const { name, votes } of result.votes) {
+                if (names.includes(name)) {
+                    continue;
+                }
+
+                try {
+                    parsed.push(Codec.parseUser(votes, pollDates));
+                    names.push(name);
+                    validCodes.push([name, votes]);
+                } catch (e) {
+                    console.warn(
+                        'Skipping invalid backend user',
+                        `${name}=${votes}`,
+                        e
+                    );
+                }
+            }
+        } catch (e) {
+            console.warn('Could not load backend results', e);
+        }
+    }
+
+    // Also removes malformed users from the URL.
+    if (validCodes.length !== codes.length) {
+        Storage.replaceUsers(validCodes);
     }
 
     const list = $('#userList');
@@ -1166,7 +1169,7 @@ function renderResults() {
         list.textContent = 'No responses yet.';
     }
 
-    validCodes.forEach(({ code: [name, code], local }) => {
+    validCodes.forEach(([name, code], i) => {
         const row = document.createElement('div');
         row.className = 'userrow';
 		
@@ -1175,18 +1178,11 @@ function renderResults() {
         row.innerHTML =
             `<strong>${escapeHtml(name)}</strong>` +
             `<code>${escapeHtml(textCode)}</code>` +
-            (local
-                ? '<button class="btn danger">Remove</button>'
-                : '<span class="muted">Synced</span>');
+            '<button class="btn danger">Remove</button>';
 
-        if (local) $('button', row).addEventListener('click', () => {
-            const next = [...validLocalCodes];
-            const localIndex = next.findIndex(
-                ([localName, localCode]) =>
-                    localName === name && localCode === code
-            );
-
-            if (localIndex >= 0) next.splice(localIndex, 1);
+        $('button', row).addEventListener('click', () => {
+            const next = [...validCodes];
+            next.splice(i, 1);
 
             Storage.replaceUsers(next);
             renderResults();
@@ -1257,41 +1253,6 @@ function renderResults() {
             showAllDays: false
         }
     );
-}
-
-async function loadBackendResults() {
-    const poll = Storage.params().get('poll');
-
-    if (!poll || backendPoll === poll || backendLoadPromise) return;
-
-    const request = Backend.results(poll);
-    backendLoadPromise = request;
-
-    try {
-        const data = await request;
-
-        if (Storage.params().get('poll') !== poll) return;
-
-        if (!Array.isArray(data.votes)) {
-            throw new Error('Daypoll backend returned invalid results');
-        }
-
-        backendUsers = data.votes
-            .filter(vote =>
-                vote &&
-                typeof vote.name === 'string' &&
-                typeof vote.votes === 'string'
-            )
-            .map(vote => [vote.name, vote.votes]);
-        backendPoll = poll;
-        renderResults();
-    } catch (e) {
-        console.warn('Could not load votes from the Daypoll backend.', e);
-    } finally {
-        if (backendLoadPromise === request) {
-            backendLoadPromise = null;
-        }
-    }
 }
 
 
@@ -1392,34 +1353,24 @@ $('#setAllNo').addEventListener('click', () => {
 });
 
 
-$('#finishVote').addEventListener('click', () => {
+$('#finishVote').addEventListener('click', async () => {
     if (!pollDates.length) return;
 
-    const name = $('#username').value.trim() || 'anonymous';
+    const name = $('#username').value || 'anonymous';
     const code = Codec.encodeUser(voteMap, pollDates, name);
 
     $('#voteCode').textContent = code;
     $('#voteOutputWrap').classList.remove('hidden');
 
-    const poll = Storage.params().get('poll');
-    const votes = code.slice(name.length + 1);
+    if (Backend.baseUrl()) {
+        const votes = code.slice(code.indexOf('=') + 1);
+        const poll = Storage.params().get('poll');
 
-    if (poll) {
-        Backend.submitVote(poll, name, votes)
-            .then(() => {
-                backendUsers = [
-                    ...backendUsers.filter(([savedName]) => savedName !== name),
-                    [name, votes]
-                ];
-                backendPoll = poll;
-
-                if (!$('#results').classList.contains('hidden')) {
-                    renderResults();
-                }
-            })
-            .catch(e => {
-                console.warn('Could not save vote to the Daypoll backend.', e);
-            });
+        try {
+            await Backend.submitVote(poll, name, votes);
+        } catch (e) {
+            console.warn('Could not save vote to backend', e);
+        }
     }
 });
 
